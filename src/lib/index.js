@@ -59,7 +59,6 @@ function App() {
 						{isopenList ? <Svgminimize key='minimize' /> : <Svglist key='list' />}
 					</AnimatePresence>
 				</motion.div>
-
 				<AnimatePresence>
 					{isopenList && (
 						<motion.div
