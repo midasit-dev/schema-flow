@@ -38,8 +38,6 @@ function App() {
 					exit={{ width: '24px', height: '24px' }}
 					transition={{ duration: 0.2 }}
 					style={{
-						// width: isopenList ? "12px" : "24px",
-						// height: isopenList ? "12px" : "24px",
 						backgroundColor: 'white',
 						cursor: 'pointer',
 						position: 'fixed',
