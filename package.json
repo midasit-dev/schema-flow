@@ -15,7 +15,7 @@
 		"type": "git",
 		"url": "git+https://github.com/midasit-dev/SchemaUIBuilder.git"
 	},
-	"homepage": "https://midasit-dev.github.io/SchemaUIBuilder",
+	"homepage": "https://midasit-dev.github.io/SchemaUIBuilder/",
 	"private": false,
 	"main": "index.js",
 	"contributors": [
