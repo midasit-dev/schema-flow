@@ -59,55 +59,60 @@ function App() {
 						{isopenList ? <Svgminimize key='minimize' /> : <Svglist key='list' />}
 					</AnimatePresence>
 				</motion.div>
-				{isopenList && (
-					<motion.div
-						initial={{ opacity: 0, scale: 0 }}
-						animate={{ opacity: 1, scale: 1 }}
-						exit={{ opacity: 0, scale: 0 }}
-						style={{
-							width: 'auto',
-							height: 'auto',
-							backgroundColor: 'rgba(252, 249, 235, 0.7)',
-							cursor: 'pointer',
-							position: 'absolute',
-							top: '24px',
-							left: '24px',
-							zIndex: '1000',
-							padding: '5px',
-							border: '1px solid #c1c1c3',
-							borderRadius: '8px',
-						}}
-					>
-						{examplePylist.map((py, index) => (
-							<div
-								key={index}
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									justifyContent: 'flex-start',
-									padding: '5px',
-									cursor: 'pointer',
-									borderBottom: index !== examplePylist.length - 1 ? '1px solid #c1c1c3' : 'none',
-								}}
-								onClick={() => {
-									setIsopenList(false);
-								}}
-							>
-								<img
+
+				<AnimatePresence mode={'wait'}>
+					{isopenList && (
+						<motion.div
+							key={'div_schema_list'}
+							initial={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
+							animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+							exit={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
+							transition={{ duration: 0.2 }}
+							style={{
+								width: 'auto',
+								height: 'auto',
+								backgroundColor: 'rgba(252, 249, 235, 0.7)',
+								cursor: 'pointer',
+								position: 'absolute',
+								top: '24px',
+								left: '24px',
+								zIndex: '1000',
+								padding: '5px',
+								border: '1px solid #c1c1c3',
+								borderRadius: '8px',
+							}}
+						>
+							{examplePylist.map((py, index) => (
+								<div
+									key={index}
 									style={{
-										width: '14px',
-										height: '14px',
-										marginRight: '5px',
-										marginTop: '5px',
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'flex-start',
+										padding: '5px',
+										cursor: 'pointer',
+										borderBottom: index !== examplePylist.length - 1 ? '1px solid #c1c1c3' : 'none',
 									}}
-									src={`${process.env.PUBLIC_URL}/svg/Python.svg`}
-									alt='Python'
-								/>
-								{py}
-							</div>
-						))}
-					</motion.div>
-				)}
+									onClick={() => {
+										setIsopenList(false);
+									}}
+								>
+									<img
+										style={{
+											width: '14px',
+											height: '14px',
+											marginRight: '5px',
+											marginTop: '5px',
+										}}
+										src={`${process.env.PUBLIC_URL}/svg/Python.svg`}
+										alt='Python'
+									/>
+									{py}
+								</div>
+							))}
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</div>
 			<ReactFlowComp />
 		</div>
