@@ -1,39 +1,74 @@
 {
-  "name": "reactflow",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
-    "reactflow": "^11.11.3",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+	"name": "@midasit-dev/schemauibuilder",
+	"description": "A builder that automatically generates Schema as UI and connects the flow.",
+	"version": "0.1.0",
+	"keywords": [
+		"moaui",
+		"midasit",
+		"plugin",
+		"schema",
+		"ui",
+		"builder"
+	],
+	"author": "APIDEV Team <developer@midasit.com> (https://github.com/midasit-dev)",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/midasit-dev/SchemaUIBuilder.git"
+	},
+	"homepage": "https://midasit-dev.github.io/SchemaUIBuilder",
+	"private": false,
+	"main": "index.js",
+	"contributors": [
+		{
+			"name": "lhy0118"
+		},
+		{
+			"name": "kh1012"
+		}
+	],
+	"dependencies": {
+		"@testing-library/jest-dom": "^5.17.0",
+		"@testing-library/react": "^13.4.0",
+		"@testing-library/user-event": "^13.5.0",
+		"framer-motion": "^11.2.10",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-scripts": "5.0.1",
+		"reactflow": "^11.11.3",
+		"recoil": "^0.7.7",
+		"web-vitals": "^2.1.4"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"move": "rmdir /s /q docs && rename build docs",
+		"build": "react-scripts build && npm run move",
+		"publish-npm": "npm run prepare-npm && cd ./dist && npm publish --access public",
+		"prepare-npm": "node prepare.js && tsc && npm run copy",
+		"reset": "rmdir /s /q dist && mkdir dist",
+		"copy": "copyfiles -u 2 src/lib/**/*.css dist/ && copyfiles -u 2 src/lib/**/*.json dist/",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"bugs": {
+		"url": "https://github.com/midasit-dev/SchemaUIBuilder/issues"
+	},
+	"license": "MIT"
 }
