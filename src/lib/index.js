@@ -60,7 +60,7 @@ function App() {
 					</AnimatePresence>
 				</motion.div>
 
-				<AnimatePresence mode={'wait'}>
+				<AnimatePresence>
 					{isopenList && (
 						<motion.div
 							key={'div_schema_list'}
