@@ -38,8 +38,10 @@ interface Layers extends Array<Layer> {}
 interface Canvas {
 	width: number;
 	height: number;
+	layers: Layers;
 }
 
+type Canvases = Record<string, Canvas>;
 interface ExportSchema {
 	canvas?: Canvas;
 	layers?: Layers;
@@ -157,6 +159,7 @@ export type {
 	Layer,
 	Layers,
 	Canvas,
+	Canvases,
 	ExportSchema,
 	Box,
 	Schema,
