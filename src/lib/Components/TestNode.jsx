@@ -1,13 +1,14 @@
 import React from 'react';
 import { Handle, useStore, Position, useReactFlow } from 'reactflow';
 import { Button, Typography } from '@midasit-dev/moaui';
+import SchemaToUI from '../SchemaToUI';
 
 const dimensionAttrs = ['width', 'height'];
 
 const exampleSchema = {
-	canvas: {
+	canvas_1: {
 		width: 640,
-		height: 320,
+		height: 256,
 		layers: [
 			{
 				id: '1-FloatingBox',
@@ -152,13 +153,19 @@ const exampleSchema = {
 				],
 				parent: null,
 			},
+		],
+	},
+	canvas_run: {
+		width: 250,
+		height: 100,
+		layers: [
 			{
 				id: '6-FloatingBox',
 				type: 'FloatingBox',
 				props: {
 					x: 0,
-					y: 256,
-					width: 640,
+					y: 0,
+					width: 220,
 					height: 64,
 					guideBoxProps: {
 						width: 'inherit',
@@ -174,7 +181,7 @@ const exampleSchema = {
 						type: 'Button',
 						props: {
 							children: '실행하기',
-							width: '100px',
+							width: '120px',
 							variant: 'contained',
 							color: 'negative',
 						},
@@ -189,6 +196,11 @@ const exampleSchema = {
 
 export default function TestNode(props) {
 	const { setNodes } = useReactFlow();
+
+	// React.useEffect(() => {
+	// 	const UI = SchemaToUI(exampleSchema);
+	// 	console.log('UI: ', UI);
+	// }, []);
 
 	const dimensions = useStore((s) => {
 		const node = s.nodeInternals.get('2-3');
@@ -224,10 +236,7 @@ export default function TestNode(props) {
 	return (
 		<>
 			<div>
-				<Typography variant={'h1'}>This is testnode</Typography>
-				<Button variant='contained' width='200px' color='normal' onClick={() => {}}>
-					Run
-				</Button>
+				<SchemaToUI canvases={exampleSchema} />
 			</div>
 			<Handle type='target' position={Position.Top} />
 		</>

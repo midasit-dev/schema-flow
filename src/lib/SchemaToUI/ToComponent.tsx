@@ -4,23 +4,23 @@ import { useRecoilState } from 'recoil';
 import Moaui, { type FloatingBoxProps, FloatingBox } from '@midasit-dev/moaui';
 import { type Layer } from '../Common/types';
 import { isAvailableComp } from './AvailableComponents';
-import {
-	components_inner_layer_bgColor,
-	components_inner_layer_bgColor_selected,
-} from '../../../../playground/src/lib/Common/const';
-import { PageString } from '../../../../playground/src/lib/Common/string';
+// import {
+// 	components_inner_layer_bgColor,
+// 	components_inner_layer_bgColor_selected,
+// } from '../../../../playground/src/lib/Common/const';
+// import { PageString } from '../../../../playground/src/lib/Common/string';
 
 const ToFloatingBox = (props: { layer: Layer; parentPage: string }) => {
 	const { layer, parentPage } = props;
 
-	const [fill, setFill] = useState(components_inner_layer_bgColor);
+	// const [fill, setFill] = useState(components_inner_layer_bgColor);
 	const [opacity, setOpacity] = useState(1);
 	const [border, setBorder] = useState('none');
 
 	// const [selectedLayerId, setSelectedLayerId] = useRecoilState(SelectedLayerIdState);
 
 	useEffect(() => {
-		if (parentPage === PageString.Showcase) setFill('transparent');
+		// if (parentPage === PageString.Showcase) setFill('transparent');
 		// else
 		// 	layer.id === selectedLayerId
 		// 		? setFill(components_inner_layer_bgColor_selected)
@@ -31,7 +31,7 @@ const ToFloatingBox = (props: { layer: Layer; parentPage: string }) => {
 		key: layer.id,
 		...layer.props,
 		show: true,
-		fill: fill,
+		fill: 'transparent',
 		opacity: opacity,
 		cursor: 'pointer',
 		transition: 'opacity 0.4s ease',
@@ -45,11 +45,11 @@ const ToFloatingBox = (props: { layer: Layer; parentPage: string }) => {
 			setBorder('none');
 		},
 		onMouseDown: () => {
-			if (parentPage === PageString.Showcase) setFill('transparent');
+			// if (parentPage === PageString.Showcase) setFill('transparent');
 			// else layer.id === selectedLayerId ? setFill('rgba(75, 154, 244, 1)') : setFill('2');
 		},
 		onMouseUp: () => {
-			if (parentPage === PageString.Showcase) setFill('transparent');
+			// if (parentPage === PageString.Showcase) setFill('transparent');
 			// else layer.id === selectedLayerId ? setFill('rgba(75, 154, 244, .7)') : setFill('1');
 		},
 		onClick: () => {
@@ -81,7 +81,7 @@ const ToComponentReal = <T extends React.ComponentType<any>>(props: {
 	const { layer, component: Component, parentPage } = props;
 
 	const divStyle = {
-		border: parentPage === PageString.Components ? '1px solid grey' : 'none',
+		border: parentPage === 'Components' ? '1px solid grey' : 'none',
 	};
 
 	return (
@@ -91,8 +91,8 @@ const ToComponentReal = <T extends React.ComponentType<any>>(props: {
 	);
 };
 
-const ToComponent = (props: { layer: Layer; parentPage: string }) => {
-	const { layer, parentPage } = props;
+const ToComponent = (props: { layer: Layer; parentPage?: string }) => {
+	const { layer, parentPage = 'Showcase' } = props;
 
 	if (layer.type === 'FloatingBox') {
 		return <ToFloatingBox layer={layer} parentPage={parentPage} />;
