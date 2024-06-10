@@ -4,6 +4,8 @@ import { Svglist, Svgminimize } from './SVGComps';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSetRecoilState } from 'recoil';
 import { SelectedSchema } from './RecoilAtom/recoilState';
+import { ReactFlowProvider } from 'reactflow';
+
 const examplePylist = [
 	'create-alignment-moaui',
 	'baseplate-moaui',
@@ -211,21 +213,82 @@ const exampleSchema = {
 
 function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
+	const [isClicked, setIsClicked] = React.useState([]);
 	const setSchema = useSetRecoilState(SelectedSchema);
 
 	const toggleOpen = () => setIsopenList(!isopenList);
 
-	function onClickPyHandler(e) {
-		console.log('e:', e.target.innerText);
-		// temp code
-		if (e.target.innerText === 'text_to_plate_mesh') {
-			setSchema(exampleSchema);
-		}
-	}
+	React.useEffect(() => {
+		// make array of false by examplePylist
+		setIsClicked(new Array(examplePylist.length).fill(false));
+	}, []);
 
 	React.useEffect(() => {
 		setSchema(exampleSchema);
 	}, []);
+
+	function ListComp(props) {
+		const { py, index } = props;
+
+		function onClickPyHandler(e) {
+			const newIsClicked = new Array(examplePylist.length).fill(false);
+			newIsClicked[index] = true;
+			setIsClicked(newIsClicked);
+
+			// temp code
+			if (e.target.innerText === 'text_to_plate_mesh') {
+				setSchema(exampleSchema);
+			}
+		}
+
+		const variants = {
+			hidden: { opacity: 1 },
+			visible: {
+				opacity: 1,
+				backgroundPosition: [
+					'0% 25%',
+					'25% 50%',
+					'50% 100%',
+					'100% 50%',
+					'50% 25%',
+					'25% 0%',
+					'0% 25%',
+				],
+				transition: { repeat: Infinity, duration: 1.5, ease: 'linear' },
+			},
+		};
+
+		return (
+			<motion.div
+				key={'listbutton_' + index}
+				initial='hidden'
+				animate={isClicked[index] ? 'visible' : 'hidden'}
+				variants={variants}
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'flex-start',
+					cursor: 'pointer',
+					borderRadius: isClicked[index] ? '5px' : '0px',
+					borderBottom: index !== examplePylist.length - 1 ? '1px solid #c1c1c3' : 'none',
+					backgroundImage: isClicked[index]
+						? 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)'
+						: 'none',
+					backgroundSize: '400% 400%',
+				}}
+				onClick={onClickPyHandler}
+			>
+				<div
+					key={'listname_' + index}
+					style={{
+						padding: '5px',
+					}}
+				>
+					{py}
+				</div>
+			</motion.div>
+		);
+	}
 
 	return (
 		<div className='App' style={{ width: '100vw', height: '100vh' }}>
@@ -278,36 +341,15 @@ function App() {
 							}}
 						>
 							{examplePylist.map((py, index) => (
-								<div
-									key={index}
-									style={{
-										display: 'flex',
-										alignItems: 'center',
-										justifyContent: 'flex-start',
-										padding: '5px',
-										cursor: 'pointer',
-										borderBottom: index !== examplePylist.length - 1 ? '1px solid #c1c1c3' : 'none',
-									}}
-									onClick={onClickPyHandler}
-								>
-									<img
-										style={{
-											width: '14px',
-											height: '14px',
-											marginRight: '5px',
-											marginTop: '5px',
-										}}
-										src={`${process.env.PUBLIC_URL}/svg/Python.svg`}
-										alt='Python'
-									/>
-									{py}
-								</div>
+								<ListComp key={'listcomp_' + index} py={py} index={index} />
 							))}
 						</motion.div>
 					)}
 				</AnimatePresence>
 			</div>
-			<ReactFlowComp />
+			<ReactFlowProvider>
+				<ReactFlowComp />
+			</ReactFlowProvider>
 		</div>
 	);
 }
