@@ -35,7 +35,7 @@ const edgeTypes = {
 
 const nodeClassName = (node) => node.type;
 
-const OverviewFlow = () => {
+const ReactFlowComp = (props) => {
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -72,4 +72,4 @@ const OverviewFlow = () => {
 	);
 };
 
-export default OverviewFlow;
+export default ReactFlowComp;
