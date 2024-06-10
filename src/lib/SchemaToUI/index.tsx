@@ -10,7 +10,6 @@ export default function SchemaToUI(props: { canvas: Canvas }) {
 	return (
 		<React.Fragment>
 			{/* canvases is object */}
-
 			<Panel
 				key={'PanelCanvas-' + uuidv4().slice(0, 8)}
 				width={canvas.width}
