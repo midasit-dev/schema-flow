@@ -42,7 +42,7 @@
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"start": "react-scripts start",
+		"start": "npm run prettier && react-scripts start",
 		"move": "rmdir /s /q docs && rename build docs",
 		"build": "react-scripts build && npm run move",
 		"publish-npm": "npm run prepare-npm && cd ./dist && npm publish --access public",
@@ -50,7 +50,8 @@
 		"reset": "rmdir /s /q dist && mkdir dist",
 		"copy": "copyfiles -u 2 src/lib/**/*.css dist/ && copyfiles -u 2 src/lib/**/*.json dist/",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"prettier": "prettier --write --config ./.prettierrc src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"
 	},
 	"eslintConfig": {
 		"extends": [
