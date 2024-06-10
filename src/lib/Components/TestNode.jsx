@@ -52,7 +52,7 @@ export default function TestNode(props) {
 	return (
 		<>
 			<div>
-				<SchemaToUI canvases={selectedSchema} />
+				<SchemaToUI canvas={selectedSchema['canvas_1']} />
 			</div>
 			<Handle type='target' position={Position.Top} />
 		</>

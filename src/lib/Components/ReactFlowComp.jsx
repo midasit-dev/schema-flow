@@ -20,6 +20,10 @@ import TestNode from './TestNode';
 import 'reactflow/dist/style.css';
 import './overview.css';
 
+// recoil
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { Nodetypes, SelectedSchema } from '../RecoilAtom/recoilState';
+
 const nodeTypes = {
 	annotation: AnnotationNode,
 	tools: ToolbarNode,
@@ -35,9 +39,18 @@ const edgeTypes = {
 
 const nodeClassName = (node) => node.type;
 
-const ReactFlowComp = (props) => {
+const ReactFlowComp = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+	const [nodetypes, setNodetypes] = useRecoilState(Nodetypes);
+	const selectedschema = useRecoilValue(SelectedSchema);
+
+	React.useEffect(() => {
+		console.log(selectedschema);
+		setNodetypes((prevNodetype) => {
+			return { ...prevNodetype, selectedschema };
+		});
+	}, [selectedschema]);
 
 	const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
@@ -59,7 +72,7 @@ const ReactFlowComp = (props) => {
 				onEdgesChange={onEdgesChange}
 				onConnect={onConnect}
 				fitView
-				attributionPosition='top-right'
+				attributionPosition='top-center'
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}
 				className='overview'
