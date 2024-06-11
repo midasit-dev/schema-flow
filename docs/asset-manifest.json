@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/SchemaUIBuilder/static/css/main.651ddccd.css",
-    "main.js": "/SchemaUIBuilder/static/js/main.f5e1d5ca.js",
+    "main.js": "/SchemaUIBuilder/static/js/main.69152992.js",
     "static/js/453.2447ea62.chunk.js": "/SchemaUIBuilder/static/js/453.2447ea62.chunk.js",
     "static/media/Pretendard-Black.woff": "/SchemaUIBuilder/static/media/Pretendard-Black.c51355ddc1caec596031.woff",
     "static/media/Pretendard-ExtraBold.woff": "/SchemaUIBuilder/static/media/Pretendard-ExtraBold.f6491e200d1fb5c5917b.woff",
@@ -23,11 +23,11 @@
     "static/media/Pretendard-Thin.woff2": "/SchemaUIBuilder/static/media/Pretendard-Thin.bb7cedf4446fa24dda9d.woff2",
     "index.html": "/SchemaUIBuilder/index.html",
     "main.651ddccd.css.map": "/SchemaUIBuilder/static/css/main.651ddccd.css.map",
-    "main.f5e1d5ca.js.map": "/SchemaUIBuilder/static/js/main.f5e1d5ca.js.map",
+    "main.69152992.js.map": "/SchemaUIBuilder/static/js/main.69152992.js.map",
     "453.2447ea62.chunk.js.map": "/SchemaUIBuilder/static/js/453.2447ea62.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.651ddccd.css",
-    "static/js/main.f5e1d5ca.js"
+    "static/js/main.69152992.js"
   ]
 }
