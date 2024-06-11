@@ -6,6 +6,7 @@ import ReactFlow, {
 	Background,
 	useNodesState,
 	useEdgesState,
+	useReactFlow,
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
@@ -15,11 +16,11 @@ import ResizerNode from './ResizerNode';
 import CircleNode from './CircleNode';
 import TextNode from './TextNode';
 import ButtonEdge from './ButtonEdge';
-import TestNode from './TestNode';
+import CustomNode from './CustomNode';
 
 import 'reactflow/dist/style.css';
 import './overview.css';
-
+import { isEmpty, cloneDeep } from 'lodash';
 // recoil
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { Nodetypes, SelectedSchema } from '../RecoilAtom/recoilState';
@@ -30,7 +31,7 @@ const nodeTypes = {
 	resizer: ResizerNode,
 	circle: CircleNode,
 	textinput: TextNode,
-	schemaUI: TestNode,
+	customSchema: CustomNode,
 };
 
 const edgeTypes = {
@@ -40,17 +41,51 @@ const edgeTypes = {
 const nodeClassName = (node) => node.type;
 
 const ReactFlowComp = () => {
+	const connectingNodeId = React.useRef(null);
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 	const [nodetypes, setNodetypes] = useRecoilState(Nodetypes);
 	const selectedschema = useRecoilValue(SelectedSchema);
+	const { screenToFlowPosition } = useReactFlow();
 
 	React.useEffect(() => {
 		console.log(selectedschema);
-		setNodetypes((prevNodetype) => {
-			return { ...prevNodetype, selectedschema };
-		});
 	}, [selectedschema]);
+
+	// React.useEffect(() => {
+	// 	console.log("position: ", screenToFlowPosition)
+	// }, [screenToFlowPosition])
+
+	const onConnectStart = useCallback((_, { nodeId }) => {
+		connectingNodeId.current = nodeId;
+	}, []);
+
+	function onConnectEnd(event) {
+		if (!isEmpty(selectedschema)) addCustomNode(event);
+	}
+
+	function onClickHandler(event) {
+		console.log('event: ', event);
+		if (!isEmpty(selectedschema)) addCustomNode(event);
+	}
+
+	function addCustomNode(event) {
+		const id = (nodes.length + 1).toString();
+		const schemadata = cloneDeep(selectedschema);
+		const newNode = [
+			{
+				id,
+				type: 'customSchema',
+				position: screenToFlowPosition({
+					x: event.clientX,
+					y: event.clientY,
+				}),
+				data: { schema: schemadata },
+			},
+		];
+		setNodes((nds) => nds.concat(newNode));
+		setEdges((eds) => eds.concat({ id, source: connectingNodeId.current, target: id }));
+	}
 
 	const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
@@ -71,11 +106,14 @@ const ReactFlowComp = () => {
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
 				onConnect={onConnect}
+				onConnectStart={onConnectStart}
+				onConnectEnd={onConnectEnd}
 				fitView
 				attributionPosition='top-center'
 				nodeTypes={nodeTypes}
 				edgeTypes={edgeTypes}
 				className='overview'
+				onClick={onClickHandler}
 			>
 				<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 				<Controls />

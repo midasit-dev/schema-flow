@@ -130,12 +130,6 @@ export const nodes = [
 		position: { x: 350, y: 500 },
 		data: {},
 	},
-	{
-		id: 'Test',
-		type: 'schemaUI',
-		position: { x: -400, y: 0 },
-		data: {},
-	},
 ];
 
 export const edges = [

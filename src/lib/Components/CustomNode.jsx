@@ -1,17 +1,21 @@
 import React from 'react';
-import { Handle, useStore, Position, useReactFlow } from 'reactflow';
+import { Handle, useStore, Position, useReactFlow, NodeResizer } from 'reactflow';
 import { Button, Typography } from '@midasit-dev/moaui';
+import { isEmpty } from 'lodash';
+
 import SchemaToUI from '../SchemaToUI';
 
 //recoil
 import { useRecoilValue } from 'recoil';
 import { SelectedSchema } from '../RecoilAtom/recoilState';
 
-const dimensionAttrs = ['width', 'height'];
+export default function CustomNode(props) {
+	const { data } = props;
+	React.useEffect(() => {
+		console.log('CustomNode props data: ', data);
+	}, []);
 
-export default function TestNode(props) {
 	const { setNodes } = useReactFlow();
-	const selectedSchema = useRecoilValue(SelectedSchema);
 
 	// React.useEffect(() => {
 	// 	const UI = SchemaToUI(exampleSchema);
@@ -51,10 +55,17 @@ export default function TestNode(props) {
 
 	return (
 		<>
-			<div>
-				<SchemaToUI canvas={selectedSchema['canvas_1']} />
-			</div>
-			<Handle type='target' position={Position.Top} />
+			{!isEmpty(data.schema) && (
+				<>
+					<div>
+						<SchemaToUI canvas={data.schema['canvas']} />
+					</div>
+					<Handle type='target' position={Position.Top} />
+					<Handle type='target' position={Position.Bottom} />
+					<Handle type='target' position={Position.Left} />
+					<Handle type='target' position={Position.Right} />
+				</>
+			)}
 		</>
 	);
 }

@@ -26,10 +26,11 @@ const examplePylist = [
 	'tendon-profile-converter-moaui',
 	'texdas',
 	'text_to_plate_mesh',
+	'text_to_plate_mesh2',
 ];
 
 const exampleSchema = {
-	canvas_1: {
+	canvas: {
 		width: 640,
 		height: 320,
 		layers: [
@@ -211,6 +212,158 @@ const exampleSchema = {
 	},
 };
 
+const exampleSchema2 = {
+	canvas: {
+		width: 640,
+		height: 256,
+		layers: [
+			{
+				id: '1-FloatingBox',
+				type: 'FloatingBox',
+				props: {
+					x: 0,
+					y: 0,
+					width: 640,
+					height: 64,
+					guideBoxProps: {
+						width: 'inherit',
+						height: 'inherit',
+						id: '1-FloatingBox',
+						spacing: 1,
+						center: true,
+					},
+				},
+				children: [
+					{
+						id: '1-Typography',
+						type: 'Typography',
+						props: {
+							children: 'text_to_plate_mesh',
+							width: 'auto',
+							height: 'auto',
+							variant: 'h1',
+							color: 'primary',
+							size: 'large',
+						},
+						children: [],
+					},
+					{
+						id: '2-Typography',
+						type: 'Typography',
+						props: {
+							children:
+								'Convert the text to a plate mesh and upload the image as a triangular mesh to MIDAS CIVIL.',
+							width: 'auto',
+							height: 'auto',
+							variant: 'body1',
+							color: 'primary',
+							size: 'small',
+						},
+						children: [],
+					},
+				],
+				parent: null,
+			},
+			{
+				id: '2-FloatingBox',
+				type: 'FloatingBox',
+				props: {
+					x: 0,
+					y: 64,
+					width: 640,
+					height: 64,
+					guideBoxProps: {
+						width: 'inherit',
+						height: 'inherit',
+						id: '2-FloatingBox',
+						spacing: 1,
+						center: true,
+					},
+				},
+				children: [
+					{
+						id: '2-TextField',
+						type: 'TextField',
+						props: {
+							title: 'text',
+							placeholder: 'Placeholder',
+							wrappedWidth: '200px',
+							width: '150px',
+							height: '30px',
+						},
+						children: [],
+					},
+				],
+				parent: null,
+			},
+			{
+				id: '3-FloatingBox',
+				type: 'FloatingBox',
+				props: {
+					x: 0,
+					y: 128,
+					width: 640,
+					height: 64,
+					guideBoxProps: {
+						width: 'inherit',
+						height: 'inherit',
+						id: '3-FloatingBox',
+						spacing: 1,
+						center: true,
+					},
+				},
+				children: [
+					{
+						id: '3-TextField',
+						type: 'TextField',
+						props: {
+							title: 'insert',
+							placeholder: 'Placeholder',
+							wrappedWidth: '200px',
+							width: '150px',
+							height: '30px',
+						},
+						children: [],
+					},
+				],
+				parent: null,
+			},
+			{
+				id: '4-FloatingBox',
+				type: 'FloatingBox',
+				props: {
+					x: 0,
+					y: 192,
+					width: 640,
+					height: 64,
+					guideBoxProps: {
+						width: 'inherit',
+						height: 'inherit',
+						id: '4-FloatingBox',
+						spacing: 1,
+						center: true,
+					},
+				},
+				children: [
+					{
+						id: '4-TextField',
+						type: 'TextField',
+						props: {
+							title: 'height',
+							placeholder: 'Placeholder',
+							wrappedWidth: '200px',
+							width: '150px',
+							height: '30px',
+						},
+						children: [],
+					},
+				],
+				parent: null,
+			},
+		],
+	},
+};
+
 function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
 	const [isClicked, setIsClicked] = React.useState([]);
@@ -223,14 +376,17 @@ function App() {
 		setIsClicked(new Array(examplePylist.length).fill(false));
 	}, []);
 
-	React.useEffect(() => {
-		setSchema(exampleSchema);
-	}, []);
-
 	function ListComp(props) {
 		const { py, index } = props;
 
 		function onClickPyHandler(e) {
+			if (isClicked[index]) {
+				const newIsClicked = new Array(examplePylist.length).fill(false);
+				setIsClicked(newIsClicked);
+				setSchema({});
+				return;
+			}
+
 			const newIsClicked = new Array(examplePylist.length).fill(false);
 			newIsClicked[index] = true;
 			setIsClicked(newIsClicked);
@@ -238,6 +394,8 @@ function App() {
 			// temp code
 			if (e.target.innerText === 'text_to_plate_mesh') {
 				setSchema(exampleSchema);
+			} else if (e.target.innerText === 'text_to_plate_mesh2') {
+				setSchema(exampleSchema2);
 			}
 		}
 
