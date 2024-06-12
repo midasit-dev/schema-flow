@@ -1,4 +1,4 @@
-import { atom, selector } from 'recoil';
+import { atom } from 'recoil';
 
 export const SelectedSchema = atom<any>({
 	key: 'SelectedSchema',
@@ -10,7 +10,15 @@ export const Nodetypes = atom<any>({
 	default: {},
 });
 
-export const isClickedlist = atom<any>({
-	key: 'isClickedlist',
+export const FunctionListInfo = atom<any>({
+	key: 'FunctionListInfo',
 	default: [],
+	// [
+	// 	{
+	// 		schema : {}
+	// 		isSelected : false
+	// 		isRendered : false
+	// 		viewCount : 0
+	// 	}
+	// ]
 });

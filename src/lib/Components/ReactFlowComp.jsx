@@ -22,8 +22,8 @@ import 'reactflow/dist/style.css';
 import './overview.css';
 import { isEmpty, cloneDeep } from 'lodash';
 // recoil
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { Nodetypes, SelectedSchema, isClickedlist } from '../RecoilAtom/recoilState';
+import { useRecoilState } from 'recoil';
+import { Nodetypes, SelectedSchema, FunctionListInfo } from '../RecoilAtom/recoilState';
 
 const nodeTypes = {
 	annotation: AnnotationNode,
@@ -46,16 +46,12 @@ const ReactFlowComp = () => {
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 	const [nodetypes, setNodetypes] = useRecoilState(Nodetypes);
 	const [selectedschema, setSelectedschema] = useRecoilState(SelectedSchema);
-	const [isclickedlist, setIsclickedlist] = useRecoilState(isClickedlist);
+	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const { screenToFlowPosition } = useReactFlow();
 
 	React.useEffect(() => {
 		console.log(selectedschema);
 	}, [selectedschema]);
-
-	// React.useEffect(() => {
-	// 	console.log("position: ", screenToFlowPosition)
-	// }, [screenToFlowPosition])
 
 	const onConnectStart = useCallback((_, { nodeId }) => {
 		connectingNodeId.current = nodeId;
@@ -66,7 +62,6 @@ const ReactFlowComp = () => {
 	}
 
 	function onClickHandler(event) {
-		console.log('event: ', event);
 		if (!isEmpty(selectedschema)) addCustomNode(event);
 	}
 
@@ -86,13 +81,25 @@ const ReactFlowComp = () => {
 		];
 		setNodes((nds) => nds.concat(newNode));
 		setEdges((eds) => eds.concat({ id, source: connectingNodeId.current, target: id }));
-		setIsclickedlist((prev) => new Array(prev.length).fill(false));
+		setFunctionListInfo((prev) => {
+			return prev.map((item) => {
+				if(item.isSelected)
+					return { ...item, isSelected: false, isRendered: true, viewCount: item.viewCount + 1 };
+				else
+					return item;
+			});
+		});
 		setSelectedschema({});
 	}
 
 	const removeCustomNode = (id) => {
 		setNodes((nds) => nds.filter((node) => node.id !== id));
 		setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
+		setFunctionListInfo((prev) => {
+			return prev.map((item) => {
+				return { ...item, isRendered: false };
+			});
+		});
 	};
 
 	const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);

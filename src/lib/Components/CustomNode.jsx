@@ -11,9 +11,9 @@ import { SelectedSchema } from '../RecoilAtom/recoilState';
 
 export default function CustomNode(props) {
 	const { id, data } = props;
-	React.useEffect(() => {
-		console.log('CustomNode props data: ', data);
-	}, []);
+	// React.useEffect(() => {
+	// 	console.log('CustomNode props data: ', data);
+	// }, []);
 
 	const { setNodes } = useReactFlow();
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactFlowComp from './Components/ReactFlowComp';
-import { Svglist, Svgminimize } from './SVGComps';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Svglist, Svgminimize, SvgCheckCircle } from './SVGComps';
+import { motion, AnimatePresence, m } from 'framer-motion';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { SelectedSchema, isClickedlist } from './RecoilAtom/recoilState';
+import { SelectedSchema, FunctionListInfo } from './RecoilAtom/recoilState';
 import { ReactFlowProvider } from 'reactflow';
 
 const examplePylist = [
@@ -364,89 +364,184 @@ const exampleSchema2 = {
 	},
 };
 
+
+const ListComp = (props) => {
+	const { py, index, item, onChangeSchema, onSetFunctionListInfo } = props;
+
+	function onClickPyHandler(e) {
+		// if function is already selected, then unselect it.
+		if (item.isSelected) {
+			onSetFunctionListInfo(index, false);
+			onChangeSchema({});
+			return;
+		}
+
+		// if function is not selected, then select it.
+		onSetFunctionListInfo(index, true);
+
+		// temp code will remove later after functionlist post api integration.
+		if (e.target.innerText === 'text_to_plate_mesh') {
+			onChangeSchema(exampleSchema);
+		} else if (e.target.innerText === 'text_to_plate_mesh2') {
+			onChangeSchema(exampleSchema2);
+		}
+	}
+
+	React.useEffect(() => {
+		console.log(item);
+	}, [item]);
+
+	const variants = {
+		hidden: { opacity: 0 },
+		visible: {
+			opacity: 1,
+			backgroundPosition: [
+				'0% 25%',
+				'25% 50%',
+				'50% 100%',
+				'100% 50%',
+				'50% 25%',
+				'25% 0%',
+				'0% 25%',
+			],
+			transition: { duration: 1, ease: 'linear' },
+		},
+		move: {
+			x: ["-50%", "0"],
+			transition: { repeat: Infinity, repeatType: "reverse", duration: 1, ease: 'easeInOut' },
+		},
+		unselected: { // 추가된 변형
+			x: [
+				0,
+				"calc(100cqw - 32px)",
+			],
+			height: ["100%", "100%"],
+			width: [
+				"200%",
+				"32px",
+			],
+			opacity: [
+				1,
+				1,
+				1,
+				0,
+			], // 완전히 투명해짐
+			borderRadius: [
+				0,
+				0,
+				"50%",
+			], // 동그라미 형태
+			transition: { duration: 2.5, ease: "easeInOut" } // 부드러운 효과
+		}
+	};
+
+	return (
+		<motion.div
+		key={'listbutton_' + index}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'flex-start',
+			cursor: 'pointer',
+			width: "100%",
+			height: '100%',
+			borderRadius: '5px',
+			borderBottom: index !== examplePylist.length - 1 ? '1px solid #c1c1c3' : 'none',
+			position: 'relative',
+			overflow: 'hidden', // 자식 요소가 부모 요소 밖으로 넘치지 않도록
+				}}
+				onClick={onClickPyHandler}>
+				
+				{/* 배경 애니메이션을 위한 motion.div */}
+			<AnimatePresence mode="popLayout">
+				{
+					item.isSelected && 
+					<motion.div
+						key="나 나간다ㅏㅏㅏㅏ"
+						initial='hidden'
+						animate="visible"
+						variants={variants}
+						style={{
+							position: 'absolute',
+							top: 0,
+							left: 0,
+							width: '100%',
+							height: '100%',
+							overflow: "hidden",
+							containerType: "inline-size",
+						}}
+					>
+						<motion.div
+							animate="move" 
+							exit="unselected"
+							variants={variants}
+							style={{
+								position: 'absolute',
+								width: '200cqw',
+								height: "100%",
+								background: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
+						}} />
+					</motion.div>
+				}
+				</AnimatePresence>
+				<div
+					key={'listname_' + index}
+					style={{
+						padding: '5px',
+						width: '100%',
+						height: '100%',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'space-between',
+						zIndex: '1000',
+					}}
+				>
+					{py}
+					<div style={{width:"20px", height:"20px", marginRight:"5px"}}>
+						<SvgCheckCircle color={item.isSelected ? "white" : "black"} isVisible={item.isRendered}/>
+					</div>
+				</div>
+			</motion.div>
+	);
+};
+
+
 function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
-	const [isClicked, setIsClicked] = useRecoilState(isClickedlist);
+	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setSchema = useSetRecoilState(SelectedSchema);
 
 	const toggleOpen = () => setIsopenList(!isopenList);
 
 	React.useEffect(() => {
-		// make array of false by examplePylist
-		setIsClicked(new Array(examplePylist.length).fill(false));
+		// make array by examplePylist.length and below object is reference
+		// [
+		// 	{
+		// 		schema : {}
+		// 		isSelected : false
+		// 		isRendered : false
+		// 		viewCount : 0
+		// 	}
+		// ]
+		const newFunctionListInfo = new Array(examplePylist.length).fill({ schema: {}, isSelected: false, isRendered: false, viewCount: 0 });
+		setFunctionListInfo(newFunctionListInfo);
 	}, []);
 
-	function ListComp(props) {
-		const { py, index } = props;
+	const handleSetFunctionListInfo = React.useCallback((index, isSelected) => {
+		setFunctionListInfo((prev) => {
+			return prev.map((item, idx) => {
+				if (idx === index) {
+					return { ...item, isSelected: isSelected };
+				} else {
+					return item;
+				}
+			});
+		});
+	});
 
-		function onClickPyHandler(e) {
-			if (isClicked[index]) {
-				const newIsClicked = new Array(examplePylist.length).fill(false);
-				setIsClicked(newIsClicked);
-				setSchema({});
-				return;
-			}
-
-			const newIsClicked = new Array(examplePylist.length).fill(false);
-			newIsClicked[index] = true;
-			setIsClicked(newIsClicked);
-
-			// temp code
-			if (e.target.innerText === 'text_to_plate_mesh') {
-				setSchema(exampleSchema);
-			} else if (e.target.innerText === 'text_to_plate_mesh2') {
-				setSchema(exampleSchema2);
-			}
-		}
-
-		const variants = {
-			hidden: { opacity: 1 },
-			visible: {
-				opacity: 1,
-				backgroundPosition: [
-					'0% 25%',
-					'25% 50%',
-					'50% 100%',
-					'100% 50%',
-					'50% 25%',
-					'25% 0%',
-					'0% 25%',
-				],
-				transition: { repeat: Infinity, duration: 1.5, ease: 'linear' },
-			},
-		};
-
-		return (
-			<motion.div
-				key={'listbutton_' + index}
-				initial='hidden'
-				animate={isClicked[index] ? 'visible' : 'hidden'}
-				variants={variants}
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'flex-start',
-					cursor: 'pointer',
-					borderRadius: isClicked[index] ? '5px' : '0px',
-					borderBottom: index !== examplePylist.length - 1 ? '1px solid #c1c1c3' : 'none',
-					backgroundImage: isClicked[index]
-						? 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)'
-						: 'none',
-					backgroundSize: '400% 400%',
-				}}
-				onClick={onClickPyHandler}
-			>
-				<div
-					key={'listname_' + index}
-					style={{
-						padding: '5px',
-					}}
-				>
-					{py}
-				</div>
-			</motion.div>
-		);
-	}
+	const handleChangeSchema = React.useCallback((schema) => {
+		setSchema(schema);
+	}, [setSchema]);
 
 	return (
 		<div className='App' style={{ width: '100vw', height: '100vh' }}>
@@ -499,7 +594,7 @@ function App() {
 							}}
 						>
 							{examplePylist.map((py, index) => (
-								<ListComp key={'listcomp_' + index} py={py} index={index} />
+								<ListComp key={'listcomp_' + index} py={py} index={index} item={functionlistInfo[index]} onChangeSchema={handleChangeSchema} onSetFunctionListInfo={handleSetFunctionListInfo} />
 							))}
 						</motion.div>
 					)}
