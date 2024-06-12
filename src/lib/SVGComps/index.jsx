@@ -88,8 +88,8 @@ export const SvgCheckCircle = ({ color = 'white', isVisible }) => {
       pathLength: 1,
       opacity: 1,
       transition: {
-        pathLength: { duration: 1, delay: 1.5 },
-        opacity: { duration: 0.1, delay: 1.5 },
+        pathLength: { duration: 1, delay: 0.5 },
+        opacity: { duration: 0.1, delay: 0.5 },
       },
     },
     exit: {

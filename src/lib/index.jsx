@@ -364,7 +364,6 @@ const exampleSchema2 = {
 	},
 };
 
-
 const ListComp = (props) => {
 	const { py, index, item, onChangeSchema, onSetFunctionListInfo } = props;
 
@@ -404,62 +403,47 @@ const ListComp = (props) => {
 				'25% 0%',
 				'0% 25%',
 			],
-			transition: { duration: 1, ease: 'linear' },
+			transition: { duration: 0.5, ease: 'linear' },
 		},
 		move: {
-			x: ["-50%", "0"],
-			transition: { repeat: Infinity, repeatType: "reverse", duration: 1, ease: 'easeInOut' },
+			x: ['-50%', '0'],
+			transition: { repeat: Infinity, repeatType: 'reverse', duration: 0.8, ease: 'easeInOut' },
 		},
-		unselected: { // 추가된 변형
-			x: [
-				0,
-				"calc(100cqw - 32px)",
-			],
-			height: ["100%", "100%"],
-			width: [
-				"200%",
-				"32px",
-			],
-			opacity: [
-				1,
-				1,
-				1,
-				0,
-			], // 완전히 투명해짐
-			borderRadius: [
-				0,
-				0,
-				"50%",
-			], // 동그라미 형태
-			transition: { duration: 2.5, ease: "easeInOut" } // 부드러운 효과
-		}
+		unselected: {
+			// 추가된 변형
+			x: [0, 'calc(100cqw - 32px)'],
+			height: ['100%', '100%'],
+			width: ['200%', '32px'],
+			opacity: [1, 1, 1, 0], // 완전히 투명해짐
+			borderRadius: [0, 0, '50%'], // 동그라미 형태
+			transition: { duration: 1.2, ease: 'easeInOut' }, // 부드러운 효과
+		},
 	};
 
 	return (
 		<motion.div
-		key={'listbutton_' + index}
-		style={{
-			display: 'flex',
-			alignItems: 'center',
-			justifyContent: 'flex-start',
-			cursor: 'pointer',
-			width: "100%",
-			height: '100%',
-			borderRadius: '5px',
-			borderBottom: index !== examplePylist.length - 1 ? '1px solid #c1c1c3' : 'none',
-			position: 'relative',
-			overflow: 'hidden', // 자식 요소가 부모 요소 밖으로 넘치지 않도록
-				}}
-				onClick={onClickPyHandler}>
-				
-				{/* 배경 애니메이션을 위한 motion.div */}
-			<AnimatePresence mode="popLayout">
-				{
-					item.isSelected && 
+			key={'list_button_' + index}
+			style={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'flex-start',
+				cursor: 'pointer',
+				width: '100%',
+				height: '100%',
+				borderRadius: '5px',
+				borderBottom: index !== examplePylist.length - 1 ? '1px solid #c1c1c3' : 'none',
+				position: 'relative',
+				overflow: 'hidden', // 자식 요소가 부모 요소 밖으로 넘치지 않도록
+			}}
+			onClick={onClickPyHandler}
+		>
+			{/* 배경 애니메이션을 위한 motion.div */}
+			<AnimatePresence mode='popLayout'>
+				{item.isSelected && (
 					<motion.div
-						key="나 나간다ㅏㅏㅏㅏ"
+						key={'list_background_'+ index}
 						initial='hidden'
-						animate="visible"
+						animate='visible'
 						variants={variants}
 						style={{
 							position: 'absolute',
@@ -467,44 +451,44 @@ const ListComp = (props) => {
 							left: 0,
 							width: '100%',
 							height: '100%',
-							overflow: "hidden",
-							containerType: "inline-size",
+							overflow: 'hidden',
+							containerType: 'inline-size',
 						}}
 					>
 						<motion.div
-							animate="move" 
-							exit="unselected"
+							animate='move'
+							exit='unselected'
 							variants={variants}
 							style={{
 								position: 'absolute',
 								width: '200cqw',
-								height: "100%",
+								height: '100%',
 								background: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
-						}} />
+							}}
+						/>
 					</motion.div>
-				}
-				</AnimatePresence>
-				<div
-					key={'listname_' + index}
-					style={{
-						padding: '5px',
-						width: '100%',
-						height: '100%',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'space-between',
-						zIndex: '1000',
-					}}
-				>
-					{py}
-					<div style={{width:"20px", height:"20px", marginRight:"5px"}}>
-						<SvgCheckCircle color={item.isSelected ? "white" : "black"} isVisible={item.isRendered}/>
-					</div>
+				)}
+			</AnimatePresence>
+			<div
+				key={'listname_' + index}
+				style={{
+					padding: '5px',
+					width: '100%',
+					height: '100%',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'space-between',
+					zIndex: '1000',
+				}}
+			>
+				{py}
+				<div style={{ width: '20px', height: '20px', marginRight: '5px' }}>
+					<SvgCheckCircle color={item.isSelected ? 'white' : 'black'} isVisible={item.isRendered} />
 				</div>
-			</motion.div>
+			</div>
+		</motion.div>
 	);
 };
-
 
 function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
@@ -523,7 +507,12 @@ function App() {
 		// 		viewCount : 0
 		// 	}
 		// ]
-		const newFunctionListInfo = new Array(examplePylist.length).fill({ schema: {}, isSelected: false, isRendered: false, viewCount: 0 });
+		const newFunctionListInfo = new Array(examplePylist.length).fill({
+			schema: {},
+			isSelected: false,
+			isRendered: false,
+			viewCount: 0,
+		});
 		setFunctionListInfo(newFunctionListInfo);
 	}, []);
 
@@ -539,9 +528,12 @@ function App() {
 		});
 	});
 
-	const handleChangeSchema = React.useCallback((schema) => {
-		setSchema(schema);
-	}, [setSchema]);
+	const handleChangeSchema = React.useCallback(
+		(schema) => {
+			setSchema(schema);
+		},
+		[setSchema],
+	);
 
 	return (
 		<div className='App' style={{ width: '100vw', height: '100vh' }}>
@@ -594,7 +586,14 @@ function App() {
 							}}
 						>
 							{examplePylist.map((py, index) => (
-								<ListComp key={'listcomp_' + index} py={py} index={index} item={functionlistInfo[index]} onChangeSchema={handleChangeSchema} onSetFunctionListInfo={handleSetFunctionListInfo} />
+								<ListComp
+									key={'listcomp_' + index}
+									py={py}
+									index={index}
+									item={functionlistInfo[index]}
+									onChangeSchema={handleChangeSchema}
+									onSetFunctionListInfo={handleSetFunctionListInfo}
+								/>
 							))}
 						</motion.div>
 					)}
