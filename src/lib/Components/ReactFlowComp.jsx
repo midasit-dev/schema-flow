@@ -83,10 +83,9 @@ const ReactFlowComp = () => {
 		setEdges((eds) => eds.concat({ id, source: connectingNodeId.current, target: id }));
 		setFunctionListInfo((prev) => {
 			return prev.map((item) => {
-				if(item.isSelected)
+				if (item.isSelected)
 					return { ...item, isSelected: false, isRendered: true, viewCount: item.viewCount + 1 };
-				else
-					return item;
+				else return item;
 			});
 		});
 		setSelectedschema({});

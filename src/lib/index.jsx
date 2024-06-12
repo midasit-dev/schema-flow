@@ -441,7 +441,7 @@ const ListComp = (props) => {
 			<AnimatePresence mode='popLayout'>
 				{item.isSelected && (
 					<motion.div
-						key={'list_background_'+ index}
+						key={'list_background_' + index}
 						initial='hidden'
 						animate='visible'
 						variants={variants}
