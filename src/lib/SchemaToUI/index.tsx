@@ -32,7 +32,7 @@ export default function SchemaToUI(props: {
 				style={{
 					width: '100%',
 					height: 26,
-					backgroundColor: '#000000',
+					backgroundColor: 'rgba(0, 0, 0, 0.7)',
 					borderTopLeftRadius: '5px',
 					borderTopRightRadius: '5px',
 					color: '#fff',
@@ -73,7 +73,7 @@ export default function SchemaToUI(props: {
 					borderLeft: '1px solid #c1c1c3',
 					borderRight: '1px solid #c1c1c3',
 					borderBottom: '1px solid #c1c1c3',
-					backgroundColor: '#fff',
+					backgroundColor: 'rgba(255, 255, 255, 0.7)',
 					position: 'relative',
 					borderBottomLeftRadius: '5px',
 					borderBottomRightRadius: '5px',
