@@ -2,8 +2,8 @@ import React from 'react';
 import ReactFlowComp from './Components/ReactFlowComp';
 import { Svglist, Svgminimize } from './SVGComps';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSetRecoilState } from 'recoil';
-import { SelectedSchema } from './RecoilAtom/recoilState';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { SelectedSchema, isClickedlist } from './RecoilAtom/recoilState';
 import { ReactFlowProvider } from 'reactflow';
 
 const examplePylist = [
@@ -366,7 +366,7 @@ const exampleSchema2 = {
 
 function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
-	const [isClicked, setIsClicked] = React.useState([]);
+	const [isClicked, setIsClicked] = useRecoilState(isClickedlist);
 	const setSchema = useSetRecoilState(SelectedSchema);
 
 	const toggleOpen = () => setIsopenList(!isopenList);

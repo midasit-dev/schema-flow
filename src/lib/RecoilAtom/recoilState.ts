@@ -9,3 +9,8 @@ export const Nodetypes = atom<any>({
 	key: 'Nodetypes',
 	default: {},
 });
+
+export const isClickedlist = atom<any>({
+	key: 'isClickedlist',
+	default: [],
+});
