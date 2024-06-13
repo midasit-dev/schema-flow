@@ -409,14 +409,14 @@ const ListComp = (props) => {
 		},
 		move: {
 			transform: [`translate(0%, -${ty}%)`, `translate(-50%, -${ty}%)`],
-			transition: { repeat: Infinity, repeatType: "reverse", duration: 0.8 },
+			transition: { repeat: Infinity, repeatType: 'reverse', duration: 0.8 },
 		},
 		shrink: {
 			// x: [null, 'calc(100% - 16px)'], // x 좌표는 계산된 위치로 이동
 			transform: [null, ``, `translateY(-${ty}%) scale(1)`, `translate(${tx}%, -${ty}%) scale(0)`], // 크기를 0으로 줄임
 			// opacity: [1, 0], // 불투명에서 투명으로
-			transition: { duration: 1.2, ease: 'easeInOut' } // 부드럽게 변화
-		  },
+			transition: { duration: 1.2, ease: 'easeInOut' }, // 부드럽게 변화
+		},
 	};
 
 	return (
@@ -455,14 +455,14 @@ const ListComp = (props) => {
 						}}
 					>
 						<motion.div
-							whileInView="move"
-							exit="shrink"
+							whileInView='move'
+							exit='shrink'
 							variants={variants}
 							style={{
 								position: 'absolute',
 								width: '200cqw',
 								height: '200cqw',
-								clipPath: "circle(farthest-side)",
+								clipPath: 'circle(farthest-side)',
 								background: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
 							}}
 						/>
