@@ -390,6 +390,8 @@ const ListComp = (props) => {
 		console.log(item);
 	}, [item]);
 
+	const ty = React.useMemo(() => 48, []);
+	const tx = React.useMemo(() => -2.5, []);
 	const variants = {
 		hidden: { opacity: 0 },
 		visible: {
@@ -406,18 +408,15 @@ const ListComp = (props) => {
 			transition: { duration: 0.5, ease: 'linear' },
 		},
 		move: {
-			x: ['-50%', '0'],
-			transition: { repeat: Infinity, repeatType: 'reverse', duration: 0.8, ease: 'easeInOut' },
+			transform: [`translate(0%, -${ty}%)`, `translate(-50%, -${ty}%)`],
+			transition: { repeat: Infinity, repeatType: "reverse", duration: 0.8 },
 		},
-		unselected: {
-			// 추가된 변형
-			x: [0, 'calc(100cqw - 32px)'],
-			height: ['100%', '100%'],
-			width: ['200%', '32px'],
-			opacity: [1, 1, 1, 0], // 완전히 투명해짐
-			borderRadius: [0, 0, '50%'], // 동그라미 형태
-			transition: { duration: 1.2, ease: 'easeInOut' }, // 부드러운 효과
-		},
+		shrink: {
+			// x: [null, 'calc(100% - 16px)'], // x 좌표는 계산된 위치로 이동
+			transform: [null, ``, `translateY(-${ty}%) scale(1)`, `translate(${tx}%, -${ty}%) scale(0)`], // 크기를 0으로 줄임
+			// opacity: [1, 0], // 불투명에서 투명으로
+			transition: { duration: 1.2, ease: 'easeInOut' } // 부드럽게 변화
+		  },
 	};
 
 	return (
@@ -456,13 +455,14 @@ const ListComp = (props) => {
 						}}
 					>
 						<motion.div
-							animate='move'
-							exit='unselected'
+							whileInView="move"
+							exit="shrink"
 							variants={variants}
 							style={{
 								position: 'absolute',
 								width: '200cqw',
-								height: '100%',
+								height: '200cqw',
+								clipPath: "circle(farthest-side)",
 								background: 'linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)',
 							}}
 						/>
