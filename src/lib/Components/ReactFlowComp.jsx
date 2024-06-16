@@ -49,9 +49,9 @@ const ReactFlowComp = () => {
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const { screenToFlowPosition } = useReactFlow();
 
-	React.useEffect(() => {
-		console.log(selectedschema);
-	}, [selectedschema]);
+	// React.useEffect(() => {
+		// console.log(selectedschema);
+	// }, [selectedschema]);
 
 	const onConnectStart = useCallback((_, { nodeId }) => {
 		connectingNodeId.current = nodeId;

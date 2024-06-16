@@ -367,6 +367,24 @@ const exampleSchema2 = {
 const ListComp = (props) => {
 	const { py, index, item, onChangeSchema, onSetFunctionListInfo } = props;
 
+	const getSchema = async () => {
+		const res = await fetch('https://moa-wgsd.rpm.kr-dv-midasit.com/backend/wgsd/function-list', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			}
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				console.log(data);
+			});
+			// console.log("res", res);
+	};
+
+	React.useEffect(() => {
+		getSchema();
+	}, []);
+
 	function onClickPyHandler(e) {
 		// if function is already selected, then unselect it.
 		if (item.isSelected) {
@@ -385,10 +403,6 @@ const ListComp = (props) => {
 			onChangeSchema(exampleSchema2);
 		}
 	}
-
-	React.useEffect(() => {
-		console.log(item);
-	}, [item]);
 
 	const ty = React.useMemo(() => 48, []);
 	const tx = React.useMemo(() => -2.5, []);
