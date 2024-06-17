@@ -364,22 +364,22 @@ const exampleSchema2 = {
 	},
 };
 
+const getSchema = async () => {
+	const res = await fetch(`${process.env.PUBLIC_URL}/backend/wgsd/function-list`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	})
+		.then((res) => res.json())
+		.then((data) => {
+			console.log(data);
+		});
+	// console.log("res", res);
+};
+
 const ListComp = (props) => {
 	const { py, index, item, onChangeSchema, onSetFunctionListInfo } = props;
-
-	const getSchema = async () => {
-		const res = await fetch('https://moa-wgsd.rpm.kr-dv-midasit.com/backend/wgsd/function-list', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			}
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data);
-			});
-			// console.log("res", res);
-	};
 
 	React.useEffect(() => {
 		getSchema();

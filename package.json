@@ -33,6 +33,7 @@
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
 		"@types/uuid": "^9.0.8",
+		"env-cmd": "^10.1.0",
 		"framer-motion": "^11.2.10",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
@@ -43,12 +44,14 @@
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"start": "npm run prettier && craco start",
+		"start": "npm run prettier && env-cmd -f .env.development craco start",
 		"move": "rmdir /s /q docs && rename build docs",
-		"build": "craco build && npm run move",
+		"build": "env-cmd -f .env.production craco build && npm run move",
+		"build-dv-env": "env-cmd -f .env.development craco build && npm run move",
+		"build-st-env": "env-cmd -f .env.staging craco build && npm run move",
+		"build-pr-env": "env-cmd -f .env.production craco build && npm run move",
 		"publish-npm": "npm run prepare-npm && cd ./dist && npm publish --access public",
 		"prepare-npm": "node prepare.js && tsc && npm run copy",
-		"reset": "rmdir /s /q dist && mkdir dist",
 		"copy": "copyfiles -u 2 src/lib/**/*.css dist/ && copyfiles -u 2 src/lib/**/*.json dist/",
 		"test": "craco test",
 		"eject": "craco eject",
@@ -75,5 +78,8 @@
 	"bugs": {
 		"url": "https://github.com/midasit-dev/SchemaUIBuilder/issues"
 	},
-	"license": "MIT"
+	"license": "MIT",
+	"devDependencies": {
+		"tsconfig-paths-webpack-plugin": "^4.1.0"
+	}
 }

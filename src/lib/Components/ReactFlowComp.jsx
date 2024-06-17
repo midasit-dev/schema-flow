@@ -50,7 +50,7 @@ const ReactFlowComp = () => {
 	const { screenToFlowPosition } = useReactFlow();
 
 	// React.useEffect(() => {
-		// console.log(selectedschema);
+	// console.log(selectedschema);
 	// }, [selectedschema]);
 
 	const onConnectStart = useCallback((_, { nodeId }) => {
