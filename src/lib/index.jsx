@@ -365,7 +365,7 @@ const exampleSchema2 = {
 };
 
 const getSchema = async () => {
-	const res = await fetch(`${process.env.PUBLIC_URL}/backend/wgsd/function-list`, {
+	const res = await fetch(`${process.env.PUBLIC_URL}/backend/wgsd/functions`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
