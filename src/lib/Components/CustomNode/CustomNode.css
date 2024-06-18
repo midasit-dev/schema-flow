@@ -1,0 +1,23 @@
+/* Shaking and rotating animation */
+@keyframes shake {
+	0% {
+		transform: translateX(0) rotate(0deg);
+	}
+	25% {
+		transform: translateX(-2px) rotate(-1deg);
+	}
+	50% {
+		transform: translateX(2px) rotate(1deg);
+	}
+	75% {
+		transform: translateX(-2px) rotate(-1deg);
+	}
+	100% {
+		transform: translateX(0) rotate(0deg);
+	}
+}
+
+/* Applying the shake animation */
+.shake {
+	animation: shake 1s infinite; /* Adjust the duration for a smoother effect */
+}

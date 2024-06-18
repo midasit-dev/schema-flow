@@ -16,7 +16,7 @@ import ResizerNode from './ResizerNode';
 import CircleNode from './CircleNode';
 import TextNode from './TextNode';
 import ButtonEdge from './ButtonEdge';
-import CustomNode from './CustomNode';
+import CustomNode from './CustomNode/CustomNode';
 
 import 'reactflow/dist/style.css';
 import './overview.css';

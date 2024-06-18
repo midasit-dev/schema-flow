@@ -4,29 +4,41 @@ import { v4 as uuidv4 } from 'uuid';
 import ToComponent from './ToComponent';
 import { Canvas, Canvases, Layer } from '../Common/types';
 import { SvgClose } from '../SVGComps/index';
+import RJSFComp from './rjsf';
 
 export default function SchemaToUI(props: {
 	nodeId: string;
-	canvas: Canvas;
+	schema: any;
 	onRemove: (id: string) => void;
 }) {
-	const { nodeId, canvas, onRemove } = props;
+	const { nodeId, schema, onRemove } = props;
 	const [bgColor, setBgColor] = React.useState('transparent');
+	const [canvas, setCanvas] = React.useState<Canvas>({
+		width: 300,
+		height: 300,
+		layers: [],
+	});
 
-	const handleMouseEnter = () => {
+	React.useEffect(() => {
+		console.log('schema', schema);
+		if (schema.canvas === undefined) return;
+		setCanvas(schema.canvas);
+	}, [schema]);
+
+	const handleMouseEnter = React.useCallback(() => {
 		setBgColor('gray');
-	};
+	}, []);
 
-	const handleMouseLeave = () => {
+	const handleMouseLeave = React.useCallback(() => {
 		setBgColor('transparent');
-	};
+	}, []);
 
-	const onClickCloseHandler = () => {
+	const onClickCloseHandler = React.useCallback(() => {
 		onRemove(nodeId);
-	};
+	}, []);
 
 	return (
-		<React.Fragment>
+		<div>
 			{/* canvases is object */}
 			<div
 				style={{
@@ -68,8 +80,8 @@ export default function SchemaToUI(props: {
 			<div
 				key={'PanelCanvas-' + uuidv4().slice(0, 8)}
 				style={{
-					width: canvas.width,
-					height: canvas.height,
+					width: '100%',
+					height: '100%',
 					borderLeft: '1px solid #c1c1c3',
 					borderRight: '1px solid #c1c1c3',
 					borderBottom: '1px solid #c1c1c3',
@@ -80,10 +92,11 @@ export default function SchemaToUI(props: {
 				}}
 				className='nodrag'
 			>
-				{canvas.layers.map((layer: Layer, index: number) => {
+				{/* {canvas.layers.map((layer: Layer, index: number) => {
 					return <ToComponent key={index} layer={layer} />;
-				})}
+				})} */}
+				<RJSFComp schema={schema} />
 			</div>
-		</React.Fragment>
+		</div>
 	);
 }

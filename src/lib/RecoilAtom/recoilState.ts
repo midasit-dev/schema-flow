@@ -15,10 +15,17 @@ export const FunctionListInfo = atom<any>({
 	default: [],
 	// [
 	// 	{
+	// 		id : 1
+	// 		name : 'Function Name'
 	// 		schema : {}
 	// 		isSelected : false
 	// 		isRendered : false
 	// 		viewCount : 0
 	// 	}
 	// ]
+});
+
+export const RJSFdimension = atom<any>({
+	key: 'RJSFdimension',
+	default: {},
 });
