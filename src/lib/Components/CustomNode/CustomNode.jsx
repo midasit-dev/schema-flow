@@ -11,18 +11,13 @@ import { SelectedSchema } from '../../RecoilAtom/recoilState';
 
 export default function CustomNode(props) {
 	const { id, data } = props;
-	// React.useEffect(() => {
-	// 	console.log('CustomNode props data: ', data);
-	// }, []);
-
-	const { setNodes } = useReactFlow();
 
 	return (
 		<>
-			{!isEmpty(data.schema) && (
+			{!isEmpty(data.schemainfo) && (
 				<div className={data.edit ? 'shake' : ''}>
 					<div>
-						<SchemaToUI nodeId={id} schema={data.schema} onRemove={data.onRemove} />
+						<SchemaToUI nodeId={id} schemaInfo={data.schemainfo} onRemove={data.onRemove} />
 					</div>
 					<Handle type='target' position={Position.Top} />
 					<Handle type='target' position={Position.Bottom} />

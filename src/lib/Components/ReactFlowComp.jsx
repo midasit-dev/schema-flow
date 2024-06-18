@@ -66,8 +66,8 @@ const ReactFlowComp = () => {
 	}
 
 	function addCustomNode(event) {
-		const id = (nodes.length + 1).toString();
 		const schemadata = cloneDeep(selectedschema);
+		const id = (nodes.length + 1).toString();
 		const newNode = [
 			{
 				id,
@@ -76,7 +76,7 @@ const ReactFlowComp = () => {
 					x: event.clientX,
 					y: event.clientY,
 				}),
-				data: { schema: schemadata, onRemove: removeCustomNode },
+				data: { schemainfo: schemadata, onRemove: removeCustomNode },
 			},
 		];
 		setNodes((nds) => nds.concat(newNode));
@@ -91,12 +91,16 @@ const ReactFlowComp = () => {
 		setSelectedschema({});
 	}
 
-	const removeCustomNode = (id) => {
-		setNodes((nds) => nds.filter((node) => node.id !== id));
-		setEdges((eds) => eds.filter((edge) => edge.source !== id && edge.target !== id));
+	const removeCustomNode = (nodeId, functionId) => {
+		setNodes((nds) => nds.filter((node) => node.id !== nodeId));
+		setEdges((eds) => eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId));
 		setFunctionListInfo((prev) => {
 			return prev.map((item) => {
-				return { ...item, isRendered: false };
+				if (item.id === functionId) {
+					const viewCount = item.viewCount - 1;
+					return { ...item, isRendered: viewCount > 0 ? true : false, viewCount: viewCount};
+				}
+				else return item;
 			});
 		});
 	};

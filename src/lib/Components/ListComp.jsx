@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SvgCheckCircle } from '../SVGComps';
-import { SelectedSchema, FunctionListInfo } from '../RecoilAtom/recoilState';
+import { FunctionListInfo } from '../RecoilAtom/recoilState';
 import { useRecoilValue } from 'recoil';
 
 const getSchema = async (functionName) => {
@@ -18,7 +18,6 @@ const getSchema = async (functionName) => {
 		.then((data) => {
 			console.log(data);
 		});
-	// console.log("res", res);
 };
 
 const ListComp = (props) => {
@@ -35,8 +34,7 @@ const ListComp = (props) => {
 
 		// if function is not selected, then select it.
 		onSetFunctionListInfo(index, true);
-		console.log('item.schema', item.schema);
-		onChangeSchema(item.schema);
+		onChangeSchema({ id: item.id, schema: item.schema });
 	}
 
 	const ty = React.useMemo(() => 46, []);

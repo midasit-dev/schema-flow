@@ -8,10 +8,10 @@ import RJSFComp from './rjsf';
 
 export default function SchemaToUI(props: {
 	nodeId: string;
-	schema: any;
-	onRemove: (id: string) => void;
+	schemaInfo: any;
+	onRemove: (nodeId: string, functionId: string) => void;
 }) {
-	const { nodeId, schema, onRemove } = props;
+	const { nodeId, schemaInfo, onRemove } = props;
 	const [bgColor, setBgColor] = React.useState('transparent');
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
@@ -20,10 +20,9 @@ export default function SchemaToUI(props: {
 	});
 
 	React.useEffect(() => {
-		console.log('schema', schema);
-		if (schema.canvas === undefined) return;
-		setCanvas(schema.canvas);
-	}, [schema]);
+		if (schemaInfo.schema.canvas === undefined) return;
+		setCanvas(schemaInfo.schema.canvas);
+	}, [schemaInfo]);
 
 	const handleMouseEnter = React.useCallback(() => {
 		setBgColor('gray');
@@ -34,7 +33,7 @@ export default function SchemaToUI(props: {
 	}, []);
 
 	const onClickCloseHandler = React.useCallback(() => {
-		onRemove(nodeId);
+		onRemove(nodeId, schemaInfo.id);
 	}, []);
 
 	return (
@@ -95,7 +94,7 @@ export default function SchemaToUI(props: {
 				{/* {canvas.layers.map((layer: Layer, index: number) => {
 					return <ToComponent key={index} layer={layer} />;
 				})} */}
-				<RJSFComp schema={schema} />
+				<RJSFComp schema={schemaInfo.schema} />
 			</div>
 		</div>
 	);

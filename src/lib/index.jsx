@@ -102,8 +102,8 @@ function App() {
 	);
 
 	const handleChangeSchema = React.useCallback(
-		(schema) => {
-			setSchema(schema);
+		(schemainfo) => {
+			setSchema(schemainfo);
 		},
 		[setSchema],
 	);
