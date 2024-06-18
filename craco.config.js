@@ -49,7 +49,7 @@ module.exports = {
 	devServer: (devSeverConfig, { env, paths, proxy, allowedHost }) => {
 		devSeverConfig.proxy = {
 			"/backend": {
-				target: process.env.REACT_APP_API_URL,
+				target: process.env.REACT_APP_ACTUAL_API_URL,
 				changeOrigin: true,
 				secure: false,
 			},

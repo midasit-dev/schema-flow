@@ -29,12 +29,16 @@
 	"dependencies": {
 		"@craco/craco": "^7.1.0",
 		"@midasit-dev/moaui": "^0.1.136",
+		"@rjsf/core": "^5.18.4",
+		"@rjsf/utils": "^5.18.4",
+		"@rjsf/validator-ajv8": "^5.18.4",
 		"@testing-library/jest-dom": "^5.17.0",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
 		"@types/uuid": "^9.0.8",
 		"env-cmd": "^10.1.0",
 		"framer-motion": "^11.2.10",
+		"lodash": "^4.17.21",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-scripts": "5.0.1",
@@ -44,7 +48,7 @@
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"start": "npm run prettier && env-cmd -f .env.development craco start",
+		"start": "npm run prettier && env-cmd -f .env.local craco start",
 		"move": "rmdir /s /q docs && rename build docs",
 		"build": "env-cmd -f .env.production craco build && npm run move",
 		"build-dv-env": "env-cmd -f .env.development craco build && npm run move",
@@ -80,6 +84,7 @@
 	},
 	"license": "MIT",
 	"devDependencies": {
+		"@types/lodash": "^4.17.5",
 		"tsconfig-paths-webpack-plugin": "^4.1.0"
 	}
 }
