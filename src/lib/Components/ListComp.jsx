@@ -131,6 +131,23 @@ const ListComp = (props) => {
 			>
 				{py}
 				<div style={{ width: '20px', height: '20px', marginRight: '5px' }}>
+					{item.isRendered && item.viewCount > 1 && (
+						<div
+							style={{
+								position: 'absolute',
+								width: '10px',
+								height: '10px',
+								color: item.isSelected ? 'white' : 'black',
+								fontSize: '11px',
+								fontWeight: 500,
+								fontFamily: 'pretendard',
+								top: 0,
+								right: 0,
+							}}
+						>
+							{item.viewCount}
+						</div>
+					)}
 					<SvgCheckCircle color={item.isSelected ? 'white' : 'black'} isVisible={item.isRendered} />
 				</div>
 			</div>
