@@ -90,7 +90,10 @@ function App() {
 					if (idx === index) {
 						return { ...item, isSelected: isSelected };
 					} else {
-						return item;
+						if(isSelected)
+							return { ...item, isSelected: false };
+						else
+							return item;
 					}
 				});
 			});
