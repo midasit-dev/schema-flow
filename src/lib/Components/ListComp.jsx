@@ -39,7 +39,7 @@ const ListComp = (props) => {
 		onChangeSchema(item.schema);
 	}
 
-	const ty = React.useMemo(() => 48, []);
+	const ty = React.useMemo(() => 46, []);
 	const tx = React.useMemo(() => -2.5, []);
 	const variants = {
 		hidden: { opacity: 0 },
@@ -64,7 +64,7 @@ const ListComp = (props) => {
 			// x: [null, 'calc(100% - 16px)'], // x 좌표는 계산된 위치로 이동
 			transform: [null, ``, `translateY(-${ty}%) scale(1)`, `translate(${tx}%, -${ty}%) scale(0)`], // 크기를 0으로 줄임
 			// opacity: [1, 0], // 불투명에서 투명으로
-			transition: { duration: 1.2, ease: 'easeOut' }, // 부드럽게 변화
+			transition: { duration: 0.9, ease: 'easeOut' }, // 부드럽게 변화
 		},
 	};
 
