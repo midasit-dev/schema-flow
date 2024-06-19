@@ -90,10 +90,8 @@ function App() {
 					if (idx === index) {
 						return { ...item, isSelected: isSelected };
 					} else {
-						if(isSelected)
-							return { ...item, isSelected: false };
-						else
-							return item;
+						if (isSelected) return { ...item, isSelected: false };
+						else return item;
 					}
 				});
 			});
@@ -129,6 +127,8 @@ function App() {
 						display: 'flex',
 						alignItems: 'center',
 						justifyContent: 'center',
+						boxSizing: 'content-box',
+						WebkitBoxSizing: 'content-box',
 					}}
 					onClick={toggleOpen}
 				>

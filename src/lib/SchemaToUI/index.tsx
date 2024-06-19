@@ -6,6 +6,9 @@ import { Canvas, Canvases, Layer } from '../Common/types';
 import { SvgClose } from '../SVGComps/index';
 import RJSFComp from './rjsf';
 
+const maxWidth = 620;
+const maxHeight = 620;
+
 export default function SchemaToUI(props: {
 	nodeId: string;
 	schemaInfo: any;
@@ -43,6 +46,7 @@ export default function SchemaToUI(props: {
 				style={{
 					width: '100%',
 					height: 26,
+					maxWidth: maxWidth,
 					backgroundColor: 'rgba(0, 0, 0, 0.7)',
 					borderTopLeftRadius: '5px',
 					borderTopRightRadius: '5px',
@@ -57,7 +61,7 @@ export default function SchemaToUI(props: {
 					fontFamily: 'pretendard',
 				}}
 			>
-				Title
+				{schemaInfo.schema.title}
 				<div
 					style={{
 						width: '20px',
@@ -81,15 +85,19 @@ export default function SchemaToUI(props: {
 				style={{
 					width: '100%',
 					height: '100%',
+					maxWidth: maxWidth,
+					maxHeight: maxHeight,
+					overflow: 'auto',
 					borderLeft: '1px solid #c1c1c3',
 					borderRight: '1px solid #c1c1c3',
 					borderBottom: '1px solid #c1c1c3',
-					backgroundColor: 'rgba(255, 255, 255, 0.7)',
+					backgroundColor: 'rgba(255, 255, 255, 0.9)',
 					position: 'relative',
 					borderBottomLeftRadius: '5px',
 					borderBottomRightRadius: '5px',
+					padding: '10px',
 				}}
-				className='nodrag'
+				className='nodrag nowheel'
 			>
 				{/* {canvas.layers.map((layer: Layer, index: number) => {
 					return <ToComponent key={index} layer={layer} />;

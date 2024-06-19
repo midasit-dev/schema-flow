@@ -98,9 +98,8 @@ const ReactFlowComp = () => {
 			return prev.map((item) => {
 				if (item.id === functionId) {
 					const viewCount = item.viewCount - 1;
-					return { ...item, isRendered: viewCount > 0 ? true : false, viewCount: viewCount};
-				}
-				else return item;
+					return { ...item, isRendered: viewCount > 0 ? true : false, viewCount: viewCount };
+				} else return item;
 			});
 		});
 	};

@@ -127,6 +127,10 @@ const ListComp = (props) => {
 					alignItems: 'center',
 					justifyContent: 'space-between',
 					zIndex: '1000',
+					color: item.isSelected ? 'white' : 'black',
+					fontSize: '16px',
+					fontFamily: 'pretendard',
+					marginLeft: '3px',
 				}}
 			>
 				{py}
