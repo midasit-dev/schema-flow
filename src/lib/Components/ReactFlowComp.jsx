@@ -7,6 +7,7 @@ import ReactFlow, {
 	useNodesState,
 	useEdgesState,
 	useReactFlow,
+	BackgroundVariant,
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
@@ -134,7 +135,7 @@ const ReactFlowComp = () => {
 			>
 				<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 				<Controls />
-				<Background />
+				<Background id='1' gap={25} variant={BackgroundVariant.Lines}/>
 			</ReactFlow>
 		</div>
 	);

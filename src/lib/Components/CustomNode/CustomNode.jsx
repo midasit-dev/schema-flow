@@ -16,13 +16,13 @@ export default function CustomNode(props) {
 		<>
 			{!isEmpty(data.schemainfo) && (
 				<div className={data.edit ? 'shake' : ''}>
+					<Handle id={"top_"+ id} type='target' position={Position.Top} />
 					<div>
 						<SchemaToUI nodeId={id} schemaInfo={data.schemainfo} onRemove={data.onRemove} />
 					</div>
-					<Handle type='target' position={Position.Top} />
-					<Handle type='target' position={Position.Bottom} />
-					<Handle type='target' position={Position.Left} />
-					<Handle type='target' position={Position.Right} />
+					<Handle id={"left_"+ id} type='target' position={Position.Left} />
+					<Handle id={"right_"+ id} type='source' position={Position.Right} />
+					<Handle id={"bottom_"+ id} type='source' position={Position.Bottom} />
 				</div>
 			)}
 		</>

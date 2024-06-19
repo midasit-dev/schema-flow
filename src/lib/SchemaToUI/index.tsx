@@ -102,7 +102,7 @@ export default function SchemaToUI(props: {
 				{/* {canvas.layers.map((layer: Layer, index: number) => {
 					return <ToComponent key={index} layer={layer} />;
 				})} */}
-				<RJSFComp schema={schemaInfo.schema} />
+				<RJSFComp schema={schemaInfo.schema} path={schemaInfo.path}/>
 			</div>
 		</div>
 	);

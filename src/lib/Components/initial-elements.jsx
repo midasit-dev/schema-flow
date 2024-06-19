@@ -36,7 +36,7 @@ export const nodes = [
 	},
 	{
 		id: '1-3',
-		type: 'output',
+		type: 'default',
 		data: {
 			label: 'Output Node',
 		},
