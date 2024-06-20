@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/SchemaUIBuilder/static/css/main.4c919b79.css",
-    "main.js": "/SchemaUIBuilder/static/js/main.09d57d297bd95f8cc738.js",
+    "main.js": "/SchemaUIBuilder/static/js/main.7813b898c18d8060db54.js",
     "runtime.js": "/SchemaUIBuilder/static/js/runtime.68243ba3ed91136ca99d.js",
     "static/js/453.js": "/SchemaUIBuilder/static/js/453.5a04d7073298feac7c1f.js",
-    "static/css/55.e278f166.css": "/SchemaUIBuilder/static/css/55.e278f166.css",
-    "static/js/55.js": "/SchemaUIBuilder/static/js/55.8390731bba2b9f22cb15.js",
-    "static/js/473.js": "/SchemaUIBuilder/static/js/473.ad41a53306379c1e8170.js",
+    "static/css/844.1b435f6b.css": "/SchemaUIBuilder/static/css/844.1b435f6b.css",
+    "static/js/844.js": "/SchemaUIBuilder/static/js/844.ce9f4e9478c0bb261004.js",
+    "static/js/329.js": "/SchemaUIBuilder/static/js/329.7df18b134c8a4cbfa8bf.js",
     "index.html": "/SchemaUIBuilder/index.html"
   },
   "entrypoints": [
     "static/js/runtime.68243ba3ed91136ca99d.js",
-    "static/css/55.e278f166.css",
-    "static/js/55.8390731bba2b9f22cb15.js",
-    "static/js/473.ad41a53306379c1e8170.js",
+    "static/css/844.1b435f6b.css",
+    "static/js/844.ce9f4e9478c0bb261004.js",
+    "static/js/329.7df18b134c8a4cbfa8bf.js",
     "static/css/main.4c919b79.css",
-    "static/js/main.09d57d297bd95f8cc738.js"
+    "static/js/main.7813b898c18d8060db54.js"
   ]
 }
