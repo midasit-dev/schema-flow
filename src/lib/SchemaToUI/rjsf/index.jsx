@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 const log = (type) => console.log.bind(console, type);
 
 export default function RJSFComp(props) {
-	const { schema, path, enqueueSnackbar, setResponse } = props;
+	const { schema, path, enqueueSnackbar, setResponseData } = props;
 	const [isloading, setIsloading] = React.useState(false);
 
 	async function postFunctionExecute(body) {
@@ -25,7 +25,7 @@ export default function RJSFComp(props) {
 		if(res.ok){
 			const data = await res.json()
 			console.log("data", data)
-			setResponse(data)
+			setResponseData(data)
 		}
 	}
 

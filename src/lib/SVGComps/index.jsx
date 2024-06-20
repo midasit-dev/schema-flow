@@ -148,3 +148,43 @@ export const SvgClose = () => (
 		/>
 	</svg>
 );
+
+export const SvgRightArrow = () => (
+	<svg
+		width='100%'
+		height='100%'
+		viewBox='0 0 24 24'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+	>
+		<path
+			d='M3.33789 7C5.06694 4.01099 8.29866 2 12.0001 2C17.5229 2 22.0001 6.47715 22.0001 12C22.0001 17.5228 17.5229 22 12.0001 22C8.29866 22 5.06694 19.989 3.33789 17M12 16L16 12M16 12L12 8M16 12H2'
+			stroke='white'
+			stroke-width='2'
+			stroke-linecap='round'
+			stroke-linejoin='round'
+		/>
+	</svg>
+);
+
+export const SvgLeftArrow = () => (
+	<motion.svg
+		initial={{ opacity: 0, scale: 1 }}
+		animate={{ opacity: 1, scale: 1 }}
+		exit={{ opacity: 0, scale: 0 }}
+		transition={{ duration: 0.2 }}
+		width='100%'
+		height='100%'
+		viewBox='0 0 24 24'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+	>
+		<path
+			d='M20.6621 17C18.933 19.989 15.7013 22 11.9999 22C6.47703 22 1.99988 17.5228 1.99988 12C1.99988 6.47715 6.47703 2 11.9999 2C15.7013 2 18.933 4.01099 20.6621 7M11.9999 8L7.99995 12M7.99995 12L11.9999 16M7.99995 12H21.9999'
+			stroke='white'
+			stroke-width='2'
+			stroke-linecap='round'
+			stroke-linejoin='round'
+		/>
+	</motion.svg>
+);

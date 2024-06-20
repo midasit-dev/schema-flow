@@ -3,18 +3,20 @@ import { Panel } from '@midasit-dev/moaui';
 import { v4 as uuidv4 } from 'uuid';
 import ToComponent from './ToComponent';
 import { Canvas, Canvases, Layer } from '../Common/types';
-import { SvgClose } from '../SVGComps/index';
+import { SvgClose, SvgRightArrow, SvgLeftArrow } from '../SVGComps/index';
 import RJSFComp from './rjsf';
 
-import { isEmpty } from 'lodash';
+import { isEmpty, set } from 'lodash';
 
 import JsonView from 'react18-json-view';
 import 'react18-json-view/src/style.css';
 
 import { useSnackbar } from 'notistack';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const maxRJSFWidth = 620;
-const maxWidth = 820;
+const minRJSFWidth = 350;
+const maxWidth = 720;
 const maxHeight = 620;
 
 export default function SchemaToUI(props: {
@@ -30,6 +32,7 @@ export default function SchemaToUI(props: {
 		layers: [],
 	});
 	const [response, setResponse] = React.useState({});
+	const [isOpenJsonView, setIsOpenJsonView] = React.useState(false);
 
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -83,6 +86,15 @@ export default function SchemaToUI(props: {
 		onRemove(nodeId, schemaInfo.id);
 	}, []);
 
+	function onClickOpenJsonView() {
+		setIsOpenJsonView(!isOpenJsonView);
+	}
+
+	function setResponseData(data: any) {
+		setResponse(data);
+		setIsOpenJsonView(true);
+	}
+
 	return (
 		<div>
 			{/* canvases is object */}
@@ -135,6 +147,7 @@ export default function SchemaToUI(props: {
 						height: '100%',
 						maxWidth: maxRJSFWidth,
 						maxHeight: maxHeight,
+						minWidth: minRJSFWidth,
 						overflow: 'auto',
 						borderLeft: '1px solid #c1c1c3',
 						borderRight: '1px solid #c1c1c3',
@@ -151,11 +164,31 @@ export default function SchemaToUI(props: {
 						schema={schemaInfo.schema}
 						path={schemaInfo.path}
 						enqueueSnackbar={enqueueSnackbar}
-						setResponse={setResponse}
+						setResponseData={setResponseData}
 					/>
+					{!isEmpty(response) && (
+						<div
+							style={{
+								position: 'fixed',
+								top: '52%',
+								right: -10,
+								width: '25px',
+								height: '25px',
+								borderRadius: '46%',
+								backgroundColor: '#595fe0',
+								cursor: 'pointer',
+								zIndex: 100,
+							}}
+							onClick={onClickOpenJsonView}
+						>
+							<AnimatePresence mode={'wait'}>
+								{isOpenJsonView ? <SvgLeftArrow /> : <SvgRightArrow />}
+							</AnimatePresence>
+						</div>
+					)}
 				</div>
-				{!isEmpty(response) && (
-					<JsonView src={test} style={{ width: '100%', height: maxHeight, overflow: 'auto' }} />
+				{isOpenJsonView && (
+					<JsonView src={response} style={{ width: '100%', height: maxHeight, overflow: 'auto' }} />
 				)}
 			</div>
 		</div>
