@@ -8,6 +8,7 @@ const log = (type) => console.log.bind(console, type);
 export default function RJSFComp(props) {
 	const { schema, path, enqueueSnackbar } = props;
 	const [isloading, setIsloading] = React.useState(false);
+	const [response, setResponse] = React.useState({});
 
 	console.log('schema', schema);
 
@@ -46,8 +47,25 @@ export default function RJSFComp(props) {
 			onSubmit={onSubmit}
 			onError={log('errors')}
 		>
-			<button type='submit' className='btn btn-primary' style={{ width: '100%' }}>
-				Submit
+			<button
+				type='submit'
+				className='btn btn-primary'
+				style={{
+					width: '100%',
+					position: 'fixed',
+					bottom: 0,
+					left: 0,
+					backgroundColor: 'rgba(255,255,255,0.7)',
+					height: '30px',
+					padding: 0,
+					margin: 0,
+					borderTopLeftRadius: 0,
+					borderTopRightRadius: 0,
+					border: '1px solid #c1c1c3',
+					color: 'black',
+				}}
+			>
+				Run
 			</button>
 		</Form>
 	);

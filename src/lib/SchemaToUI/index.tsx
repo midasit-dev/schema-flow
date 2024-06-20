@@ -130,8 +130,6 @@ export default function SchemaToUI(props: {
 					borderBottom: '1px solid #c1c1c3',
 					backgroundColor: 'rgba(255, 255, 255, 0.9)',
 					position: 'relative',
-					borderBottomLeftRadius: '5px',
-					borderBottomRightRadius: '5px',
 					padding: '10px',
 				}}
 				className='nodrag nowheel'

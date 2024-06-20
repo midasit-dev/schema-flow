@@ -54,7 +54,7 @@ export default function CustomNode(props) {
 			}}
 		>
 			{!isEmpty(data.schemainfo) && (
-				<div className={data.edit ? 'shake' : ''}>
+				<div className={data.edit ? 'shake' : ''} style={{paddingBottom:29}}>
 					<Handle id={'top_' + id} type='target' position={Position.Top} />
 					<div>
 						<SchemaToUI nodeId={id} schemaInfo={data.schemainfo} onRemove={data.onRemove} />
