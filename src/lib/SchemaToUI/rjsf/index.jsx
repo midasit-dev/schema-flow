@@ -6,15 +6,12 @@ import Button from '@mui/material/Button';
 const log = (type) => console.log.bind(console, type);
 
 export default function RJSFComp(props) {
-	const { schema, path, enqueueSnackbar } = props;
+	const { schema, path, enqueueSnackbar, setResponse } = props;
 	const [isloading, setIsloading] = React.useState(false);
-	const [response, setResponse] = React.useState({});
-
-	console.log('schema', schema);
 
 	async function postFunctionExecute(body) {
 		// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
-		const res = fetch(
+		const res = await fetch(
 			`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute${path}`,
 			{
 				method: 'POST',
@@ -24,11 +21,12 @@ export default function RJSFComp(props) {
 				body: JSON.stringify(body),
 			},
 		)
-			.then((res) => res.json())
-			.then((data) => {
-				enqueueSnackbar('Success', { variant: 'success' });
-				console.log(data);
-			});
+		console.log("res", res)
+		if(res.ok){
+			const data = await res.json()
+			console.log("data", data)
+			setResponse(data)
+		}
 	}
 
 

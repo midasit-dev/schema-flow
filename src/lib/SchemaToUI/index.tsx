@@ -6,9 +6,15 @@ import { Canvas, Canvases, Layer } from '../Common/types';
 import { SvgClose } from '../SVGComps/index';
 import RJSFComp from './rjsf';
 
+import { isEmpty } from 'lodash';
+
+import JsonView from 'react18-json-view';
+import 'react18-json-view/src/style.css';
+
 import { useSnackbar } from 'notistack';
 
-const maxWidth = 620;
+const maxRJSFWidth = 620;
+const maxWidth = 820;
 const maxHeight = 620;
 
 export default function SchemaToUI(props: {
@@ -23,41 +29,42 @@ export default function SchemaToUI(props: {
 		height: 300,
 		layers: [],
 	});
-	
+	const [response, setResponse] = React.useState({});
+
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  // const action = (key) => (
-  //   <Button sx={{m:0, p:0}} onClick={() => closeSnackbar(key)}>
-  //     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-  //       <path d="M0.759766 0.76001L9.24505 9.24529" stroke="#D5D9DE" strokeLinecap="round"/>
-  //       <path d="M9.24512 0.76001L0.759836 9.24529" stroke="#D5D9DE" strokeLinecap="round"/>
-  //     </svg>
-  //   </Button>
-  // );
+	// const action = (key) => (
+	//   <Button sx={{m:0, p:0}} onClick={() => closeSnackbar(key)}>
+	//     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+	//       <path d="M0.759766 0.76001L9.24505 9.24529" stroke="#D5D9DE" strokeLinecap="round"/>
+	//       <path d="M9.24512 0.76001L0.759836 9.24529" stroke="#D5D9DE" strokeLinecap="round"/>
+	//     </svg>
+	//   </Button>
+	// );
 
 	// function showSuccessSnackbar(msg){
-  //   enqueueSnackbar(msg, {
-  //     variant: "customSuccess",
-  //     anchorOrigin: {
-  //       vertical: 'bottom',
-  //       horizontal: 'center',
-  //     },
-  //     action,
-  //     marginBottom: "2.5rem",
-  //   });
-  // }
+	//   enqueueSnackbar(msg, {
+	//     variant: "customSuccess",
+	//     anchorOrigin: {
+	//       vertical: 'bottom',
+	//       horizontal: 'center',
+	//     },
+	//     action,
+	//     marginBottom: "2.5rem",
+	//   });
+	// }
 
 	// function showErrorSnackbar(msg){
-  //   enqueueSnackbar(msg, {
-  //     variant: "customError",
-  //     anchorOrigin: {
-  //       vertical: 'bottom',
-  //       horizontal: 'center',
-  //     },
-  //     action,
-  //     marginBottom: "2.5rem",
-  //   });
-  // }
+	//   enqueueSnackbar(msg, {
+	//     variant: "customError",
+	//     anchorOrigin: {
+	//       vertical: 'bottom',
+	//       horizontal: 'center',
+	//     },
+	//     action,
+	//     marginBottom: "2.5rem",
+	//   });
+	// }
 
 	React.useEffect(() => {
 		if (schemaInfo.schema.canvas === undefined) return;
@@ -118,26 +125,38 @@ export default function SchemaToUI(props: {
 				</div>
 			</div>
 			<div
-				key={'PanelCanvas-' + uuidv4().slice(0, 8)}
-				style={{
-					width: '100%',
-					height: '100%',
-					maxWidth: maxWidth,
-					maxHeight: maxHeight,
-					overflow: 'auto',
-					borderLeft: '1px solid #c1c1c3',
-					borderRight: '1px solid #c1c1c3',
-					borderBottom: '1px solid #c1c1c3',
-					backgroundColor: 'rgba(255, 255, 255, 0.9)',
-					position: 'relative',
-					padding: '10px',
-				}}
+				style={{ display: 'flex', flexDirection: 'row', maxWidth: maxWidth }}
 				className='nodrag nowheel'
 			>
-				{/* {canvas.layers.map((layer: Layer, index: number) => {
+				<div
+					key={'PanelCanvas-' + uuidv4().slice(0, 8)}
+					style={{
+						width: '100%',
+						height: '100%',
+						maxWidth: maxRJSFWidth,
+						maxHeight: maxHeight,
+						overflow: 'auto',
+						borderLeft: '1px solid #c1c1c3',
+						borderRight: '1px solid #c1c1c3',
+						borderBottom: '1px solid #c1c1c3',
+						backgroundColor: 'rgba(255, 255, 255, 0.9)',
+						position: 'relative',
+						padding: '10px',
+					}}
+				>
+					{/* {canvas.layers.map((layer: Layer, index: number) => {
 					return <ToComponent key={index} layer={layer} />;
 				})} */}
-				<RJSFComp schema={schemaInfo.schema} path={schemaInfo.path} enqueueSnackbar={enqueueSnackbar}/>
+					<RJSFComp
+						schema={schemaInfo.schema}
+						path={schemaInfo.path}
+						enqueueSnackbar={enqueueSnackbar}
+						setResponse={setResponse}
+					/>
+				</div>
+				{!isEmpty(response) && (
+					<JsonView src={test} style={{ width: '100%', height: maxHeight, overflow: 'auto' }} />
+				)}
 			</div>
 		</div>
 	);
