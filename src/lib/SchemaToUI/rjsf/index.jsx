@@ -1,11 +1,13 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';
+import Button from '@mui/material/Button';
 
 const log = (type) => console.log.bind(console, type);
 
 export default function RJSFComp(props) {
-	const { schema, path } = props;
+	const { schema, path, enqueueSnackbar } = props;
+	const [isloading, setIsloading] = React.useState(false);
 
 	console.log('schema', schema);
 
@@ -23,13 +25,17 @@ export default function RJSFComp(props) {
 		)
 			.then((res) => res.json())
 			.then((data) => {
+				enqueueSnackbar('Success', { variant: 'success' });
 				console.log(data);
 			});
 	}
 
+
 	function onSubmit(data) {
+		setIsloading(true);
 		console.log('submitted', data.formData);
 		postFunctionExecute(data.formData);
+		setIsloading(false);
 	}
 
 	return (

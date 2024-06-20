@@ -6,6 +6,8 @@ import { Canvas, Canvases, Layer } from '../Common/types';
 import { SvgClose } from '../SVGComps/index';
 import RJSFComp from './rjsf';
 
+import { useSnackbar } from 'notistack';
+
 const maxWidth = 620;
 const maxHeight = 620;
 
@@ -21,6 +23,41 @@ export default function SchemaToUI(props: {
 		height: 300,
 		layers: [],
 	});
+	
+	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  // const action = (key) => (
+  //   <Button sx={{m:0, p:0}} onClick={() => closeSnackbar(key)}>
+  //     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+  //       <path d="M0.759766 0.76001L9.24505 9.24529" stroke="#D5D9DE" strokeLinecap="round"/>
+  //       <path d="M9.24512 0.76001L0.759836 9.24529" stroke="#D5D9DE" strokeLinecap="round"/>
+  //     </svg>
+  //   </Button>
+  // );
+
+	// function showSuccessSnackbar(msg){
+  //   enqueueSnackbar(msg, {
+  //     variant: "customSuccess",
+  //     anchorOrigin: {
+  //       vertical: 'bottom',
+  //       horizontal: 'center',
+  //     },
+  //     action,
+  //     marginBottom: "2.5rem",
+  //   });
+  // }
+
+	// function showErrorSnackbar(msg){
+  //   enqueueSnackbar(msg, {
+  //     variant: "customError",
+  //     anchorOrigin: {
+  //       vertical: 'bottom',
+  //       horizontal: 'center',
+  //     },
+  //     action,
+  //     marginBottom: "2.5rem",
+  //   });
+  // }
 
 	React.useEffect(() => {
 		if (schemaInfo.schema.canvas === undefined) return;
@@ -102,7 +139,7 @@ export default function SchemaToUI(props: {
 				{/* {canvas.layers.map((layer: Layer, index: number) => {
 					return <ToComponent key={index} layer={layer} />;
 				})} */}
-				<RJSFComp schema={schemaInfo.schema} path={schemaInfo.path} />
+				<RJSFComp schema={schemaInfo.schema} path={schemaInfo.path} enqueueSnackbar={enqueueSnackbar}/>
 			</div>
 		</div>
 	);

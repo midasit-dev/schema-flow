@@ -39,6 +39,7 @@
 		"env-cmd": "^10.1.0",
 		"framer-motion": "^11.2.10",
 		"lodash": "^4.17.21",
+		"notistack": "^3.0.1",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-scripts": "5.0.1",
@@ -50,7 +51,7 @@
 	"scripts": {
 		"start": "npm run prettier && env-cmd -f .env.local craco start",
 		"move": "rmdir /s /q docs && rename build docs",
-		"build": "env-cmd -f .env.production craco build && npm run move",
+		"build": "env-cmd -f .env craco build && npm run move",
 		"build-dv-env": "env-cmd -f .env.development craco build && npm run move",
 		"build-st-env": "env-cmd -f .env.staging craco build && npm run move",
 		"build-pr-env": "env-cmd -f .env.production craco build && npm run move",
