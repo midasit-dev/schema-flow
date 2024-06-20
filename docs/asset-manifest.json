@@ -1,33 +1,20 @@
 {
   "files": {
-    "main.css": "/SchemaUIBuilder/static/css/main.651ddccd.css",
-    "main.js": "/SchemaUIBuilder/static/js/main.88d09b05.js",
-    "static/js/453.2447ea62.chunk.js": "/SchemaUIBuilder/static/js/453.2447ea62.chunk.js",
-    "static/media/Pretendard-Black.woff": "/SchemaUIBuilder/static/media/Pretendard-Black.c51355ddc1caec596031.woff",
-    "static/media/Pretendard-ExtraBold.woff": "/SchemaUIBuilder/static/media/Pretendard-ExtraBold.f6491e200d1fb5c5917b.woff",
-    "static/media/Pretendard-Bold.woff": "/SchemaUIBuilder/static/media/Pretendard-Bold.1f1dbbbf311ffffcc770.woff",
-    "static/media/Pretendard-SemiBold.woff": "/SchemaUIBuilder/static/media/Pretendard-SemiBold.9f6b39f88e7e6a3fd0b2.woff",
-    "static/media/Pretendard-Medium.woff": "/SchemaUIBuilder/static/media/Pretendard-Medium.edd5e28caa1cc4a9e0b7.woff",
-    "static/media/Pretendard-Light.woff": "/SchemaUIBuilder/static/media/Pretendard-Light.7d1a33b829142e833fb9.woff",
-    "static/media/Pretendard-Regular.woff": "/SchemaUIBuilder/static/media/Pretendard-Regular.303253288b0ba99db532.woff",
-    "static/media/Pretendard-ExtraLight.woff": "/SchemaUIBuilder/static/media/Pretendard-ExtraLight.caca3ea2e764095a60e9.woff",
-    "static/media/Pretendard-Thin.woff": "/SchemaUIBuilder/static/media/Pretendard-Thin.e7b3f421a3a379ef4137.woff",
-    "static/media/Pretendard-Black.woff2": "/SchemaUIBuilder/static/media/Pretendard-Black.c2be1420d8fb4b99a671.woff2",
-    "static/media/Pretendard-ExtraBold.woff2": "/SchemaUIBuilder/static/media/Pretendard-ExtraBold.26df84c2b3b8cb8a4b0c.woff2",
-    "static/media/Pretendard-Bold.woff2": "/SchemaUIBuilder/static/media/Pretendard-Bold.0c6f5e225ff28f456183.woff2",
-    "static/media/Pretendard-SemiBold.woff2": "/SchemaUIBuilder/static/media/Pretendard-SemiBold.d5ded8ad2884e7855bb1.woff2",
-    "static/media/Pretendard-Medium.woff2": "/SchemaUIBuilder/static/media/Pretendard-Medium.a9645bebe1a0010e66dc.woff2",
-    "static/media/Pretendard-Regular.woff2": "/SchemaUIBuilder/static/media/Pretendard-Regular.38bed7de46e7b9049ced.woff2",
-    "static/media/Pretendard-Light.woff2": "/SchemaUIBuilder/static/media/Pretendard-Light.1fc5521353ec20635e8e.woff2",
-    "static/media/Pretendard-ExtraLight.woff2": "/SchemaUIBuilder/static/media/Pretendard-ExtraLight.6a3dddfd84c05761ef44.woff2",
-    "static/media/Pretendard-Thin.woff2": "/SchemaUIBuilder/static/media/Pretendard-Thin.bb7cedf4446fa24dda9d.woff2",
-    "index.html": "/SchemaUIBuilder/index.html",
-    "main.651ddccd.css.map": "/SchemaUIBuilder/static/css/main.651ddccd.css.map",
-    "main.88d09b05.js.map": "/SchemaUIBuilder/static/js/main.88d09b05.js.map",
-    "453.2447ea62.chunk.js.map": "/SchemaUIBuilder/static/js/453.2447ea62.chunk.js.map"
+    "main.css": "/SchemaUIBuilder/static/css/main.4c919b79.css",
+    "main.js": "/SchemaUIBuilder/static/js/main.374606384a269d8cd7ed.js",
+    "runtime.js": "/SchemaUIBuilder/static/js/runtime.68243ba3ed91136ca99d.js",
+    "static/js/453.js": "/SchemaUIBuilder/static/js/453.5a04d7073298feac7c1f.js",
+    "static/css/55.e278f166.css": "/SchemaUIBuilder/static/css/55.e278f166.css",
+    "static/js/55.js": "/SchemaUIBuilder/static/js/55.8e229814917dc78b3e0b.js",
+    "static/js/693.js": "/SchemaUIBuilder/static/js/693.c19e19bb2c953b9c8fa2.js",
+    "index.html": "/SchemaUIBuilder/index.html"
   },
   "entrypoints": [
-    "static/css/main.651ddccd.css",
-    "static/js/main.88d09b05.js"
+    "static/js/runtime.68243ba3ed91136ca99d.js",
+    "static/css/55.e278f166.css",
+    "static/js/55.8e229814917dc78b3e0b.js",
+    "static/js/693.c19e19bb2c953b9c8fa2.js",
+    "static/css/main.4c919b79.css",
+    "static/js/main.374606384a269d8cd7ed.js"
   ]
 }

@@ -34,7 +34,7 @@ const ListComp = (props) => {
 
 		// if function is not selected, then select it.
 		onSetFunctionListInfo(index, true);
-		onChangeSchema({ id: item.id, schema: item.schema, path: item.path});
+		onChangeSchema({ id: item.id, schema: item.schema, path: item.path });
 	}
 
 	const ty = React.useMemo(() => 46, []);

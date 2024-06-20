@@ -135,7 +135,7 @@ const ReactFlowComp = () => {
 			>
 				<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 				<Controls />
-				<Background id='1' gap={25} variant={BackgroundVariant.Lines}/>
+				<Background id='1' gap={25} variant={BackgroundVariant.Lines} />
 			</ReactFlow>
 		</div>
 	);
