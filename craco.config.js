@@ -53,6 +53,12 @@ module.exports = {
 				changeOrigin: true,
 				secure: false,
 			},
+			"/SchemaUIBuilder": {
+				target: process.env.REACT_APP_ACTUAL_API_URL,
+				pathRewrite: { "^/SchemaUIBuilder": "" },
+				changeOrigin: true,
+				secure: false,
+			},
 		};
 		devSeverConfig.allowedHosts = ['moa.rpm.kr-dv-midasit.com', "localhost"];
 
