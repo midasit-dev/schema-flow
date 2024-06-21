@@ -65,8 +65,8 @@ function App() {
 				const paths = dereferencedFunctionList.paths;
 				for (const key in paths) {
 					// ex) key is '/moapy/project/wgsd/wgsd_flow/calc_3dpm'
-					// name is 'calc_3dpm'
 					path = key;
+					// ex) name is 'calc_3dpm'
 					name = key.split('/').pop();
 					schema = paths[key]['post']['requestBody']['content']['application/json']['schema'];
 				}

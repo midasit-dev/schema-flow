@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 // import { SelectedLayerIdState } from '../../../../playground/src/lib/Layout/recoilState';
 import Moaui, { type FloatingBoxProps, FloatingBox } from '@midasit-dev/moaui';
-import { type Layer } from '../Common/types';
+import { type Layer } from '../../Common/types';
 import { isAvailableComp } from './AvailableComponents';
 // import {
 // 	components_inner_layer_bgColor,

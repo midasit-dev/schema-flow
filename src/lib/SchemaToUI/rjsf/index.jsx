@@ -1,39 +1,32 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';
-import Button from '@mui/material/Button';
 
-const log = (type) => console.log.bind(console, type);
+async function postFunctionExecute(path, body, setResponseData) {
+	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
+	const res = await fetch(
+		`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute${path}`,
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(body),
+		},
+	);
+	if (res.ok) {
+		const data = await res.json();
+		console.log('data', data);
+		setResponseData(data);
+	}
+}
 
 export default function RJSFComp(props) {
-	const { schema, path, enqueueSnackbar, setResponseData } = props;
-	const [isloading, setIsloading] = React.useState(false);
+	const { schema, path, enqueueSnackbar, setResponseData, setIsloading } = props;
 
-	async function postFunctionExecute(body) {
-		// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
-		const res = await fetch(
-			`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute${path}`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(body),
-			},
-		)
-		console.log("res", res)
-		if(res.ok){
-			const data = await res.json()
-			console.log("data", data)
-			setResponseData(data)
-		}
-	}
-
-
-	function onSubmit(data) {
+	async function onSubmit(data) {
 		setIsloading(true);
-		console.log('submitted', data.formData);
-		postFunctionExecute(data.formData);
+		await postFunctionExecute(path, data.formData, setResponseData);
 		setIsloading(false);
 	}
 
@@ -41,9 +34,9 @@ export default function RJSFComp(props) {
 		<Form
 			schema={schema}
 			validator={validator}
-			onChange={log('changed')}
+			onChange={() => {}}
 			onSubmit={onSubmit}
-			onError={log('errors')}
+			onError={() => {}}
 		>
 			<button
 				type='submit'

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Panel } from '@midasit-dev/moaui';
 import { v4 as uuidv4 } from 'uuid';
-import ToComponent from './ToComponent';
+import ToComponent from './moaUI/ToComponent';
 import { Canvas, Canvases, Layer } from '../Common/types';
 import { SvgClose, SvgRightArrow, SvgLeftArrow } from '../SVGComps/index';
 import RJSFComp from './rjsf';
+import InfiniLoading from '../Components/Loading/InfinitLoading';
 
 import { isEmpty, set } from 'lodash';
 
@@ -33,6 +34,7 @@ export default function SchemaToUI(props: {
 	});
 	const [response, setResponse] = React.useState({});
 	const [isOpenJsonView, setIsOpenJsonView] = React.useState(false);
+	const [isloading, setIsloading] = React.useState(false);
 
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -136,6 +138,8 @@ export default function SchemaToUI(props: {
 					<SvgClose />
 				</div>
 			</div>
+
+			{isloading && <InfiniLoading />}
 			<div
 				style={{ display: 'flex', flexDirection: 'row', maxWidth: maxWidth }}
 				className='nodrag nowheel'
@@ -165,6 +169,7 @@ export default function SchemaToUI(props: {
 						path={schemaInfo.path}
 						enqueueSnackbar={enqueueSnackbar}
 						setResponseData={setResponseData}
+						setIsloading={setIsloading}
 					/>
 					{!isEmpty(response) && (
 						<div
