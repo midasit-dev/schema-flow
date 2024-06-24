@@ -29,3 +29,13 @@ export const RJSFdimension = atom<any>({
 	key: 'RJSFdimension',
 	default: {},
 });
+
+export const EgdesInfo = atom<any>({
+	key: 'EgdesInfo',
+	default: [],
+});
+
+export const ExecuteNodeId = atom<string[]>({
+	key: 'ExecuteNodeId',
+	default : [],
+});

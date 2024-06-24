@@ -165,6 +165,7 @@ export default function SchemaToUI(props: {
 					return <ToComponent key={index} layer={layer} />;
 				})} */}
 					<RJSFComp
+						nodeId={nodeId}
 						schema={schemaInfo.schema}
 						path={schemaInfo.path}
 						enqueueSnackbar={enqueueSnackbar}

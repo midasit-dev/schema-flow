@@ -23,8 +23,8 @@ import 'reactflow/dist/style.css';
 import './overview.css';
 import { isEmpty, cloneDeep } from 'lodash';
 // recoil
-import { useRecoilState } from 'recoil';
-import { Nodetypes, SelectedSchema, FunctionListInfo } from '../RecoilAtom/recoilState';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { Nodetypes, SelectedSchema, FunctionListInfo, EgdesInfo } from '../RecoilAtom/recoilState';
 
 const nodeTypes = {
 	annotation: AnnotationNode,
@@ -43,12 +43,13 @@ const nodeClassName = (node) => node.type;
 
 const ReactFlowComp = () => {
 	const connectingNodeId = React.useRef(null);
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+	const [nodes, setNodes, onNodesChange] = useNodesState([]);
+	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const [nodetypes, setNodetypes] = useRecoilState(Nodetypes);
 	const [selectedschema, setSelectedschema] = useRecoilState(SelectedSchema);
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const { screenToFlowPosition } = useReactFlow();
+	const setEgdesInfo = useSetRecoilState(EgdesInfo);
 
 	// React.useEffect(() => {
 	// console.log(selectedschema);
@@ -59,16 +60,32 @@ const ReactFlowComp = () => {
 	}, []);
 
 	function onConnectEnd(event) {
-		if (!isEmpty(selectedschema)) addCustomNode(event);
+		if (!isEmpty(selectedschema)) {
+			console.log("onConnectEnd", event);
+			addCustomNode(event);
+		}
 	}
 
 	function onClickHandler(event) {
 		if (!isEmpty(selectedschema)) addCustomNode(event);
 	}
 
+	// edge changed
+	React.useEffect(() => {
+		if(edges.length > 0){
+			const edgesInfo = [];
+			for(let i = 0; i < edges.length; i++){
+				if(edges[i].source !== null){
+					edgesInfo.push(edges[i]);
+				}
+			}
+			setEgdesInfo(edgesInfo);
+		}
+	}, [edges]);
+
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
-		const id = (nodes.length + 1).toString();
+		const id = "Custom_" + (nodes.length + 1).toString();
 		const newNode = [
 			{
 				id,
@@ -81,7 +98,7 @@ const ReactFlowComp = () => {
 			},
 		];
 		setNodes((nds) => nds.concat(newNode));
-		setEdges((eds) => eds.concat({ id, source: connectingNodeId.current, target: id }));
+		setEdges((eds) => eds.concat({ id, source: null, target: id }));
 		setFunctionListInfo((prev) => {
 			return prev.map((item) => {
 				if (item.isSelected)
@@ -105,7 +122,13 @@ const ReactFlowComp = () => {
 		});
 	};
 
-	const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
+	const onConnect = useCallback(
+		(params) => {
+			console.log('onConnect', params);
+			return setEdges((eds) => addEdge(params, eds));
+		},
+		[setEdges],
+	);
 
 	return (
 		<div

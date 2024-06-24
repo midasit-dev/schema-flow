@@ -71,7 +71,7 @@ function App() {
 					schema = paths[key]['post']['requestBody']['content']['application/json']['schema'];
 				}
 				return {
-					id: index,
+					id: 'Custom_' + index,
 					name: name,
 					schema: schema,
 					isSelected: false,
