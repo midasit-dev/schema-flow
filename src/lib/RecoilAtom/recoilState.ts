@@ -37,5 +37,5 @@ export const EgdesInfo = atom<any>({
 
 export const ExecuteNodeId = atom<string[]>({
 	key: 'ExecuteNodeId',
-	default : [],
+	default: [],
 });

@@ -61,7 +61,6 @@ const ReactFlowComp = () => {
 
 	function onConnectEnd(event) {
 		if (!isEmpty(selectedschema)) {
-			console.log("onConnectEnd", event);
 			addCustomNode(event);
 		}
 	}
@@ -72,10 +71,10 @@ const ReactFlowComp = () => {
 
 	// edge changed
 	React.useEffect(() => {
-		if(edges.length > 0){
+		if (edges.length > 0) {
 			const edgesInfo = [];
-			for(let i = 0; i < edges.length; i++){
-				if(edges[i].source !== null){
+			for (let i = 0; i < edges.length; i++) {
+				if (edges[i].source !== null) {
 					edgesInfo.push(edges[i]);
 				}
 			}
@@ -85,7 +84,7 @@ const ReactFlowComp = () => {
 
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
-		const id = "Custom_" + (nodes.length + 1).toString();
+		const id = 'Custom_' + (nodes.length + 1).toString();
 		const newNode = [
 			{
 				id,

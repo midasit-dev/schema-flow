@@ -15,36 +15,8 @@ const getFunctionList = async () => {
 		},
 	});
 	const data = await res.json();
+	console.log('data', data);
 	return data;
-};
-
-// JSON 데이터에서 $ref를 해제하는 함수
-const dereference = (json) => {
-	const resolveRef = (ref, root) => {
-		const parts = ref.split('/').slice(1); // 첫 번째 요소는 "#"이므로 제거
-		let result = root;
-		for (const part of parts) {
-			result = result[part];
-		}
-		return result;
-	};
-
-	const traverse = (obj, root) => {
-		if (Array.isArray(obj)) {
-			return obj.map((item) => traverse(item, root));
-		} else if (obj !== null && typeof obj === 'object') {
-			if (obj.$ref) {
-				return traverse(resolveRef(obj.$ref, root), root);
-			}
-			return Object.keys(obj).reduce((acc, key) => {
-				acc[key] = traverse(obj[key], root);
-				return acc;
-			}, {});
-		}
-		return obj;
-	};
-
-	return traverse(json, json);
 };
 
 function App() {
@@ -57,29 +29,24 @@ function App() {
 	React.useEffect(() => {
 		async function fetchFunctionList() {
 			const functionlist = await getFunctionList();
-			const newFunctionListInfo = functionlist.map((item, index) => {
-				const dereferencedFunctionList = dereference(item);
-				let schema = {};
-				let name = '';
-				let path = '';
-				const paths = dereferencedFunctionList.paths;
-				for (const key in paths) {
-					// ex) key is '/moapy/project/wgsd/wgsd_flow/calc_3dpm'
-					path = key;
-					// ex) name is 'calc_3dpm'
-					name = key.split('/').pop();
-					schema = paths[key]['post']['requestBody']['content']['application/json']['schema'];
-				}
-				return {
-					id: 'Custom_' + index,
+			let newFunctionListInfo = [];
+			if(functionlist.length === 0) return;
+			for (let i = 0; i < functionlist.length; i++) {
+				let name = functionlist[i].split('/').pop();
+				if (name === 'base' || name === 'project') continue;
+				// change '_' to ' '
+				name = name.replace(/_/g, ' ');
+				name = name.charAt(0).toUpperCase() + name.slice(1);
+				newFunctionListInfo.push({
+					id: 'Custom_' + i,
 					name: name,
-					schema: schema,
+					schema: {},
 					isSelected: false,
 					isRendered: false,
 					viewCount: 0,
-					path: path,
-				};
-			});
+					path: functionlist[i],
+				});
+			}
 			console.log('newFunctionListInfo', newFunctionListInfo);
 			setFunctionListInfo(newFunctionListInfo);
 		}
@@ -87,15 +54,19 @@ function App() {
 	}, []);
 
 	const handleSetSelectFunctionListInfo = React.useCallback(
-		(index, isSelected) => {
+		(index, isSelected, schema) => {
 			setFunctionListInfo((prev) => {
 				return prev.map((item, idx) => {
-					if (idx === index) {
-						return { ...item, isSelected: isSelected };
-					} else {
-						if (isSelected) return { ...item, isSelected: false };
-						else return item;
+					if (idx !== index) {
+						// 현재 아이템이 선택 대상이 아닌 경우, isSelected가 true일 때만 false로 설정
+						return isSelected ? { ...item, isSelected: false } : item;
 					}
+					// 선택된 아이템에 대해 isSelected 상태와 선택된 경우 schema 업데이트
+					return {
+						...item,
+						isSelected,
+						...(isSelected && { schema }), // isSelected가 true일 경우에만 schema 추가
+					};
 				});
 			});
 		},

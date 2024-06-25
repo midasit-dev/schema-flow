@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SvgCheckCircle } from '../SVGComps';
 import { FunctionListInfo } from '../RecoilAtom/recoilState';
 import { useRecoilValue } from 'recoil';
-
 const getSchema = async (functionName) => {
 	const res = await fetch(
 		`${process.env.REACT_APP_API_URL}backend/wgsd/functions/${functionName}`,
@@ -13,28 +12,38 @@ const getSchema = async (functionName) => {
 				'Content-Type': 'application/json',
 			},
 		},
-	)
-		.then((res) => res.json())
-		.then((data) => {
-			console.log(data);
-		});
+	);
+	if (res.ok) {
+		const data = await res.json();
+		console.log('data', data);
+		return data;
+	}
 };
 
 const ListComp = (props) => {
 	const { py, index, item, onChangeSchema, onSetFunctionListInfo } = props;
 	const functionListInfo = useRecoilValue(FunctionListInfo);
 
-	function onClickPyHandler(e) {
+	async function onClickPyHandler(e) {
 		// if function is already selected, then unselect it.
 		if (item.isSelected) {
 			onSetFunctionListInfo(index, false);
 			onChangeSchema({});
 			return;
 		}
-
+		const encodedPath = encodeURIComponent(item.path);
+		const dereferencedFunctionSchema = await getSchema(encodedPath);
+		const paths = dereferencedFunctionSchema.paths;
+		let schema = {};
+		for (const key in paths) {
+			// ex) key is '/moapy/project/wgsd/wgsd_flow/calc_3dpm'
+			schema = paths[key]['post']['requestBody']['content']['application/json']['schema'];
+		}
+		console.log('dereferencedFunctionSchema', schema);
+		schema.title = item.name;
 		// if function is not selected, then select it.
-		onSetFunctionListInfo(index, true);
-		onChangeSchema({ id: item.id, schema: item.schema, path: item.path });
+		onSetFunctionListInfo(index, true, schema);
+		onChangeSchema({ id: item.id, schema: schema, path: item.path });
 	}
 
 	const ty = React.useMemo(() => 46, []);
