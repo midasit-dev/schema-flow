@@ -30,7 +30,7 @@ function App() {
 		async function fetchFunctionList() {
 			const functionlist = await getFunctionList();
 			let newFunctionListInfo = [];
-			if(functionlist.length === 0) return;
+			if (functionlist.length === 0) return;
 			for (let i = 0; i < functionlist.length; i++) {
 				let name = functionlist[i].split('/').pop();
 				if (name === 'base' || name === 'project') continue;
