@@ -8,6 +8,7 @@ import ReactFlow, {
 	useEdgesState,
 	useReactFlow,
 	BackgroundVariant,
+	MarkerType,
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
@@ -18,6 +19,7 @@ import CircleNode from './CircleNode';
 import TextNode from './TextNode';
 import ButtonEdge from './ButtonEdge';
 import CustomNode from './CustomNode/CustomNode';
+import CustomEdge from './CustomEdge';
 
 import 'reactflow/dist/style.css';
 import './overview.css';
@@ -36,7 +38,7 @@ const nodeTypes = {
 };
 
 const edgeTypes = {
-	button: ButtonEdge,
+	'custom-edge': ButtonEdge,
 };
 
 const nodeClassName = (node) => node.type;
@@ -127,8 +129,15 @@ const ReactFlowComp = () => {
 			const edge = {
 				...params,
 				type: 'button',
-				label: 'delete',
+				label: 'Delete',
 				animated: true,
+				markerEnd: {
+					type: MarkerType.ArrowClosed,
+					width: 12,
+					height: 12,
+					color: '#000',
+				},
+				style: { stroke: 'blue', strokeWidth: 3, strokeDasharray: '6'},
 			};
 			setEdges((es) => addEdge(edge, es));
 		},
