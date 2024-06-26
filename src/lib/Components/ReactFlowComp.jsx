@@ -137,7 +137,7 @@ const ReactFlowComp = () => {
 					height: 12,
 					color: '#000',
 				},
-				style: { stroke: 'blue', strokeWidth: 3, strokeDasharray: '6'},
+				style: { stroke: 'blue', strokeWidth: 3, strokeDasharray: '6' },
 			};
 			setEdges((es) => addEdge(edge, es));
 		},

@@ -210,7 +210,7 @@ export default function SchemaToUI(props: {
 				{isOpenJsonView && (
 					<JsonView
 						src={response}
-						style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight:"30px" }}
+						style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
 					/>
 				)}
 				{is3dpm && (

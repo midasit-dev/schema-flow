@@ -77,13 +77,13 @@ function reCalculateData(data) {
 }
 
 function ThreeDPM(props) {
-	const { data = [""] } = props;
+	const { data = [''] } = props;
 	const [newData, setNewData] = React.useState([
 		[0.00032639995659142733, 2.2351741790771485e-14, -573.998955056804],
 		[2, 2, 2],
 	]);
 	React.useEffect(() => {
-		if(data.length === 0) return;
+		if (data.length === 0) return;
 		const newData = reCalculateData(data);
 		setNewData(newData);
 	}, [data]);
