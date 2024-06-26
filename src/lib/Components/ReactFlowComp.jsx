@@ -123,8 +123,14 @@ const ReactFlowComp = () => {
 
 	const onConnect = useCallback(
 		(params) => {
-			console.log('onConnect', params);
-			return setEdges((eds) => addEdge(params, eds));
+			// add button edge
+			const edge = {
+				...params,
+				type: 'button',
+				label: 'delete',
+				animated: true,
+			};
+			setEdges((es) => addEdge(edge, es));
 		},
 		[setEdges],
 	);
