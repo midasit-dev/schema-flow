@@ -15,9 +15,11 @@ import 'react18-json-view/src/style.css';
 import { useSnackbar } from 'notistack';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import ThreeDPM from '../Components/ThreeDPM';
+
 const maxRJSFWidth = 620;
 const minRJSFWidth = 350;
-const maxWidth = 720;
+const maxWidth = 1000;
 const maxHeight = 620;
 
 export default function SchemaToUI(props: {
@@ -35,6 +37,8 @@ export default function SchemaToUI(props: {
 	const [response, setResponse] = React.useState({});
 	const [isOpenJsonView, setIsOpenJsonView] = React.useState(false);
 	const [isloading, setIsloading] = React.useState(false);
+
+	const [is3dpm, setIs3dpm] = React.useState(false);
 
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -93,8 +97,18 @@ export default function SchemaToUI(props: {
 	}
 
 	function setResponseData(data: any) {
+		if (data.hasOwnProperty('json')) {
+			data = data.json;
+			if (data.hasOwnProperty('PM_Curve')) {
+				data = data.PM_Curve.DATA;
+				setIs3dpm(true);
+				setIsOpenJsonView(false);
+			} else {
+				setIs3dpm(false);
+				setIsOpenJsonView(true);
+			}
+		}
 		setResponse(data);
-		setIsOpenJsonView(true);
 	}
 
 	return (
@@ -147,7 +161,7 @@ export default function SchemaToUI(props: {
 				<div
 					key={'PanelCanvas-' + uuidv4().slice(0, 8)}
 					style={{
-						width: '100%',
+						width: isOpenJsonView ? '60%' : '100%',
 						height: '100%',
 						maxWidth: maxRJSFWidth,
 						maxHeight: maxHeight,
@@ -188,13 +202,23 @@ export default function SchemaToUI(props: {
 							onClick={onClickOpenJsonView}
 						>
 							<AnimatePresence mode={'wait'}>
-								{isOpenJsonView ? <SvgLeftArrow /> : <SvgRightArrow />}
+								{isOpenJsonView || is3dpm ? <SvgLeftArrow /> : <SvgRightArrow />}
 							</AnimatePresence>
 						</div>
 					)}
 				</div>
 				{isOpenJsonView && (
-					<JsonView src={response} style={{ width: '100%', height: maxHeight, overflow: 'auto' }} />
+					<JsonView
+						src={response}
+						style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight:"30px" }}
+					/>
+				)}
+				{is3dpm && (
+					<div
+						style={{ width: '100%', height: maxHeight, overflow: 'auto', backgroundColor: 'white' }}
+					>
+						<ThreeDPM data={response} />
+					</div>
 				)}
 			</div>
 		</div>

@@ -29,6 +29,8 @@
 	"dependencies": {
 		"@craco/craco": "^7.1.0",
 		"@midasit-dev/moaui": "^0.1.136",
+		"@react-three/drei": "^9.107.0",
+		"@react-three/fiber": "^8.16.8",
 		"@rjsf/core": "^5.18.4",
 		"@rjsf/utils": "^5.18.4",
 		"@rjsf/validator-ajv8": "^5.18.4",
