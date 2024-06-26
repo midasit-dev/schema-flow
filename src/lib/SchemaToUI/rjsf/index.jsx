@@ -7,7 +7,7 @@ import { EgdesInfo, ExecuteNodeId } from '../../RecoilAtom/recoilState';
 async function postFunctionExecute(path, body, enqueueSnackbar, setResponseData) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
 	const res = await fetch(
-		`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute${path}`,
+		`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute/${path}`,
 		{
 			method: 'POST',
 			headers: {
@@ -39,7 +39,7 @@ export default function RJSFComp(props) {
 					break;
 				} else setIsDisabled(false);
 			}
-		}
+		} else setIsDisabled(false);
 	}, [edgesInfo]);
 
 	React.useEffect(() => {

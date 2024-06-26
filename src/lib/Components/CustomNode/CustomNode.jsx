@@ -1,5 +1,5 @@
 import React from 'react';
-import { Handle, useStore, Position, useReactFlow, NodeResizer } from 'reactflow';
+import { Handle, Position } from 'reactflow';
 import { isEmpty } from 'lodash';
 
 import SchemaToUI from '../../SchemaToUI';
@@ -8,11 +8,14 @@ import './CustomNode.css';
 // noticestack
 import { SnackbarProvider } from 'notistack';
 
-//recoil
-import { useRecoilValue } from 'recoil';
-import { SelectedSchema } from '../../RecoilAtom/recoilState';
+function areEqual(prevProps, nextProps) {
+	return (
+		prevProps.data.schemainfo.id === nextProps.data.schemainfo.id &&
+		prevProps.data.edit === nextProps.data.edit
+	);
+}
 
-export default function CustomNode(props) {
+const CustomNode = React.memo((props) => {
 	const { id, data } = props;
 
 	return (
@@ -101,4 +104,6 @@ export default function CustomNode(props) {
 			)}
 		</SnackbarProvider>
 	);
-}
+}, areEqual);
+
+export default CustomNode;
