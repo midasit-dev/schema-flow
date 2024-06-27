@@ -33,8 +33,8 @@ function App() {
 			if (functionlist.length === 0) return;
 			for (let i = 0; i < functionlist.length; i++) {
 				let name = functionlist[i].split('/').pop();
-				if (name === 'base' || name === 'project') continue;
-				// change '_' to ' '
+				if (name === 'base' || name === 'project') continue; // todo : remove this
+				// change '_' to ' ' in name
 				name = name.replace(/_/g, ' ');
 				name = name.charAt(0).toUpperCase() + name.slice(1);
 				newFunctionListInfo.push({
@@ -47,7 +47,6 @@ function App() {
 					path: functionlist[i],
 				});
 			}
-			console.log('newFunctionListInfo', newFunctionListInfo);
 			setFunctionListInfo(newFunctionListInfo);
 		}
 		fetchFunctionList();

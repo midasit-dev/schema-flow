@@ -21,6 +21,8 @@ import ButtonEdge from './ButtonEdge';
 import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import 'reactflow/dist/style.css';
 import './overview.css';
 import { isEmpty, cloneDeep } from 'lodash';
@@ -86,7 +88,7 @@ const ReactFlowComp = () => {
 
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
-		const id = 'Custom_' + schemadata.id.toString();
+		const id = 'Custom_' + schemadata.id.toString() + "_" +  uuidv4().slice(0, 8);
 		const newNode = [
 			{
 				id,
