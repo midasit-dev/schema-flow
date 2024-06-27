@@ -26,10 +26,15 @@ async function postFunctionExecute(path, body, enqueueSnackbar, setResponseData)
 
 export default function RJSFComp(props) {
 	const { nodeId, schema, path, enqueueSnackbar, setResponseData, setIsloading } = props;
+
 	const edgesInfo = useRecoilValue(EgdesInfo);
 	const [executeNodeId, setExecuteNodeId] = useRecoilState(ExecuteNodeId);
 	const [isDisabled, setIsDisabled] = React.useState(false);
 	const [changedData, setChangedData] = React.useState({ formData: {} });
+
+	React.useEffect(() => {
+		console.log("RJSFComp", props.schema);
+	}, []);
 
 	React.useEffect(() => {
 		if (edgesInfo.length > 0) {
@@ -55,29 +60,40 @@ export default function RJSFComp(props) {
 		}
 	}, [executeNodeId]);
 
-	async function AutomaticRun() {
-		setIsloading(true);
-		await postFunctionExecute(path, changedData.formData, enqueueSnackbar, setResponseData);
-		setIsloading(false);
-		setNextExecuteNodeId();
-	}
-
-	function setNextExecuteNodeId() {
+	const setNextExecuteNodeId = React.useCallback(() => {
 		if (edgesInfo.length > 0) {
 			for (let i = 0; i < edgesInfo.length; i++) {
 				if (edgesInfo[i].source === nodeId) {
 					const targetNodeId = edgesInfo[i].target;
 					setExecuteNodeId((prev) => {
-						return [...prev, targetNodeId];
+						return [...prev, targetNodeId]; 
 					});
 				}
 			}
 		}
-	}
+	}, [edgesInfo, nodeId, setExecuteNodeId]);
 
-	function onChangedData(data) {
-		setChangedData(data);
-	}
+	const AutomaticRun = React.useCallback(async () => {
+		setIsloading(true);
+		await postFunctionExecute(path, changedData.formData, enqueueSnackbar, setResponseData);
+		setIsloading(false);
+		setNextExecuteNodeId();
+	}, [path, changedData, enqueueSnackbar, setResponseData, setIsloading, setNextExecuteNodeId]);
+	
+	const onChangedData = React.useCallback((data) => {
+		setChangedData((prevState) => {
+			const newFormData = data.formData;
+			const prevFormData = prevState.formData;
+	
+			console.log('newFormData', newFormData);
+			console.log('prevFormData', prevFormData);
+			// 필드별로 변경 여부 확인
+			if (JSON.stringify(prevFormData) !== JSON.stringify(newFormData)) {
+				return { ...prevState, formData: newFormData };
+			}
+			return prevState;
+		});
+	}, [setChangedData]);
 
 	async function onClickedRunButton(data) {
 		setIsloading(true);
