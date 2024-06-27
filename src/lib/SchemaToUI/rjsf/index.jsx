@@ -33,10 +33,6 @@ export default function RJSFComp(props) {
 	const [changedData, setChangedData] = React.useState({ formData: {} });
 
 	React.useEffect(() => {
-		console.log("RJSFComp", props.schema);
-	}, []);
-
-	React.useEffect(() => {
 		if (edgesInfo.length > 0) {
 			for (let i = 0; i < edgesInfo.length; i++) {
 				if (edgesInfo[i].target === nodeId && edgesInfo[i].source !== null) {
@@ -85,8 +81,6 @@ export default function RJSFComp(props) {
 			const newFormData = data.formData;
 			const prevFormData = prevState.formData;
 	
-			console.log('newFormData', newFormData);
-			console.log('prevFormData', prevFormData);
 			// 필드별로 변경 여부 확인
 			if (JSON.stringify(prevFormData) !== JSON.stringify(newFormData)) {
 				return { ...prevState, formData: newFormData };
@@ -111,7 +105,7 @@ export default function RJSFComp(props) {
 			schema={schema}
 			validator={validator}
 			formData={changedData.formData}
-			onChange={(data) => setChangedData(data)}
+			onChange={onChangedData}
 			onSubmit={onClickedRunButton}
 			onError={onErrored}
 		>
