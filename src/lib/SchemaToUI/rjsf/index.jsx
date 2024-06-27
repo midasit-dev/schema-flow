@@ -110,7 +110,8 @@ export default function RJSFComp(props) {
 		<Form
 			schema={schema}
 			validator={validator}
-			onChange={onChangedData}
+			formData={changedData.formData}
+			onChange={(data) => setChangedData(data)}
 			onSubmit={onClickedRunButton}
 			onError={onErrored}
 		>
