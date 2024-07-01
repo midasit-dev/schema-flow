@@ -62,7 +62,7 @@ export default function RJSFComp(props) {
 				if (edgesInfo[i].source === nodeId) {
 					const targetNodeId = edgesInfo[i].target;
 					setExecuteNodeId((prev) => {
-						return [...prev, targetNodeId]; 
+						return [...prev, targetNodeId];
 					});
 				}
 			}
@@ -75,19 +75,22 @@ export default function RJSFComp(props) {
 		setIsloading(false);
 		setNextExecuteNodeId();
 	}, [path, changedData, enqueueSnackbar, setResponseData, setIsloading, setNextExecuteNodeId]);
-	
-	const onChangedData = React.useCallback((data) => {
-		setChangedData((prevState) => {
-			const newFormData = data.formData;
-			const prevFormData = prevState.formData;
-	
-			// 필드별로 변경 여부 확인
-			if (JSON.stringify(prevFormData) !== JSON.stringify(newFormData)) {
-				return { ...prevState, formData: newFormData };
-			}
-			return prevState;
-		});
-	}, [setChangedData]);
+
+	const onChangedData = React.useCallback(
+		(data) => {
+			setChangedData((prevState) => {
+				const newFormData = data.formData;
+				const prevFormData = prevState.formData;
+
+				// 필드별로 변경 여부 확인
+				if (JSON.stringify(prevFormData) !== JSON.stringify(newFormData)) {
+					return { ...prevState, formData: newFormData };
+				}
+				return prevState;
+			});
+		},
+		[setChangedData],
+	);
 
 	async function onClickedRunButton(data) {
 		setIsloading(true);

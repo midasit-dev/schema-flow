@@ -5,7 +5,7 @@ import { FunctionListInfo } from '../RecoilAtom/recoilState';
 import { useRecoilValue } from 'recoil';
 const getSchema = async (functionName) => {
 	const res = await fetch(
-		`${process.env.REACT_APP_API_URL}backend/wgsd/functions/${functionName}`,
+		`${process.env.REACT_APP_API_URL}backend/wgsd/function-schemas/${functionName}`,
 		{
 			method: 'GET',
 			headers: {

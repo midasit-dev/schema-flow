@@ -88,7 +88,7 @@ const ReactFlowComp = () => {
 
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
-		const id = 'Custom_' + schemadata.id.toString() + "_" +  uuidv4().slice(0, 8);
+		const id = 'Custom_' + schemadata.id.toString() + '_' + uuidv4().slice(0, 8);
 		const newNode = [
 			{
 				id,
