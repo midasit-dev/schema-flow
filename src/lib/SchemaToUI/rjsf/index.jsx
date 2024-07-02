@@ -43,16 +43,20 @@ export default function RJSFComp(props) {
 		} else setIsDisabled(false);
 	}, [edgesInfo]);
 
+	async function executeFunction() {
+		for (let i = 0; i < executeNodeId.length; i++) {
+			if (executeNodeId[i] === nodeId) {
+				await AutomaticRun();
+				setExecuteNodeId((prev) => {
+					return prev.filter((item) => item !== nodeId);
+				});
+			}
+		}
+	}
+
 	React.useEffect(() => {
 		if (executeNodeId.length > 0) {
-			for (let i = 0; i < executeNodeId.length; i++) {
-				if (executeNodeId[i] === nodeId) {
-					AutomaticRun();
-					setExecuteNodeId((prev) => {
-						return prev.filter((item) => item !== nodeId);
-					});
-				}
-			}
+			executeFunction();
 		}
 	}, [executeNodeId]);
 
@@ -62,6 +66,8 @@ export default function RJSFComp(props) {
 				if (edgesInfo[i].source === nodeId) {
 					const targetNodeId = edgesInfo[i].target;
 					setExecuteNodeId((prev) => {
+						// if targetNodeId is already in the list, then return prev
+						if (prev.includes(targetNodeId)) return prev;
 						return [...prev, targetNodeId];
 					});
 				}
@@ -73,7 +79,7 @@ export default function RJSFComp(props) {
 		setIsloading(true);
 		await postFunctionExecute(path, changedData.formData, enqueueSnackbar, setResponseData);
 		setIsloading(false);
-		setNextExecuteNodeId();
+		await setNextExecuteNodeId();
 	}, [path, changedData, enqueueSnackbar, setResponseData, setIsloading, setNextExecuteNodeId]);
 
 	const onChangedData = React.useCallback(
