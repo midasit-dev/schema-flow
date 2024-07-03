@@ -37,7 +37,10 @@ const ListComp = (props) => {
 		let schema = {};
 		for (const key in paths) {
 			// ex) key is '/moapy/project/wgsd/wgsd_flow/calc_3dpm'
-			schema = paths[key]['post']['requestBody']['content']['application/json']['schema'];
+			if(paths[key]['post']['requestBody']['content']['application/json']['schema'])
+				schema = paths[key]['post']['requestBody']['content']['application/json']['schema'];
+			else
+				alert('No schema found in the selected function');
 		}
 		console.log('dereferencedFunctionSchema', schema);
 		schema.title = item.name;

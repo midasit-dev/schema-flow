@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 
 import SchemaToUI from '../../SchemaToUI';
 import './CustomNode.css';
-
+import CustomHandle from '../CustomHandle';
 // noticestack
 import { SnackbarProvider } from 'notistack';
 
@@ -93,13 +93,13 @@ const CustomNode = React.memo((props) => {
 		>
 			{!isEmpty(data.schemainfo) && (
 				<div className={data.edit ? 'shake' : ''} style={{ paddingBottom: 29 }}>
-					<Handle id={'top_' + id} type='target' position={Position.Top} />
+					<CustomHandle id={'top_' + id} type='target' position={Position.Top} />
+					<CustomHandle id={'left_' + id} type='target' position={Position.Left} />
 					<div>
 						<SchemaToUI nodeId={id} schemaInfo={data.schemainfo} onRemove={data.onRemove} />
 					</div>
-					<Handle id={'left_' + id} type='target' position={Position.Left} />
-					<Handle id={'right_' + id} type='source' position={Position.Right} />
-					<Handle id={'bottom_' + id} type='source' position={Position.Bottom} />
+					<CustomHandle id={'right_' + id} type='source' position={Position.Right} />
+					<CustomHandle id={'bottom_' + id} type='source' position={Position.Bottom} />
 				</div>
 			)}
 		</SnackbarProvider>
