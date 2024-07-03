@@ -138,9 +138,9 @@ export default function RJSFComp(props) {
 					fontFamily: 'pretendard',
 					fontStretch: 'normal',
 					// when disabled is true, background color is gray
-					backgroundColor: isDisabled ? 'gray' : 'rgba(0, 71, 171, 0.7)',
+					backgroundColor: 'rgba(0, 71, 171, 0.7)',
 				}}
-				disabled={isDisabled}
+				// disabled={isDisabled}
 			>
 				Run
 			</button>
