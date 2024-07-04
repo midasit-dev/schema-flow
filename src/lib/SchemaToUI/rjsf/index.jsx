@@ -110,39 +110,41 @@ export default function RJSFComp(props) {
 	}
 
 	return (
-		<Form
-			schema={schema}
-			validator={validator}
-			formData={changedData.formData}
-			onChange={onChangedData}
-			onSubmit={onClickedRunButton}
-			onError={onErrored}
-		>
-			<button
-				type='submit'
-				className='btn'
-				style={{
-					width: '100%',
-					position: 'fixed',
-					bottom: 0,
-					left: 0,
-					height: '30px',
-					padding: 0,
-					margin: 0,
-					borderTopLeftRadius: 0,
-					borderTopRightRadius: 0,
-					border: '1px solid #c1c1c3',
-					color: 'white',
-					fontSize: '16px',
-					fontWeight: 'bold',
-					fontFamily: 'pretendard',
-					fontStretch: 'normal',
-					backgroundColor: 'rgba(0, 71, 171, 0.7)',
-				}}
-				// disabled={isDisabled}
+		<div style={{ paddingRight: '10px' }}>
+			<Form
+				schema={schema}
+				validator={validator}
+				formData={changedData.formData}
+				onChange={onChangedData}
+				onSubmit={onClickedRunButton}
+				onError={onErrored}
 			>
-				Run
-			</button>
-		</Form>
+				<button
+					type='submit'
+					className='btn'
+					style={{
+						width: '100%',
+						position: 'fixed',
+						bottom: 0,
+						left: 0,
+						height: '30px',
+						padding: 0,
+						margin: 0,
+						borderTopLeftRadius: 0,
+						borderTopRightRadius: 0,
+						border: '1px solid #c1c1c3',
+						color: 'white',
+						fontSize: '16px',
+						fontWeight: 'bold',
+						fontFamily: 'pretendard',
+						fontStretch: 'normal',
+						backgroundColor: 'rgba(0, 71, 171, 0.7)',
+					}}
+					// disabled={isDisabled}
+				>
+					Run
+				</button>
+			</Form>
+		</div>
 	);
 }

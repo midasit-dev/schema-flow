@@ -22,18 +22,12 @@ import { useSetRecoilState } from 'recoil';
 import { FunctionListInfo } from '../RecoilAtom/recoilState';
 
 const maxRJSFWidth = 620;
-const minRJSFWidth = 350;
-const maxWidth = 1000;
+const minRJSFWidth = 400;
+const maxWidth = 1200;
 const maxHeight = 620;
 
-const nodesLengthSelector = (state: any) => Array.from(state.nodeInternals.values()) || 0;
-
-export default function SchemaToUI(props: {
-	nodeId: string;
-	schemaInfo: any;
-}) {
+export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const { nodeId, schemaInfo } = props;
-	const [bgColor, setBgColor] = React.useState('transparent');
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
 		height: 300,
@@ -42,7 +36,7 @@ export default function SchemaToUI(props: {
 	const [response, setResponse] = React.useState({});
 	const [isOpenJsonView, setIsOpenJsonView] = React.useState(false);
 	const [isloading, setIsloading] = React.useState(false);
-
+	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
 	const [is3dpm, setIs3dpm] = React.useState(false);
 	const setFunctionListInfo = useSetRecoilState(FunctionListInfo);
 
@@ -56,16 +50,15 @@ export default function SchemaToUI(props: {
 			reactFlow.setNodes((nds) => {
 				const nodes = nds.filter((node) => node.id !== nodeId);
 				const localFlow = JSON.parse(localStorage.getItem('FLOW') || '{}');
-				localStorage.setItem('FLOW', JSON.stringify({...localFlow, "nodes": nodes}));
+				localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, nodes: nodes }));
 				return nodes;
 			});
 			reactFlow.setEdges((eds) => {
-				const edges =	eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+				const edges = eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId);
 				const localFlow = JSON.parse(localStorage.getItem('FLOW') || '{}');
-				localStorage.setItem('FLOW', JSON.stringify({...localFlow, "edges":edges}));
+				localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, edges: edges }));
 				return edges;
-			}
-			);
+			});
 			setFunctionListInfo((prev: any) => {
 				return prev.map((item: any) => {
 					if (item.id === functionId) {
@@ -116,23 +109,15 @@ export default function SchemaToUI(props: {
 		setCanvas(schemaInfo.schema.canvas);
 	}, [schemaInfo]);
 
-	const handleMouseEnter = React.useCallback(() => {
-		setBgColor('gray');
-	}, []);
-
-	const handleMouseLeave = React.useCallback(() => {
-		setBgColor('transparent');
-	}, []);
-
 	const onClickCloseHandler = React.useCallback(() => {
 		removeCustomNode(nodeId, schemaInfo.id);
 	}, [nodeId, schemaInfo.id, removeCustomNode]);
 
-	function onClickOpenJsonView() {
+	const onClickOpenJsonView = React.useCallback(() => {
 		setIsOpenJsonView(!isOpenJsonView);
-	}
+	}, [isOpenJsonView]);
 
-	function setResponseData(data: any) {
+	const setResponseData = React.useCallback((data: any) => {
 		if (data.hasOwnProperty('json')) {
 			data = data.json;
 			if (data.hasOwnProperty('PM_Curve')) {
@@ -145,7 +130,7 @@ export default function SchemaToUI(props: {
 			}
 		}
 		setResponse(data);
-	}
+	}, []);
 
 	return (
 		<div>
@@ -171,6 +156,7 @@ export default function SchemaToUI(props: {
 			>
 				{schemaInfo.schema.title}
 				<div
+					className='btnClose'
 					style={{
 						width: '20px',
 						height: '20px',
@@ -179,14 +165,19 @@ export default function SchemaToUI(props: {
 						justifyContent: 'center',
 						alignItems: 'center',
 						borderRadius: '50%',
-						backgroundColor: bgColor,
+						backgroundColor: 'transparent',
 					}}
-					onMouseEnter={handleMouseEnter}
-					onMouseLeave={handleMouseLeave}
 					onClick={onClickCloseHandler}
 				>
 					<SvgClose />
 				</div>
+				<style>
+					{`
+						.btnClose:hover {
+							background-color: gray !important;
+						}
+					`}
+				</style>
 			</div>
 
 			{isloading && <InfiniLoading />}
@@ -195,7 +186,7 @@ export default function SchemaToUI(props: {
 				className='nodrag nowheel'
 			>
 				<div
-					key={'PanelCanvas-' + uuidv4().slice(0, 8)}
+					key={`PanelCanvas-${uuid}`}
 					style={{
 						width: isOpenJsonView ? '60%' : '100%',
 						height: '100%',
