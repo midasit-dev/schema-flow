@@ -34,3 +34,8 @@ export const ExecuteNodeId = atom<string[]>({
 	key: 'ExecuteNodeId',
 	default: [],
 });
+
+export const ExecuteState = atom<any>({
+	key: 'ExecuteState',
+	default: {},
+});
