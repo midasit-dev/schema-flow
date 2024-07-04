@@ -9,7 +9,7 @@ import ReactFlow, {
 	useReactFlow,
 	BackgroundVariant,
 	MarkerType,
-	useStore,
+	useKeyPress,
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
@@ -52,9 +52,11 @@ const ReactFlowComp = () => {
 	const connectingNodeId = React.useRef(null);
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+	const reactFlow = useReactFlow();
+	const CPressed = useKeyPress(['c']);
+
 	const [selectedschema, setSelectedschema] = useRecoilState(SelectedSchema);
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
-	const reactFlow = useReactFlow();
 	const setEgdesInfo = useSetRecoilState(EgdesInfo);
 
 	const onConnectStart = useCallback((_, { nodeId }) => {
@@ -126,6 +128,24 @@ const ReactFlowComp = () => {
 			);
 		}
 	}, [functionlistInfo]);
+
+	// C key pressed
+	React.useEffect(() => {
+		if (CPressed) {
+			// get localstorage FLOW
+			const localStorageFlow = localStorage.getItem('FLOW');
+			if (localStorageFlow) {
+				const localFlow = JSON.parse(localStorageFlow);
+				if (localFlow['nodes'] || localFlow['edges']) {
+					navigator.clipboard.writeText(localStorageFlow);
+				} else {
+					alert('No data about node, edge');
+				}
+			} else {
+				alert('No Flow data in localstorage');
+			}
+		}
+	}, [CPressed]);
 
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
