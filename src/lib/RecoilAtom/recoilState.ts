@@ -5,11 +5,6 @@ export const SelectedSchema = atom<any>({
 	default: {},
 });
 
-export const Nodetypes = atom<any>({
-	key: 'Nodetypes',
-	default: {},
-});
-
 export const FunctionListInfo = atom<any>({
 	key: 'FunctionListInfo',
 	default: [],

@@ -27,28 +27,43 @@ function App() {
 	const toggleOpen = () => setIsopenList(!isopenList);
 
 	React.useEffect(() => {
+		const functionlistInfoLocal = JSON.parse(localStorage.getItem('functionlistInfo'));
+
+		const formatFunctionName = (name) => {
+			name = name.replace(/_/g, ' ');
+			return name.charAt(0).toUpperCase() + name.slice(1);
+		};
+
 		async function fetchFunctionList() {
 			const functionlist = await getFunctionList();
-			let newFunctionListInfo = [];
 			if (functionlist.length === 0) return;
-			for (let i = 0; i < functionlist.length; i++) {
-				let name = functionlist[i].split('/').pop();
-				if (name === 'base' || name === 'project') continue; // todo : remove this
-				// change '_' to ' ' in name
-				name = name.replace(/_/g, ' ');
-				name = name.charAt(0).toUpperCase() + name.slice(1);
-				newFunctionListInfo.push({
-					id: 'Custom_' + i,
-					name: name,
-					schema: {},
-					isSelected: false,
-					isRendered: false,
-					viewCount: 0,
-					path: functionlist[i],
-				});
-			}
+
+			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {
+				let name = path.split('/').pop();
+				if (name === 'base' || name === 'project') return acc; // Consider removing this line if no longer needed
+
+				name = formatFunctionName(name);
+				const existingInfo = functionlistInfoLocal?.find((info) => info.name === name);
+
+				const functionInfo = existingInfo
+					? { ...existingInfo, id: 'Custom_' + i, path }
+					: {
+							id: 'Custom_' + i,
+							name,
+							schema: {},
+							isSelected: false,
+							isRendered: false,
+							viewCount: 0,
+							path,
+					  };
+
+				acc.push(functionInfo);
+				return acc;
+			}, []);
+
 			setFunctionListInfo(newFunctionListInfo);
 		}
+
 		fetchFunctionList();
 	}, []);
 

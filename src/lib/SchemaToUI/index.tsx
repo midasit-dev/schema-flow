@@ -16,18 +16,23 @@ import { useSnackbar } from 'notistack';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import ThreeDPM from '../Components/ThreeDPM';
+import { useReactFlow } from 'reactflow';
+// recoil
+import { useSetRecoilState } from 'recoil';
+import { FunctionListInfo } from '../RecoilAtom/recoilState';
 
 const maxRJSFWidth = 620;
 const minRJSFWidth = 350;
 const maxWidth = 1000;
 const maxHeight = 620;
 
+const nodesLengthSelector = (state: any) => Array.from(state.nodeInternals.values()) || 0;
+
 export default function SchemaToUI(props: {
 	nodeId: string;
 	schemaInfo: any;
-	onRemove: (nodeId: string, functionId: string) => void;
 }) {
-	const { nodeId, schemaInfo, onRemove } = props;
+	const { nodeId, schemaInfo } = props;
 	const [bgColor, setBgColor] = React.useState('transparent');
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
@@ -39,8 +44,37 @@ export default function SchemaToUI(props: {
 	const [isloading, setIsloading] = React.useState(false);
 
 	const [is3dpm, setIs3dpm] = React.useState(false);
+	const setFunctionListInfo = useSetRecoilState(FunctionListInfo);
 
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+	const reactFlow = useReactFlow();
+
+	const removeCustomNode = React.useCallback(
+		(nodeId: string, functionId: string) => {
+			console.log('removeCustomNode', nodeId, functionId);
+			reactFlow.setNodes((nds) => {
+				const nodes = nds.filter((node) => node.id !== nodeId);
+				localStorage.setItem('nodes', JSON.stringify(nodes));
+				return nodes;
+			});
+			reactFlow.setEdges((eds) => {
+				const edges =	eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+				localStorage.setItem('edges', JSON.stringify(edges));
+				return edges;
+			}
+			);
+			setFunctionListInfo((prev: any) => {
+				return prev.map((item: any) => {
+					if (item.id === functionId) {
+						const viewCount = item.viewCount - 1;
+						return { ...item, isRendered: viewCount > 0 ? true : false, viewCount: viewCount };
+					} else return item;
+				});
+			});
+		},
+		[reactFlow, setFunctionListInfo],
+	);
 
 	// const action = (key) => (
 	//   <Button sx={{m:0, p:0}} onClick={() => closeSnackbar(key)}>
@@ -89,8 +123,8 @@ export default function SchemaToUI(props: {
 	}, []);
 
 	const onClickCloseHandler = React.useCallback(() => {
-		onRemove(nodeId, schemaInfo.id);
-	}, []);
+		removeCustomNode(nodeId, schemaInfo.id);
+	}, [nodeId, schemaInfo.id, removeCustomNode]);
 
 	function onClickOpenJsonView() {
 		setIsOpenJsonView(!isOpenJsonView);

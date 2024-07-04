@@ -9,6 +9,7 @@ import ReactFlow, {
 	useReactFlow,
 	BackgroundVariant,
 	MarkerType,
+	useStore
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
@@ -28,7 +29,7 @@ import './overview.css';
 import { isEmpty, cloneDeep } from 'lodash';
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { Nodetypes, SelectedSchema, FunctionListInfo, EgdesInfo } from '../RecoilAtom/recoilState';
+import { SelectedSchema, FunctionListInfo, EgdesInfo } from '../RecoilAtom/recoilState';
 
 const nodeTypes = {
 	annotation: AnnotationNode,
@@ -45,19 +46,16 @@ const edgeTypes = {
 
 const nodeClassName = (node) => node.type;
 
+const nodesLengthSelector = (state) => Array.from(state.nodeInternals.values()) || 0;
+
 const ReactFlowComp = () => {
 	const connectingNodeId = React.useRef(null);
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-	const [nodetypes, setNodetypes] = useRecoilState(Nodetypes);
 	const [selectedschema, setSelectedschema] = useRecoilState(SelectedSchema);
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
-	const { screenToFlowPosition } = useReactFlow();
+	const reactFlow = useReactFlow();
 	const setEgdesInfo = useSetRecoilState(EgdesInfo);
-
-	// React.useEffect(() => {
-	// console.log(selectedschema);
-	// }, [selectedschema]);
 
 	const onConnectStart = useCallback((_, { nodeId }) => {
 		connectingNodeId.current = nodeId;
@@ -73,6 +71,30 @@ const ReactFlowComp = () => {
 		if (!isEmpty(selectedschema)) addCustomNode(event);
 	}
 
+	React.useEffect(() => {
+		// get nodes, edges and functionlistInfo from localstorage
+		const localNodes = localStorage.getItem('nodes');
+		const localEdges = localStorage.getItem('edges');
+		const localFunctionlistInfo = localStorage.getItem('functionlistInfo');
+		if (localNodes) {
+			setNodes(JSON.parse(localNodes));
+		}
+		if (localEdges) {
+			setEdges(JSON.parse(localEdges));
+		}
+		if (localFunctionlistInfo) {
+			setFunctionListInfo(JSON.parse(localFunctionlistInfo));
+		}
+	}, []);
+
+	React.useEffect(() => {
+		// set nodes to localstorage
+		if (nodes.length > 0) {
+			console.log('save nodes', nodes);
+			localStorage.setItem('nodes', JSON.stringify(nodes));
+		}
+	}, [nodes]);
+
 	// edge changed
 	React.useEffect(() => {
 		if (edges.length > 0) {
@@ -83,21 +105,30 @@ const ReactFlowComp = () => {
 				}
 			}
 			setEgdesInfo(edgesInfo);
+			// set edges to localstorage
+			localStorage.setItem('edges', JSON.stringify(edges));
 		}
 	}, [edges]);
 
+	React.useEffect(() => {
+		// set functionlistInfo to localstorage
+		if (functionlistInfo.length > 0) {
+			localStorage.setItem('functionlistInfo', JSON.stringify(functionlistInfo));
+		}
+	}, [functionlistInfo]);
+
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
-		const id = 'Custom_' + schemadata.id.toString() + '_' + uuidv4().slice(0, 8);
+		const id = schemadata.id.toString() + '_' + uuidv4().slice(0, 8);
 		const newNode = [
 			{
 				id,
 				type: 'customSchema',
-				position: screenToFlowPosition({
+				position: reactFlow.screenToFlowPosition({
 					x: event.clientX,
 					y: event.clientY,
 				}),
-				data: { schemainfo: schemadata, onRemove: removeCustomNode },
+				data: { schemainfo: schemadata },
 			},
 		];
 		setNodes((nds) => nds.concat(newNode));
@@ -111,19 +142,6 @@ const ReactFlowComp = () => {
 		});
 		setSelectedschema({});
 	}
-
-	const removeCustomNode = (nodeId, functionId) => {
-		setNodes((nds) => nds.filter((node) => node.id !== nodeId));
-		setEdges((eds) => eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId));
-		setFunctionListInfo((prev) => {
-			return prev.map((item) => {
-				if (item.id === functionId) {
-					const viewCount = item.viewCount - 1;
-					return { ...item, isRendered: viewCount > 0 ? true : false, viewCount: viewCount };
-				} else return item;
-			});
-		});
-	};
 
 	const onConnect = useCallback(
 		(params) => {

@@ -96,7 +96,7 @@ const CustomNode = React.memo((props) => {
 					<CustomHandle id={'top_' + id} type='target' position={Position.Top} />
 					<CustomHandle id={'left_' + id} type='target' position={Position.Left} />
 					<div>
-						<SchemaToUI nodeId={id} schemaInfo={data.schemainfo} onRemove={data.onRemove} />
+						<SchemaToUI nodeId={id} schemaInfo={data.schemainfo} />
 					</div>
 					<CustomHandle id={'right_' + id} type='source' position={Position.Right} />
 					<CustomHandle id={'bottom_' + id} type='source' position={Position.Bottom} />
