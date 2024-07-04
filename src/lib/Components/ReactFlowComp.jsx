@@ -9,7 +9,7 @@ import ReactFlow, {
 	useReactFlow,
 	BackgroundVariant,
 	MarkerType,
-	useStore
+	useStore,
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
@@ -73,17 +73,21 @@ const ReactFlowComp = () => {
 
 	React.useEffect(() => {
 		// get nodes, edges and functionlistInfo from localstorage
-		const localNodes = localStorage.getItem('nodes');
-		const localEdges = localStorage.getItem('edges');
-		const localFunctionlistInfo = localStorage.getItem('functionlistInfo');
-		if (localNodes) {
-			setNodes(JSON.parse(localNodes));
-		}
-		if (localEdges) {
-			setEdges(JSON.parse(localEdges));
-		}
-		if (localFunctionlistInfo) {
-			setFunctionListInfo(JSON.parse(localFunctionlistInfo));
+		const localStorageFlow = localStorage.getItem('FLOW');
+		if (localStorageFlow) {
+			const localFlow = JSON.parse(localStorageFlow);
+			const localNodes = localFlow['nodes'];
+			const localEdges = localFlow['edges'];
+			const localFunctionlistInfo = localFlow['functionlistInfo'];
+			if (localNodes) {
+				setNodes(localNodes);
+			}
+			if (localEdges) {
+				setEdges(localEdges);
+			}
+			if (localFunctionlistInfo) {
+				setFunctionListInfo(localFunctionlistInfo);
+			}
 		}
 	}, []);
 
@@ -91,7 +95,8 @@ const ReactFlowComp = () => {
 		// set nodes to localstorage
 		if (nodes.length > 0) {
 			console.log('save nodes', nodes);
-			localStorage.setItem('nodes', JSON.stringify(nodes));
+			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
+			localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, nodes: nodes }));
 		}
 	}, [nodes]);
 
@@ -106,14 +111,19 @@ const ReactFlowComp = () => {
 			}
 			setEgdesInfo(edgesInfo);
 			// set edges to localstorage
-			localStorage.setItem('edges', JSON.stringify(edges));
+			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
+			localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, edges: edges }));
 		}
 	}, [edges]);
 
 	React.useEffect(() => {
 		// set functionlistInfo to localstorage
 		if (functionlistInfo.length > 0) {
-			localStorage.setItem('functionlistInfo', JSON.stringify(functionlistInfo));
+			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
+			localStorage.setItem(
+				'FLOW',
+				JSON.stringify({ ...localFlow, functionlistInfo: functionlistInfo }),
+			);
 		}
 	}, [functionlistInfo]);
 

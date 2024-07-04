@@ -27,7 +27,8 @@ function App() {
 	const toggleOpen = () => setIsopenList(!isopenList);
 
 	React.useEffect(() => {
-		const functionlistInfoLocal = JSON.parse(localStorage.getItem('functionlistInfo'));
+		const localFlow = localStorage.getItem('FLOW');
+		const functionlistInfoLocal = localFlow ? JSON.parse(localFlow)['functionlistInfo'] : [];
 
 		const formatFunctionName = (name) => {
 			name = name.replace(/_/g, ' ');

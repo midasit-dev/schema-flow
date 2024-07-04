@@ -55,12 +55,14 @@ export default function SchemaToUI(props: {
 			console.log('removeCustomNode', nodeId, functionId);
 			reactFlow.setNodes((nds) => {
 				const nodes = nds.filter((node) => node.id !== nodeId);
-				localStorage.setItem('nodes', JSON.stringify(nodes));
+				const localFlow = JSON.parse(localStorage.getItem('FLOW') || '{}');
+				localStorage.setItem('FLOW', JSON.stringify({...localFlow, "nodes": nodes}));
 				return nodes;
 			});
 			reactFlow.setEdges((eds) => {
 				const edges =	eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
-				localStorage.setItem('edges', JSON.stringify(edges));
+				const localFlow = JSON.parse(localStorage.getItem('FLOW') || '{}');
+				localStorage.setItem('FLOW', JSON.stringify({...localFlow, "edges":edges}));
 				return edges;
 			}
 			);
