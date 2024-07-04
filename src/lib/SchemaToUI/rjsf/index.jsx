@@ -79,7 +79,7 @@ export default function RJSFComp(props) {
 		setIsloading(true);
 		await postFunctionExecute(path, changedData.formData, enqueueSnackbar, setResponseData);
 		setIsloading(false);
-		await setNextExecuteNodeId();
+		setNextExecuteNodeId();
 	}, [path, changedData, enqueueSnackbar, setResponseData, setIsloading, setNextExecuteNodeId]);
 
 	const onChangedData = React.useCallback(
@@ -137,7 +137,6 @@ export default function RJSFComp(props) {
 					fontWeight: 'bold',
 					fontFamily: 'pretendard',
 					fontStretch: 'normal',
-					// when disabled is true, background color is gray
 					backgroundColor: 'rgba(0, 71, 171, 0.7)',
 				}}
 				// disabled={isDisabled}

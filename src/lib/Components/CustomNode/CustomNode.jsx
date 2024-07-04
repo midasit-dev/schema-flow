@@ -1,5 +1,5 @@
 import React from 'react';
-import { Handle, Position } from 'reactflow';
+import { Position } from 'reactflow';
 import { isEmpty } from 'lodash';
 
 import SchemaToUI from '../../SchemaToUI';

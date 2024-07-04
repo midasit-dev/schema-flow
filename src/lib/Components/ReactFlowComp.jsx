@@ -96,7 +96,6 @@ const ReactFlowComp = () => {
 	React.useEffect(() => {
 		// set nodes to localstorage
 		if (nodes.length > 0) {
-			console.log('save nodes', nodes);
 			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
 			localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, nodes: nodes }));
 		}
