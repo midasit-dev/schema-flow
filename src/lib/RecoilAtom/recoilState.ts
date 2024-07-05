@@ -38,4 +38,7 @@ export const ExecuteNodeId = atom<string[]>({
 export const ExecuteState = atom<any>({
 	key: 'ExecuteState',
 	default: {},
+	// {
+	// 	'nodeId' : { isExecuted : false, output : {} }
+	// }
 });

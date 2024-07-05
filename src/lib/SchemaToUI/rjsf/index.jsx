@@ -45,14 +45,13 @@ export default function RJSFComp(props) {
 	React.useEffect(() => {
 		if (edgesInfo.length > 0) {
 			for (let i = 0; i < edgesInfo.length; i++) {
-				if(edgesInfo[i].source === nodeId) {
+				if (edgesInfo[i].source === nodeId) {
 					const targetNodeId = edgesInfo[i].target;
 					setPostFunctionId((prev) => {
 						if (prev.includes(targetNodeId)) return prev;
 						return [...prev, targetNodeId];
 					});
-				}
-				else if(edgesInfo[i].target === nodeId) {
+				} else if (edgesInfo[i].target === nodeId) {
 					const sourceNodeId = edgesInfo[i].source;
 					setPreFunctionId((prev) => {
 						if (prev.includes(sourceNodeId)) return prev;
@@ -63,12 +62,65 @@ export default function RJSFComp(props) {
 		}
 	}, [edgesInfo]);
 
+	// 공통 함수
+	const setPreExecuteNodeId = React.useCallback(() => {
+		if (preFunctionId.length > 0) {
+			for (let preNodeId in preFunctionId) {
+				console.log('preNodeId', preNodeId);
+			}
+		}
+	}, [preFunctionId]);
+
+	const setPostExecuteNodeId = React.useCallback(() => {
+		if (postFunctionId.length > 0) {
+			for (let i = 0; i < postFunctionId.length; i++) {
+			}
+		}
+	}, [postFunctionId]);
+
+	const checkPrePostFunction = React.useCallback(async () => {
+		console.log("checkPrePostFunction");
+		setPreExecuteNodeId();
+		setPostExecuteNodeId();
+	}, [setPreExecuteNodeId, setPostExecuteNodeId]);
+
+	async function runFunction2API() {
+		setIsloading(true);
+		setExecuteState((prev) => {
+			const newState = { ...prev, nodeId: true };
+			return newState;
+		});
+		setIsRun(true);
+		await postFunctionExecute(
+			path,
+			changedData.formData,
+			enqueueSnackbar,
+			setResponseData,
+			setIsRun,
+		);
+		setIsloading(false);
+	}
+
+	// Run 버튼을 눌렀을때, 필요 로직
+	async function onClickedRunButton(data) {
+		await checkPrePostFunction();
+	}
+
+	// 연결 관계에 의해 실행될 때, 필요 로직
+	React.useEffect(() => {
+		if (executeNodeId.length > 0) {
+			console.log('executeNodeId', executeNodeId);
+			executePreFunction();
+			executePostFunction();
+		}
+	}, [executeNodeId]);
+
 	async function executePreFunction() {
 		for (let i = 0; i < executeNodeId.length; i++) {
 			if (executeNodeId[i] === nodeId) {
 				// 선행되어야할 함수가 없다면 바로 실행
-				if(preFunctionId.length === 0){
-					await AutomaticRun();
+				if (preFunctionId.length === 0) {
+					await checkPrePostFunction();
 					setExecuteNodeId((prev) => {
 						return prev.filter((item) => item !== nodeId);
 					});
@@ -86,58 +138,10 @@ export default function RJSFComp(props) {
 	async function executePostFunction() {
 		for (let i = 0; i < executeNodeId.length; i++) {
 			if (executeNodeId[i] === nodeId) {
-				// 후행되어야할 함수가 없다면 바로 실행
-				await AutomaticRun();
+				await checkPrePostFunction();
 			}
 		}
 	}
-
-	React.useEffect(() => {
-		if (executeNodeId.length > 0) {
-			executePreFunction();
-			executePostFunction();
-		}
-	}, [executeNodeId]);
-
-	const setPreExecuteNodeId = React.useCallback(() => {
-		// 선행되어야할 함수가 있다면 등록
-		if(preFunctionId.length > 0){
-			for(let i = 0; i < preFunctionId.length; i++){
-				setExecuteNodeId((prev) => {
-					if (prev.includes(preFunctionId[i])) return prev;
-					return [...prev, preFunctionId[i]];
-				});
-			}
-		}
-		else if(!isRun) runFunction2PostAPI();
-	}, [preFunctionId, setExecuteNodeId]);
-
-	const setPostExecuteNodeId = React.useCallback(() => {
-		if(postFunctionId.length > 0){
-			for(let i = 0; i < postFunctionId.length; i++){
-				setExecuteNodeId((prev) => {
-					if (prev.includes(postFunctionId[i])) return prev;
-					return [...prev, postFunctionId[i]];
-				});
-			}
-		}
-	}, [postFunctionId, setExecuteNodeId]);
-
-	async function runFunction2PostAPI(){
-		setIsloading(true);
-		setExecuteState((prev) => {
-			const newState = { ...prev, nodeId : true };
-			return newState;
-		});
-		setIsRun(true);
-		await postFunctionExecute(path, changedData.formData, enqueueSnackbar, setResponseData, setIsRun);
-		setIsloading(false);
-	}
-
-	const AutomaticRun = React.useCallback(async () => {
-		setPreExecuteNodeId();
-		setPostExecuteNodeId();
-	}, [setPreExecuteNodeId, setPostExecuteNodeId]);
 
 	const onChangedData = React.useCallback(
 		(data) => {
@@ -154,10 +158,6 @@ export default function RJSFComp(props) {
 		},
 		[setChangedData],
 	);
-
-	async function onClickedRunButton(data) {
-		await AutomaticRun();
-	}
 
 	function onErrored(event) {
 		console.log('error', event);
