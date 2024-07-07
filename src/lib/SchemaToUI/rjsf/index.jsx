@@ -4,7 +4,7 @@ import validator from '@rjsf/validator-ajv8';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { EgdesInfo, ExecuteNodeId, ExecuteState } from '../../RecoilAtom/recoilState';
 
-async function postFunctionExecute(path, body, enqueueSnackbar, setResponseData) {
+async function postFunctionExecute(path, body, enqueueSnackbar) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
 	const res = await fetch(
 		`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute/${path}`,
@@ -19,8 +19,10 @@ async function postFunctionExecute(path, body, enqueueSnackbar, setResponseData)
 	if (res.ok) {
 		enqueueSnackbar('Success', { variant: 'success' });
 		const data = await res.json();
-		console.log('data', data);
-		setResponseData(data);
+		return data;
+	} else {
+		enqueueSnackbar('Error', { variant: 'error' });
+		return {};
 	}
 }
 
@@ -32,28 +34,52 @@ export default function RJSFComp(props) {
 	const [executeState, setExecuteState] = useRecoilState(ExecuteState);
 	const [isDisabled, setIsDisabled] = React.useState(false);
 	const [changedData, setChangedData] = React.useState({ formData: {} });
-	const [preFunctionId, setPreFunctionId] = React.useState([]);
-	const [postFunctionId, setPostFunctionId] = React.useState([]);
-	const [isRun, setIsRun] = React.useState(false);
+	const [preFunctionIds, setPreFunctionIds] = React.useState([]);
+	const [postFunctionIds, setPostFunctionIds] = React.useState([]);
+	const [isExecuted, setIsExecuted] = React.useState(false);
 
 	React.useEffect(() => {
 		console.log('RJSFComp id', nodeId);
-		console.log('preFunctionId', preFunctionId);
-		console.log('postFunctionId', postFunctionId);
-	}, [preFunctionId, postFunctionId]);
+		console.log('preFunctionIds', preFunctionIds);
+		console.log('postFunctionIds', postFunctionIds);
+	}, [preFunctionIds, postFunctionIds]);
+
+	React.useEffect(() => {
+		console.log('nodeId', nodeId);
+		console.log('executeState', executeState);
+		if (executeState[nodeId]) {
+			setPreExecuteNodeId();
+		}
+	}, [executeState]);
+
+	React.useEffect(() => {
+		// executeNodeId 배열에 nodeId가 있을 때 실행
+		async function run() {
+			if (executeNodeId.length > 0) {
+				console.log('executeNodeId', executeNodeId);
+				if (executeNodeId.includes(nodeId) && isExecuted === false) {
+					console.log('run function that ' + nodeId);
+					console.log('isExecuted', isExecuted);
+					console.log('executeState', executeState);
+					await runFunctionFromServer();
+				}
+			}
+		}
+		run();
+	}, [executeNodeId]);
 
 	React.useEffect(() => {
 		if (edgesInfo.length > 0) {
 			for (let i = 0; i < edgesInfo.length; i++) {
 				if (edgesInfo[i].source === nodeId) {
 					const targetNodeId = edgesInfo[i].target;
-					setPostFunctionId((prev) => {
+					setPostFunctionIds((prev) => {
 						if (prev.includes(targetNodeId)) return prev;
 						return [...prev, targetNodeId];
 					});
 				} else if (edgesInfo[i].target === nodeId) {
 					const sourceNodeId = edgesInfo[i].source;
-					setPreFunctionId((prev) => {
+					setPreFunctionIds((prev) => {
 						if (prev.includes(sourceNodeId)) return prev;
 						return [...prev, sourceNodeId];
 					});
@@ -63,84 +89,90 @@ export default function RJSFComp(props) {
 	}, [edgesInfo]);
 
 	// 공통 함수
+	const checkAllPreFunctionIsExecuted = React.useCallback(
+		(preFunctionIds) => {
+			for (let preFunctionId of preFunctionIds) {
+				if (executeState[preFunctionId]) {
+					if (executeState[preFunctionId].isExecuted === false) {
+						return false;
+					}
+				} else return false;
+			}
+			return true;
+		},
+		[executeState],
+	);
+
 	const setPreExecuteNodeId = React.useCallback(() => {
-		if (preFunctionId.length > 0) {
-			for (let preNodeId in preFunctionId) {
-				console.log('preNodeId', preNodeId);
-			}
-		}
-	}, [preFunctionId]);
-
-	const setPostExecuteNodeId = React.useCallback(() => {
-		if (postFunctionId.length > 0) {
-			for (let i = 0; i < postFunctionId.length; i++) {
-			}
-		}
-	}, [postFunctionId]);
-
-	const checkPrePostFunction = React.useCallback(async () => {
-		console.log("checkPrePostFunction");
-		setPreExecuteNodeId();
-		setPostExecuteNodeId();
-	}, [setPreExecuteNodeId, setPostExecuteNodeId]);
-
-	async function runFunction2API() {
-		setIsloading(true);
-		setExecuteState((prev) => {
-			const newState = { ...prev, nodeId: true };
-			return newState;
-		});
-		setIsRun(true);
-		await postFunctionExecute(
-			path,
-			changedData.formData,
-			enqueueSnackbar,
-			setResponseData,
-			setIsRun,
-		);
-		setIsloading(false);
-	}
-
-	// Run 버튼을 눌렀을때, 필요 로직
-	async function onClickedRunButton(data) {
-		await checkPrePostFunction();
-	}
-
-	// 연결 관계에 의해 실행될 때, 필요 로직
-	React.useEffect(() => {
-		if (executeNodeId.length > 0) {
-			console.log('executeNodeId', executeNodeId);
-			executePreFunction();
-			executePostFunction();
-		}
-	}, [executeNodeId]);
-
-	async function executePreFunction() {
-		for (let i = 0; i < executeNodeId.length; i++) {
-			if (executeNodeId[i] === nodeId) {
-				// 선행되어야할 함수가 없다면 바로 실행
-				if (preFunctionId.length === 0) {
-					await checkPrePostFunction();
-					setExecuteNodeId((prev) => {
-						return prev.filter((item) => item !== nodeId);
-					});
-				} else {
-					// 선행되어야할 함수가 있다면 선행되어야할 함수를 등록하고 자신은 제거.
-					setExecuteNodeId((prev) => {
-						const executeNodes = prev.filter((item) => item !== nodeId);
-						return [...executeNodes, ...preFunctionId];
+		// 선행되어야할 함수가 있을 때
+		if (preFunctionIds.length > 0) {
+			const isAllExecuted = checkAllPreFunctionIsExecuted(preFunctionIds);
+			// 선행되어야할 함수가 모두 실행되었을 때
+			if (isAllExecuted && isExecuted === false) {
+				console.log('isAllExecuted', isAllExecuted);
+				setExecuteNodeId((prev) => {
+					if (prev.includes(nodeId)) return prev;
+					return [...prev, nodeId];
+				});
+			} else {
+				for (let preFunctionId of preFunctionIds) {
+					setExecuteState((prev) => {
+						const preNode = prev[preFunctionId];
+						if (preNode) return prev;
+						return { ...prev, [preFunctionId]: { isExecuted: false, output: {} } };
 					});
 				}
 			}
 		}
-	}
-
-	async function executePostFunction() {
-		for (let i = 0; i < executeNodeId.length; i++) {
-			if (executeNodeId[i] === nodeId) {
-				await checkPrePostFunction();
+		// 선행되어야할 함수가 없을 때
+		else {
+			if (isExecuted === false) {
+				console.log('first node that ' + nodeId);
+				setExecuteNodeId((prev) => {
+					if (prev.includes(nodeId)) return prev;
+					return [...prev, nodeId];
+				});
 			}
 		}
+	}, [preFunctionIds, checkAllPreFunctionIsExecuted]);
+
+	const setPostExecuteNodeId = React.useCallback(() => {
+		if (postFunctionIds.length > 0) {
+			for (let i = 0; i < postFunctionIds.length; i++) {}
+		}
+	}, [postFunctionIds]);
+
+	const checkPrePostFunction = React.useCallback(async () => {
+		setPreExecuteNodeId();
+		// setPostExecuteNodeId();
+	}, [setPreExecuteNodeId, setPostExecuteNodeId]);
+
+	async function runFunctionFromServer() {
+		setIsloading(true);
+		setIsExecuted(true);
+		const responseData = await postFunctionExecute(
+			path,
+			changedData.formData,
+			enqueueSnackbar,
+			setResponseData,
+			setIsExecuted,
+		);
+		setResponseData(responseData);
+		setExecuteState((prev) => {
+			return { ...prev, [nodeId]: { isExecuted: true, output: responseData } };
+		});
+		setExecuteNodeId((prev) => {
+			return prev.filter((item) => item !== nodeId);
+		});
+		setIsloading(false);
+	}
+
+	// Run 버튼을 눌렀을때, 필요 로직
+	async function onClickedRunButton() {
+		console.log("clicked run button");
+		console.log("nodeId", nodeId);
+		setExecuteState({ [nodeId]: { isExecuted: false, output: {} } });
+		await checkPrePostFunction();
 	}
 
 	const onChangedData = React.useCallback(

@@ -15,7 +15,7 @@ const getFunctionList = async () => {
 		},
 	});
 	const data = await res.json();
-	console.log('data', data);
+	// console.log('data', data);
 	return data;
 };
 

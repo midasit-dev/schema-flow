@@ -7,7 +7,7 @@ import { SvgClose, SvgRightArrow, SvgLeftArrow } from '../SVGComps/index';
 import RJSFComp from './rjsf';
 import InfiniLoading from '../Components/Loading/InfinitLoading';
 
-import { isEmpty, set } from 'lodash';
+import { isEmpty } from 'lodash';
 
 import JsonView from 'react18-json-view';
 import 'react18-json-view/src/style.css';
@@ -118,7 +118,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	}, [isOpenJsonView]);
 
 	const setResponseData = React.useCallback((data: any) => {
-		if (data.hasOwnProperty('json')) {
+		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
 			if (data.hasOwnProperty('PM_Curve')) {
 				data = data.PM_Curve.DATA;
