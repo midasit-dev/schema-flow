@@ -6,6 +6,7 @@ import { useSetRecoilState, useRecoilState } from 'recoil';
 import { SelectedSchema, FunctionListInfo } from './RecoilAtom/recoilState';
 import { ReactFlowProvider } from 'reactflow';
 import ListComp from './Components/ListComp';
+import SearchBar from './Components/Functionlist/Searchbar';
 
 const getFunctionList = async () => {
 	const res = await fetch(`${process.env.REACT_APP_API_URL}backend/wgsd/functions`, {
@@ -21,6 +22,7 @@ const getFunctionList = async () => {
 
 function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState('');
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setSchema = useSetRecoilState(SelectedSchema);
 
@@ -95,6 +97,11 @@ function App() {
 		[setSchema],
 	);
 
+	const handleSearch = (term) => {
+    setSearchTerm(term);
+    console.log('Search term:', term);
+  };
+
 	return (
 		<div className='App' style={{ width: '100vw', height: '100vh' }}>
 			<div>
@@ -147,6 +154,7 @@ function App() {
 								borderRadius: '8px',
 							}}
 						>
+							<SearchBar onSearch={handleSearch} />
 							{functionlistInfo.map((py, index) => (
 								<ListComp
 									key={'listcomp_' + index}

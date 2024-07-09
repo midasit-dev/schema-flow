@@ -19,6 +19,7 @@ async function postFunctionExecute(path, body, enqueueSnackbar) {
 	if (res.ok) {
 		enqueueSnackbar('Success', { variant: 'success' });
 		const data = await res.json();
+		console.log('data', data);
 		return data;
 	} else {
 		enqueueSnackbar('Error', { variant: 'error' });
@@ -39,6 +40,10 @@ export default function RJSFComp(props) {
 	const [isExecuted, setIsExecuted] = React.useState(false);
 
 	React.useEffect(() => {
+		console.log('changedData', changedData);
+	}, [changedData]);
+
+	React.useEffect(() => {
 		console.log('RJSFComp id', nodeId);
 		console.log('preFunctionIds', preFunctionIds);
 		console.log('postFunctionIds', postFunctionIds);
@@ -55,8 +60,8 @@ export default function RJSFComp(props) {
 	React.useEffect(() => {
 		// executeNodeId 배열에 nodeId가 있을 때 실행
 		async function run() {
+			console.log('executeNodeId', executeNodeId);
 			if (executeNodeId.length > 0) {
-				console.log('executeNodeId', executeNodeId);
 				if (executeNodeId.includes(nodeId) && isExecuted === false) {
 					console.log('run function that ' + nodeId);
 					console.log('isExecuted', isExecuted);
@@ -169,8 +174,8 @@ export default function RJSFComp(props) {
 
 	// Run 버튼을 눌렀을때, 필요 로직
 	async function onClickedRunButton() {
-		console.log("clicked run button");
-		console.log("nodeId", nodeId);
+		console.log('clicked run button');
+		console.log('nodeId', nodeId);
 		setExecuteState({ [nodeId]: { isExecuted: false, output: {} } });
 		await checkPrePostFunction();
 	}
