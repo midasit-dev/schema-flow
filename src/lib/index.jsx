@@ -16,7 +16,7 @@ const getFunctionList = async () => {
 		},
 	});
 	const data = await res.json();
-	// console.log('data', data);
+	console.log('data', data);
 	return data;
 };
 
@@ -42,6 +42,13 @@ function App() {
 			if (functionlist.length === 0) return;
 
 			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {
+				const idx = path.indexOf('wgsd');
+				let parentFolder = '';
+				if (idx === -1) {
+					parentFolder = 'plugin/' + path.split('/').pop();
+				} else {
+					parentFolder = path.slice(idx);
+				}
 				let name = path.split('/').pop();
 				if (name === 'base' || name === 'project') return acc; // Consider removing this line if no longer needed
 
@@ -51,12 +58,13 @@ function App() {
 				const functionInfo = existingInfo
 					? { ...existingInfo, id: 'Custom_' + i, path }
 					: {
-							id: 'Custom_' + i,
+							id: `Custom_${i}_${name}`,
 							name,
 							schema: {},
 							isSelected: false,
 							isRendered: false,
 							viewCount: 0,
+							parentFolder: parentFolder,
 							path,
 					  };
 
