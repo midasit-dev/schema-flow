@@ -10,6 +10,7 @@ import ReactFlow, {
 	BackgroundVariant,
 	MarkerType,
 	useKeyPress,
+	Panel,
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
@@ -174,6 +175,7 @@ const ReactFlowComp = () => {
 
 	const onConnect = useCallback(
 		(params) => {
+			console.log('onConnect', params);
 			// add button edge
 			const edge = {
 				...params,
@@ -204,25 +206,30 @@ const ReactFlowComp = () => {
 				flexDirection: 'column',
 			}}
 		>
-			<ReactFlow
-				nodes={nodes}
-				edges={edges}
-				onNodesChange={onNodesChange}
-				onEdgesChange={onEdgesChange}
-				onConnect={onConnect}
-				onConnectStart={onConnectStart}
-				onConnectEnd={onConnectEnd}
-				fitView
-				attributionPosition='top-center'
-				nodeTypes={nodeTypes}
-				edgeTypes={edgeTypes}
-				className='overview'
-				onClick={onClickHandler}
+			<div
+				className={isEmpty(selectedschema) ? '' : 'creating'}
+				style={{ width: '100%', height: '100%' }}
 			>
-				<MiniMap zoomable pannable nodeClassName={nodeClassName} />
-				<Controls />
-				<Background id='1' gap={25} variant={BackgroundVariant.Lines} />
-			</ReactFlow>
+				<ReactFlow
+					nodes={nodes}
+					edges={edges}
+					onNodesChange={onNodesChange}
+					onEdgesChange={onEdgesChange}
+					onConnect={onConnect}
+					onConnectStart={onConnectStart}
+					onConnectEnd={onConnectEnd}
+					fitView
+					attributionPosition='top-center'
+					nodeTypes={nodeTypes}
+					edgeTypes={edgeTypes}
+					className={'overview'}
+					onClick={onClickHandler}
+				>
+					<MiniMap zoomable pannable nodeClassName={nodeClassName} />
+					<Controls />
+					<Background id='1' gap={25} variant={BackgroundVariant.Lines} />
+				</ReactFlow>
+			</div>
 		</div>
 	);
 };

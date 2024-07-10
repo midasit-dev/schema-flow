@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { motion, AnimatePresence, color } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SvgSearch } from '../../SVGComps';
 
 const inputStyle = {
 	border: 'none',
@@ -35,28 +35,28 @@ const SearchBar = ({ onSearch }) => {
 				boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
 				marginBottom: '5px',
 				backgroundColor: isFocused ? '#fff' : 'transparent',
-        transition: 'background-color 0.7s ease-in-out',
+				transition: 'background-color 0.6s ease-in-out',
 			}}
 		>
-			<FaSearch
-				style={{ color: isFocused ? '#000' : '#888', marginRight: '5px', marginLeft: '5px' }}
-			/>
-      <AnimatePresence>
-			<motion.input
-        key="focused"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: 20 }}
-        transition={{ duration: 0.3 }}
-				type='text'
-				value={searchTerm}
-				onChange={handleChange}
-				onFocus={() => setIsFocused(true)}
-				onBlur={() => setIsFocused(false)}
-				placeholder={isFocused ? '' : 'Search...'}
-				style={{...inputStyle }}
-			/>
-      </AnimatePresence>
+			<div style={{width:"20px", height:"20px", marginRight: '5px', marginLeft:"5px"}}>
+				<SvgSearch isFocused={isFocused}/>
+			</div>
+			<AnimatePresence>
+				<motion.input
+					key='focused'
+					initial={{ opacity: 0, x: -20 }}
+					animate={{ opacity: 1, x: 0 }}
+					exit={{ opacity: 0, x: 20 }}
+					transition={{ duration: 0.3 }}
+					type='text'
+					value={searchTerm}
+					onChange={handleChange}
+					onFocus={() => setIsFocused(true)}
+					onBlur={() => setIsFocused(false)}
+					placeholder={isFocused ? '' : 'Search...'}
+					style={{ ...inputStyle }}
+				/>
+			</AnimatePresence>
 		</div>
 	);
 };
