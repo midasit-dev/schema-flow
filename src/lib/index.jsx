@@ -24,6 +24,7 @@ function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
 	const [searchTerm, setSearchTerm] = React.useState('');
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
+	const [originalFunctionListInfo, setOriginalFunctionListInfo] = React.useState([]);
 	const setSchema = useSetRecoilState(SelectedSchema);
 
 	const toggleOpen = () => setIsopenList(!isopenList);
@@ -70,12 +71,22 @@ function App() {
 				acc.push(functionInfo);
 				return acc;
 			}, []);
-
+			setOriginalFunctionListInfo(newFunctionListInfo);
 			setFunctionListInfo(newFunctionListInfo);
 		}
 
 		fetchFunctionList();
 	}, []);
+
+	React.useEffect(() => {
+		if (searchTerm === '') setFunctionListInfo(originalFunctionListInfo);
+		else{
+			const filteredList = originalFunctionListInfo.filter((item) =>
+				item.name.toLowerCase().includes(searchTerm.trimStart().toLowerCase()),
+			);
+			setFunctionListInfo(filteredList);
+		}
+	}, [searchTerm]);
 
 	const handleSetSelectFunctionListInfo = React.useCallback(
 		(index, isSelected, schema) => {
