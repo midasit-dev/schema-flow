@@ -22,7 +22,7 @@ const getFunctionList = async () => {
 
 function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
-  const [searchTerm, setSearchTerm] = React.useState('');
+	const [searchTerm, setSearchTerm] = React.useState('');
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setSchema = useSetRecoilState(SelectedSchema);
 
@@ -54,9 +54,8 @@ function App() {
 
 				name = formatFunctionName(name);
 				const existingInfo = functionlistInfoLocal?.find((info) => info.name === name);
-
 				const functionInfo = existingInfo
-					? { ...existingInfo, id: 'Custom_' + i, path }
+					? { ...existingInfo, id: `Custom_${i}_${name}`, path }
 					: {
 							id: `Custom_${i}_${name}`,
 							name,
@@ -106,9 +105,9 @@ function App() {
 	);
 
 	const handleSearch = (term) => {
-    setSearchTerm(term);
-    console.log('Search term:', term);
-  };
+		setSearchTerm(term);
+		console.log('Search term:', term);
+	};
 
 	return (
 		<div className='App' style={{ width: '100vw', height: '100vh' }}>
