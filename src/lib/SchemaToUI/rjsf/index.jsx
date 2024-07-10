@@ -4,7 +4,7 @@ import validator from '@rjsf/validator-ajv8';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { EgdesInfo, ExecuteNodeId, ExecuteState } from '../../RecoilAtom/recoilState';
 
-async function postFunctionExecute(path, body, enqueueSnackbar) {
+async function postFunctionExecute(path, body, enqueueSnackbar, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
 	const res = await fetch(
 		`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute/${path}`,
@@ -17,18 +17,20 @@ async function postFunctionExecute(path, body, enqueueSnackbar) {
 		},
 	);
 	if (res.ok) {
-		enqueueSnackbar('Success', { variant: 'success' });
+		// enqueueSnackbar('Success', { variant: 'success' });
+		isSuccessFunctionExecute(true)
 		const data = await res.json();
 		console.log('data', data);
 		return data;
 	} else {
-		enqueueSnackbar('Error', { variant: 'error' });
+		isSuccessFunctionExecute(false);
+		// enqueueSnackbar('Error', { variant: 'error' });
 		return {};
 	}
 }
 
 export default function RJSFComp(props) {
-	const { nodeId, schema, path, enqueueSnackbar, setResponseData, setIsloading } = props;
+	const { nodeId, schema, path, enqueueSnackbar, setResponseData, setIsloading, isSuccessFunctionExecute } = props;
 
 	const edgesInfo = useRecoilValue(EgdesInfo);
 	const [executeNodeId, setExecuteNodeId] = useRecoilState(ExecuteNodeId);
@@ -159,8 +161,7 @@ export default function RJSFComp(props) {
 			path,
 			changedData.formData,
 			enqueueSnackbar,
-			setResponseData,
-			setIsExecuted,
+			isSuccessFunctionExecute,
 		);
 		setResponseData(responseData);
 		setExecuteState((prev) => {

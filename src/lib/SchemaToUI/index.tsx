@@ -13,7 +13,7 @@ import JsonView from 'react18-json-view';
 import 'react18-json-view/src/style.css';
 
 import { useSnackbar } from 'notistack';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 
 import ThreeDPM from '../Components/ThreeDPM';
 import { useReactFlow } from 'reactflow';
@@ -39,9 +39,12 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
 	const [is3dpm, setIs3dpm] = React.useState(false);
 	const setFunctionListInfo = useSetRecoilState(FunctionListInfo);
+	const [isSuccess, setIsSuccess] = React.useState(false);
+	const [isError, setIsError] = React.useState(false);
 
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
+  const controls = useAnimation();
 	const reactFlow = useReactFlow();
 
 	const removeCustomNode = React.useCallback(
@@ -132,10 +135,54 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 		setResponse(data);
 	}, []);
 
+	function isSuccessFunctionExecute(result: boolean) {
+		if (result) {
+			setIsSuccess(true);
+			controls.start({
+				backgroundColor: [
+					'rgba(0, 0, 0, 0.7)',
+					'#15400e',
+					'#14540d',
+					'#0f6a08',
+					'#008000',
+					'#109010',
+					'#008000',
+					'#0f6a08',
+					'#14540d',
+					'#15400e',
+					'rgba(0, 0, 0, 0.7)',
+				],
+				transition: { duration: 1, ease: 'easeInOut', repeat: 1 },
+			});
+			// showSuccessSnackbar("Function executed successfully.");
+		} else {
+			setIsError(true);
+			controls.start({
+				backgroundColor: [
+					'rgba(0, 0, 0, 0.7)',
+					'#52170b',
+					'#7a1b0c',
+					'#a51b0b',
+					'#d11507',
+					'#ff0000',
+					// '#d11507',
+					// '#a51b0b',
+					// '#7a1b0c',
+					// '#52170b',
+					// 'rgba(0, 0, 0, 0.7)',
+					// '#ff0000'
+				],
+				transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
+			});
+			// showErrorSnackbar("Function execution failed.");
+		}
+	}
+
 	return (
 		<div>
 			{/* canvases is object */}
-			<div
+			<motion.div
+        animate={controls}
 				style={{
 					width: '100%',
 					height: 26,
@@ -154,7 +201,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 					fontFamily: 'pretendard',
 				}}
 			>
-				{schemaInfo.schema.title}
+				{schemaInfo.schema.title} {isSuccess ? '- Success' : isError ? '- Error' : ''}
 				<div
 					className='btnClose'
 					style={{
@@ -178,7 +225,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 						}
 					`}
 				</style>
-			</div>
+			</motion.div>
 
 			{isloading && <InfiniLoading />}
 			<div
@@ -212,6 +259,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 						enqueueSnackbar={enqueueSnackbar}
 						setResponseData={setResponseData}
 						setIsloading={setIsloading}
+						isSuccessFunctionExecute={isSuccessFunctionExecute}
 					/>
 					{!isEmpty(response) && (
 						<div
