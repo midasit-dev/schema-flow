@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/SchemaUIBuilder/static/css/main.4c919b79.css",
-    "main.js": "/SchemaUIBuilder/static/js/main.7243f60927a7aa26c15d.js",
-    "runtime.js": "/SchemaUIBuilder/static/js/runtime.68243ba3ed91136ca99d.js",
-    "static/js/453.js": "/SchemaUIBuilder/static/js/453.5a04d7073298feac7c1f.js",
-    "static/css/995.1b435f6b.css": "/SchemaUIBuilder/static/css/995.1b435f6b.css",
-    "static/js/995.js": "/SchemaUIBuilder/static/js/995.c68ec800a964b6813c46.js",
-    "static/js/633.js": "/SchemaUIBuilder/static/js/633.1573920eb714ae321151.js",
+    "main.js": "/SchemaUIBuilder/static/js/main.c5d504ad36be08a6d016.js",
+    "runtime.js": "/SchemaUIBuilder/static/js/runtime.bd341a95c7bcd1363ccc.js",
+    "static/js/453.js": "/SchemaUIBuilder/static/js/453.1c552a723c85f3332af5.js",
+    "static/css/552.7862c136.css": "/SchemaUIBuilder/static/css/552.7862c136.css",
+    "static/js/552.js": "/SchemaUIBuilder/static/js/552.aefa13ddff3e3b9f3031.js",
+    "static/js/86.js": "/SchemaUIBuilder/static/js/86.0ed7352ce903ecb02518.js",
     "index.html": "/SchemaUIBuilder/index.html",
     "static/media/CircularProgress.svg": "/SchemaUIBuilder/static/media/CircularProgress.1753b237f046b83f7dd00116d0e84c84.svg"
   },
   "entrypoints": [
-    "static/js/runtime.68243ba3ed91136ca99d.js",
-    "static/css/995.1b435f6b.css",
-    "static/js/995.c68ec800a964b6813c46.js",
-    "static/js/633.1573920eb714ae321151.js",
+    "static/js/runtime.bd341a95c7bcd1363ccc.js",
+    "static/css/552.7862c136.css",
+    "static/js/552.aefa13ddff3e3b9f3031.js",
+    "static/js/86.0ed7352ce903ecb02518.js",
     "static/css/main.4c919b79.css",
-    "static/js/main.7243f60927a7aa26c15d.js"
+    "static/js/main.c5d504ad36be08a6d016.js"
   ]
 }
