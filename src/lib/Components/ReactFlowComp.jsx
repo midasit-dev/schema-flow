@@ -179,7 +179,7 @@ const ReactFlowComp = () => {
 			// add button edge
 			const edge = {
 				...params,
-				type: 'button',
+				type: 'default',
 				label: 'Delete',
 				animated: true,
 				markerEnd: {
