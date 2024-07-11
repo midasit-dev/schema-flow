@@ -250,8 +250,8 @@ export default function RJSFComp(props) {
 	}, [executeNodeId]);
 
 	React.useEffect(() => {
+		let isConnectedEdge = false;
 		if (edgesInfo.length > 0) {
-			let isConnectedEdge = false;
 			for (let i = 0; i < edgesInfo.length; i++) {
 				if (edgesInfo[i].source === nodeId) {
 					isConnectedEdge = true;
@@ -269,8 +269,8 @@ export default function RJSFComp(props) {
 					});
 				}
 			}
-			setIsConnected(isConnectedEdge);
 		}
+		setIsConnected(isConnectedEdge);
 	}, [edgesInfo]);
 
 	// 공통 함수
