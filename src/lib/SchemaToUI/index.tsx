@@ -39,9 +39,9 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
 	const [is3dpm, setIs3dpm] = React.useState(false);
 	const setFunctionListInfo = useSetRecoilState(FunctionListInfo);
+	const [schema, setSchema] = React.useState(schemaInfo.schema);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const [isError, setIsError] = React.useState(false);
-
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const controls = useAnimation();
@@ -254,7 +254,8 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 				})} */}
 					<RJSFComp
 						nodeId={nodeId}
-						schema={schemaInfo.schema}
+						schema={schema}
+						setSchema={setSchema}
 						path={schemaInfo.path}
 						enqueueSnackbar={enqueueSnackbar}
 						setResponseData={setResponseData}
