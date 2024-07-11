@@ -10,20 +10,20 @@ const inputStyle = {
 	background: 'none',
 	fontFamily: 'pretendard',
 	fontSize: '15px',
-  color: '#000',
+	color: '#000',
 };
 
 const SearchBar = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
+	const [searchTerm, setSearchTerm] = useState('');
+	const [isFocused, setIsFocused] = useState(false);
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-    onSearch(value); // 부모 컴포넌트에 값을 전달
-  };
+	const handleChange = (event) => {
+		const value = event.target.value;
+		setSearchTerm(value);
+		onSearch(value); // 부모 컴포넌트에 값을 전달
+	};
 
-  return (
+	return (
 		<div
 			style={{
 				display: 'flex',
@@ -38,8 +38,8 @@ const SearchBar = ({ onSearch }) => {
 				transition: 'background-color 0.6s ease-in-out',
 			}}
 		>
-			<div style={{width:"20px", height:"20px", marginRight: '5px', marginLeft:"5px"}}>
-				<SvgSearch isFocused={isFocused}/>
+			<div style={{ width: '20px', height: '20px', marginRight: '5px', marginLeft: '5px' }}>
+				<SvgSearch isFocused={isFocused} />
 			</div>
 			<AnimatePresence>
 				<motion.input
