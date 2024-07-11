@@ -131,7 +131,7 @@ const inputSchema = {
 	description: 'GSD concrete geometry class',
 };
 
-async function postFunctionExecute(path, body, enqueueSnackbar) {
+async function postFunctionExecute(path, body, enqueueSnackbar, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
 	const res = await fetch(
 		`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute/${path}`,
@@ -145,7 +145,7 @@ async function postFunctionExecute(path, body, enqueueSnackbar) {
 	);
 	if (res.ok) {
 		// enqueueSnackbar('Success', { variant: 'success' });
-		isSuccessFunctionExecute(true)
+		isSuccessFunctionExecute(true);
 		const data = await res.json();
 		console.log('data', data);
 		return data;
@@ -176,7 +176,15 @@ function updateDefaults(inputSchema, outputSchema) {
 }
 
 export default function RJSFComp(props) {
-	const { nodeId, schema, path, enqueueSnackbar, setResponseData, setIsloading, isSuccessFunctionExecute } = props;
+	const {
+		nodeId,
+		schema,
+		path,
+		enqueueSnackbar,
+		setResponseData,
+		setIsloading,
+		isSuccessFunctionExecute,
+	} = props;
 
 	const edgesInfo = useRecoilValue(EgdesInfo);
 	const [executeNodeId, setExecuteNodeId] = useRecoilState(ExecuteNodeId);
@@ -214,11 +222,9 @@ export default function RJSFComp(props) {
 				if (prev.includes(nodeId)) return prev;
 				return [...prev, nodeId];
 			});
-		}
-		else if (executeState[nodeId] && isSingleRunClicked === false) {
+		} else if (executeState[nodeId] && isSingleRunClicked === false) {
 			setPreExecuteNodeId();
 		}
-		
 	}, [executeState]);
 
 	React.useEffect(() => {
@@ -245,16 +251,17 @@ export default function RJSFComp(props) {
 
 	React.useEffect(() => {
 		if (edgesInfo.length > 0) {
+			let isConnectedEdge = false;
 			for (let i = 0; i < edgesInfo.length; i++) {
 				if (edgesInfo[i].source === nodeId) {
-					setIsConnected(true);
+					isConnectedEdge = true;
 					const targetNodeId = edgesInfo[i].target;
 					setPostFunctionIds((prev) => {
 						if (prev.includes(targetNodeId)) return prev;
 						return [...prev, targetNodeId];
 					});
 				} else if (edgesInfo[i].target === nodeId) {
-					setIsConnected(true);
+					isConnectedEdge = true;
 					const sourceNodeId = edgesInfo[i].source;
 					setPreFunctionIds((prev) => {
 						if (prev.includes(sourceNodeId)) return prev;
@@ -262,6 +269,7 @@ export default function RJSFComp(props) {
 					});
 				}
 			}
+			setIsConnected(isConnectedEdge);
 		}
 	}, [edgesInfo]);
 
@@ -392,6 +400,7 @@ export default function RJSFComp(props) {
 			changedData.formData,
 			enqueueSnackbar,
 			setResponseData,
+			isSuccessFunctionExecute
 		);
 		setResponseData(responseData);
 		setExecuteState((prev) => {

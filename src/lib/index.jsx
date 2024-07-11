@@ -80,7 +80,7 @@ function App() {
 
 	React.useEffect(() => {
 		if (searchTerm === '') setFunctionListInfo(originalFunctionListInfo);
-		else{
+		else {
 			const filteredList = originalFunctionListInfo.filter((item) =>
 				item.name.toLowerCase().includes(searchTerm.trimStart().toLowerCase()),
 			);

@@ -44,7 +44,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const [isError, setIsError] = React.useState(false);
 	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const controls = useAnimation();
+	const controls = useAnimation();
 	const reactFlow = useReactFlow();
 
 	const removeCustomNode = React.useCallback(
@@ -182,7 +182,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 		<div>
 			{/* canvases is object */}
 			<motion.div
-        animate={controls}
+				animate={controls}
 				style={{
 					width: '100%',
 					height: 26,
