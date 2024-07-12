@@ -7,6 +7,7 @@ import { SelectedSchema, FunctionListInfo } from './RecoilAtom/recoilState';
 import { ReactFlowProvider } from 'reactflow';
 import ListComp from './Components/ListComp';
 import SearchBar from './Components/Functionlist/Searchbar';
+// import Test from './Components/Test';
 
 const getFunctionList = async () => {
 	const res = await fetch(`${process.env.REACT_APP_API_URL}backend/wgsd/functions`, {

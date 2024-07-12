@@ -199,24 +199,22 @@ export default function RJSFComp(props) {
 	const [isConnected, setIsConnected] = React.useState(false);
 
 	React.useEffect(() => {
-		console.log('schema', schema);
+		// console.log('schema', schema);
 	}, []);
 
 	React.useEffect(() => {
-		console.log('formSchema', formSchema);
+		// console.log('formSchema', formSchema);
 	}, [formSchema]);
 
 	React.useEffect(() => {
-		console.log('RJSFComp id', nodeId);
-		console.log('preFunctionIds', preFunctionIds);
-		console.log('postFunctionIds', postFunctionIds);
-
+		// console.log('RJSFComp id', nodeId);
+		// console.log('preFunctionIds', preFunctionIds);
+		// console.log('postFunctionIds', postFunctionIds);
 		// const updatedSchema = updateDefaults(inputSchema, outputSchema);
 		// console.log('updatedSchema', updatedSchema);
 	}, [preFunctionIds, postFunctionIds]);
 
 	React.useEffect(() => {
-		console.log('nodeId', nodeId);
 		if (isSingleRunClicked) {
 			setExecuteNodeId((prev) => {
 				if (prev.includes(nodeId)) return prev;
@@ -229,19 +227,14 @@ export default function RJSFComp(props) {
 
 	React.useEffect(() => {
 		// executeNodeId 배열에 nodeId가 있을 때 실행
-		console.log('executeNodeId', executeNodeId);
 		async function run() {
-			console.log('isSingleRunClicked', isSingleRunClicked);
 			if (executeNodeId.length > 0) {
 				if (executeNodeId.includes(nodeId) && executeState[nodeId]) {
 					if (executeState[nodeId].isExecuted === false) {
 						syncPreOutput2InputSchema();
 						await runFunctionFromServer();
 					}
-					console.log('executeNodeId', executeNodeId);
-					console.log('executeState', executeState);
 				} else if (executeNodeId.includes(nodeId) && isSingleRunClicked) {
-					console.log('singleRun');
 					await runFunctionFromServer();
 				}
 			}
@@ -254,7 +247,7 @@ export default function RJSFComp(props) {
 		if (edgesInfo.length > 0) {
 			for (let i = 0; i < edgesInfo.length; i++) {
 				if (edgesInfo[i].source === nodeId) {
-					isConnectedEdge = true;
+					isConnectedEdge = false;
 					const targetNodeId = edgesInfo[i].target;
 					setPostFunctionIds((prev) => {
 						if (prev.includes(targetNodeId)) return prev;
@@ -329,10 +322,8 @@ export default function RJSFComp(props) {
 			const isAllExecuted = checkAllPreFunctionIsExecuted(preFunctionIds);
 			// 선행되어야할 함수가 모두 실행되었을 때
 			if (isAllExecuted) {
-				console.log('isAllExecuted', isAllExecuted);
 				if (executeState[nodeId]) {
 					if (executeState[nodeId].isExecuted) {
-						console.log('This is already executed node: ' + nodeId);
 						return;
 					}
 				}
@@ -347,7 +338,6 @@ export default function RJSFComp(props) {
 			} else {
 				for (let preFunctionId of preFunctionIds) {
 					setExecuteState((prev) => {
-						console.log('prev1', prev);
 						const preNode = prev[preFunctionId];
 						if (preNode) return prev;
 						return { ...prev, [preFunctionId]: { isExecuted: false, output: {} } };
@@ -359,11 +349,9 @@ export default function RJSFComp(props) {
 		else {
 			if (executeState[nodeId]) {
 				if (executeState[nodeId].isExecuted) {
-					console.log('This is already executed node: ' + nodeId);
 					return;
 				}
 			}
-			console.log('This is First node: ' + nodeId);
 			setExecuteState((prev) => {
 				if (prev[nodeId]) return prev;
 				return { ...prev, [nodeId]: { isExecuted: false, output: {} } };
@@ -399,8 +387,7 @@ export default function RJSFComp(props) {
 			path,
 			changedData.formData,
 			enqueueSnackbar,
-			setResponseData,
-			isSuccessFunctionExecute
+			isSuccessFunctionExecute,
 		);
 		setResponseData(responseData);
 		setExecuteState((prev) => {
@@ -414,12 +401,10 @@ export default function RJSFComp(props) {
 
 	// Run 버튼을 눌렀을때, 필요 로직
 	async function onClickedFlowRunButton() {
-		console.log('clicked run button');
 		setExecuteState({ [nodeId]: { isExecuted: false, output: {} } });
 		// if (isEmpty(executeState)){
 		// await checkPrePostFunction();
 		// } else initExecuteState();
-		console.log('check end');
 	}
 
 	async function onClickedSingleRunButton() {
@@ -427,7 +412,6 @@ export default function RJSFComp(props) {
 	}
 
 	async function onSubmit() {
-		console.log('onSubmit');
 		if (isSingleRunClicked) {
 			await onClickedSingleRunButton();
 			setIsSingleRunClicked(false);
@@ -439,7 +423,6 @@ export default function RJSFComp(props) {
 
 	const onChangedData = React.useCallback(
 		(data) => {
-			console.log('data', data);
 			setChangedData((prevState) => {
 				const newFormData = data.formData;
 				const prevFormData = prevState.formData;
