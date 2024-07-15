@@ -47,6 +47,46 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const controls = useAnimation();
 	const reactFlow = useReactFlow();
 
+	React.useEffect(() => {
+		if(isSuccess){
+			controls.start({
+				backgroundColor: [
+					'rgba(0, 0, 0, 0.7)',
+					'#15400e',
+					'#14540d',
+					'#0f6a08',
+					'#008000',
+					'#109010',
+					'#008000',
+					// '#0f6a08',
+					// '#14540d',
+					// '#15400e',
+					// 'rgba(0, 0, 0, 0.7)',
+				],
+				transition: { duration: 1, ease: 'easeInOut', repeat: 1 },
+			});
+		} else if(isError) {
+			controls.start({
+				backgroundColor: [
+					'rgba(0, 0, 0, 0.7)',
+					'#52170b',
+					'#7a1b0c',
+					'#a51b0b',
+					'#d11507',
+					'#ff0000',
+					// '#d11507',
+					// '#a51b0b',
+					// '#7a1b0c',
+					// '#52170b',
+					// 'rgba(0, 0, 0, 0.7)',
+					// '#ff0000'
+				],
+				transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
+			});
+		}
+
+	}, [isSuccess, isError]);
+
 	const removeCustomNode = React.useCallback(
 		(nodeId: string, functionId: string) => {
 			console.log('removeCustomNode', nodeId, functionId);
@@ -123,8 +163,9 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const setResponseData = React.useCallback((data: any) => {
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
-			if (data.hasOwnProperty('PM_Curve')) {
-				data = data.PM_Curve.DATA;
+			if (data.hasOwnProperty("moapy.project.wgsd.wgsd_flow.Result3DPM")) {
+				data = data["moapy.project.wgsd.wgsd_flow.Result3DPM"].meshes.mesh3dpm;
+				console.log('data', data);
 				setIs3dpm(true);
 				setIsOpenJsonView(false);
 			} else {
@@ -138,42 +179,11 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	function isSuccessFunctionExecute(result: boolean) {
 		if (result) {
 			setIsSuccess(true);
-			controls.start({
-				backgroundColor: [
-					'rgba(0, 0, 0, 0.7)',
-					'#15400e',
-					'#14540d',
-					'#0f6a08',
-					'#008000',
-					'#109010',
-					'#008000',
-					'#0f6a08',
-					'#14540d',
-					'#15400e',
-					'rgba(0, 0, 0, 0.7)',
-				],
-				transition: { duration: 1, ease: 'easeInOut', repeat: 1 },
-			});
+			
 			// showSuccessSnackbar("Function executed successfully.");
 		} else {
 			setIsError(true);
-			controls.start({
-				backgroundColor: [
-					'rgba(0, 0, 0, 0.7)',
-					'#52170b',
-					'#7a1b0c',
-					'#a51b0b',
-					'#d11507',
-					'#ff0000',
-					// '#d11507',
-					// '#a51b0b',
-					// '#7a1b0c',
-					// '#52170b',
-					// 'rgba(0, 0, 0, 0.7)',
-					// '#ff0000'
-				],
-				transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
-			});
+
 			// showErrorSnackbar("Function execution failed.");
 		}
 	}
