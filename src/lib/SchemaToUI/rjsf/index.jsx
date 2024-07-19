@@ -4,6 +4,7 @@ import validator from '@rjsf/validator-ajv8';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { EgdesInfo, ExecuteNodeId, ExecuteFlow, ExecuteState } from '../../RecoilAtom/recoilState';
 import { isEmpty } from 'lodash';
+import './index.css';
 
 async function postFunctionExecuteToST(path, body, enqueueSnackbar, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
@@ -346,25 +347,7 @@ export default function RJSFComp(props) {
 							<button
 								key={'btn_singleRun_' + nodeId}
 								type='submit'
-								className='btn'
-								style={{
-									width: '50%',
-									position: 'fixed',
-									bottom: 0,
-									left: 0,
-									height: '30px',
-									padding: 0,
-									margin: 0,
-									borderTopLeftRadius: 0,
-									borderTopRightRadius: 0,
-									border: '1px solid #c1c1c3',
-									color: 'white',
-									fontSize: '16px',
-									fontWeight: 'bold',
-									fontFamily: 'pretendard',
-									fontStretch: 'normal',
-									backgroundColor: 'rgba(0, 71, 171, 0.7)',
-								}}
+								className='btn singlerun-btn'
 								disabled={isDisabled}
 								onClick={() => setIsSingleRunClicked(true)}
 							>
@@ -373,25 +356,7 @@ export default function RJSFComp(props) {
 							<button
 								key={'btn_flowRun_' + nodeId}
 								type='submit'
-								className='btn'
-								style={{
-									width: '50%',
-									position: 'fixed',
-									bottom: 0,
-									left: '50%',
-									height: '30px',
-									padding: 0,
-									margin: 0,
-									borderTopLeftRadius: 0,
-									borderTopRightRadius: 0,
-									border: '1px solid #c1c1c3',
-									color: 'white',
-									fontSize: '16px',
-									fontWeight: 'bold',
-									fontFamily: 'pretendard',
-									fontStretch: 'normal',
-									backgroundColor: 'rgba(0, 71, 171, 0.7)',
-								}}
+								className='btn flowrun-btn'
 								disabled={isDisabled}
 								onClick={() => setIsFlowRunClicked(true)}
 							>
@@ -402,25 +367,7 @@ export default function RJSFComp(props) {
 						<button
 							key={'btn_Run_' + nodeId}
 							type='submit'
-							className='btn'
-							style={{
-								width: '100%',
-								position: 'fixed',
-								bottom: 0,
-								left: 0,
-								height: '30px',
-								padding: 0,
-								margin: 0,
-								borderTopLeftRadius: 0,
-								borderTopRightRadius: 0,
-								border: '1px solid #c1c1c3',
-								color: 'white',
-								fontSize: '16px',
-								fontWeight: 'bold',
-								fontFamily: 'pretendard',
-								fontStretch: 'normal',
-								backgroundColor: 'rgba(0, 71, 171, 0.7)',
-							}}
+							className='btn run-btn'
 							disabled={isDisabled}
 							onClick={() => setIsSingleRunClicked(true)}
 						>
