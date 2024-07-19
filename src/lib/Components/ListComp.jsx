@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SvgCheckCircle } from '../SVGComps';
 import { FunctionListInfo } from '../RecoilAtom/recoilState';
 import { useRecoilValue } from 'recoil';
-const getSchema = async (functionName) => {
+
+const getSchemaFromST = async (functionName) => {
 	const res = await fetch(
-		`${process.env.REACT_APP_API_URL}backend/wgsd/function-schemas/${functionName}`,
+		`${process.env.REACT_APP_ACTUAL_ST_API_URL}backend/wgsd/function-schemas/${functionName}`,
 		{
 			method: 'GET',
 			headers: {
@@ -32,7 +33,7 @@ const ListComp = (props) => {
 			return;
 		}
 		const encodedPath = encodeURIComponent(item.path);
-		const dereferencedFunctionSchema = await getSchema(encodedPath);
+		const dereferencedFunctionSchema = await getSchemaFromST(encodedPath);
 		const paths = dereferencedFunctionSchema.paths;
 		let schema = {};
 		for (const key in paths) {

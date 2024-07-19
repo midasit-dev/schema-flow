@@ -9,15 +9,27 @@ import ListComp from './Components/ListComp';
 import SearchBar from './Components/Functionlist/Searchbar';
 // import Test from './Components/Test';
 
-const getFunctionList = async () => {
-	const res = await fetch(`${process.env.REACT_APP_API_URL}backend/wgsd/functions`, {
+const getFunctionListFromST = async () => {
+	const res = await fetch(`${process.env.REACT_APP_ACTUAL_ST_API_URL}backend/wgsd/functions`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
 	const data = await res.json();
-	console.log('data', data);
+	console.log('data st', data);
+	return data;
+};
+
+const getFunctionListFromDV = async () => {
+	const res = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/functions`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+	const data = await res.json();
+	console.log('data dv', data);
 	return data;
 };
 
@@ -40,7 +52,7 @@ function App() {
 		};
 
 		async function fetchFunctionList() {
-			const functionlist = await getFunctionList();
+			const functionlist = await getFunctionListFromST();
 			if (functionlist.length === 0) return;
 
 			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {

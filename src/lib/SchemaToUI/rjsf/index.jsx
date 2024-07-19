@@ -2,13 +2,13 @@ import React from 'react';
 import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { EgdesInfo, ExecuteNodeId, ExecuteState } from '../../RecoilAtom/recoilState';
+import { EgdesInfo, ExecuteNodeId, ExecuteFlow, ExecuteState } from '../../RecoilAtom/recoilState';
 import { isEmpty } from 'lodash';
 
-async function postFunctionExecute(path, body, enqueueSnackbar, isSuccessFunctionExecute) {
+async function postFunctionExecuteToST(path, body, enqueueSnackbar, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
 	const res = await fetch(
-		`${process.env.REACT_APP_API_URL}backend/function-executor/python-execute/${path}`,
+		`${process.env.REACT_APP_ACTUAL_ST_API_URL}backend/function-executor/python-execute/${path}`,
 		{
 			method: 'POST',
 			headers: {
@@ -62,6 +62,7 @@ export default function RJSFComp(props) {
 
 	const edgesInfo = useRecoilValue(EgdesInfo);
 	const [executeNodeId, setExecuteNodeId] = useRecoilState(ExecuteNodeId);
+	const [executeFlow, setExecuteFlow] = useRecoilState(ExecuteFlow);
 	const [executeState, setExecuteState] = useRecoilState(ExecuteState);
 	const [isDisabled, setIsDisabled] = React.useState(false);
 	const [changedData, setChangedData] = React.useState({ formData: {} });
@@ -94,17 +95,17 @@ export default function RJSFComp(props) {
 				if (prev.includes(nodeId)) return prev;
 				return [...prev, nodeId];
 			});
-		} else if (executeState[nodeId] && isSingleRunClicked === false) {
+		} else if (executeFlow[nodeId] && isSingleRunClicked === false) {
 			setPreExecuteNodeId();
 		}
-	}, [executeState]);
+	}, [executeFlow]);
 
 	React.useEffect(() => {
 		// executeNodeId 배열에 nodeId가 있을 때 실행
 		async function run() {
 			if (executeNodeId.length > 0) {
-				if (executeNodeId.includes(nodeId) && executeState[nodeId]) {
-					if (executeState[nodeId].isExecuted === false) {
+				if (executeNodeId.includes(nodeId) && executeFlow[nodeId]) {
+					if (executeFlow[nodeId].isExecuted === false) {
 						syncPreOutput2InputSchema();
 						await runFunctionFromServer();
 					}
@@ -144,8 +145,8 @@ export default function RJSFComp(props) {
 	const syncPreOutput2InputSchema = React.useCallback(() => {
 		if (preFunctionIds.length > 0) {
 			for (let preFunctionId of preFunctionIds) {
-				if (executeState[preFunctionId]) {
-					const output = executeState[preFunctionId].output;
+				if (executeFlow[preFunctionId]) {
+					const output = executeFlow[preFunctionId].output;
 					if (output && isEmpty(output) === false) {
 						const result = output.json;
 						const resultKeys = Object.keys(result);
@@ -174,20 +175,20 @@ export default function RJSFComp(props) {
 			}
 		}
 		return;
-	}, [executeState, preFunctionIds, schema, changedData]);
+	}, [executeFlow, preFunctionIds, schema, changedData]);
 
 	const checkAllPreFunctionIsExecuted = React.useCallback(
 		(preFunctionIds) => {
 			for (let preFunctionId of preFunctionIds) {
-				if (executeState[preFunctionId]) {
-					if (executeState[preFunctionId].isExecuted === false) {
+				if (executeFlow[preFunctionId]) {
+					if (executeFlow[preFunctionId].isExecuted === false) {
 						return false;
 					}
 				} else return false;
 			}
 			return true;
 		},
-		[executeState],
+		[executeFlow],
 	);
 
 	const setPreExecuteNodeId = React.useCallback(() => {
@@ -196,12 +197,12 @@ export default function RJSFComp(props) {
 			const isAllExecuted = checkAllPreFunctionIsExecuted(preFunctionIds);
 			// 선행되어야할 함수가 모두 실행되었을 때
 			if (isAllExecuted) {
-				if (executeState[nodeId]) {
-					if (executeState[nodeId].isExecuted) {
+				if (executeFlow[nodeId]) {
+					if (executeFlow[nodeId].isExecuted) {
 						return;
 					}
 				}
-				setExecuteState((prev) => {
+				setExecuteFlow((prev) => {
 					if (prev[nodeId]) return prev;
 					return { ...prev, [nodeId]: { isExecuted: false, output: {} } };
 				});
@@ -211,7 +212,7 @@ export default function RJSFComp(props) {
 				});
 			} else {
 				for (let preFunctionId of preFunctionIds) {
-					setExecuteState((prev) => {
+					setExecuteFlow((prev) => {
 						const preNode = prev[preFunctionId];
 						if (preNode) return prev;
 						return { ...prev, [preFunctionId]: { isExecuted: false, output: {} } };
@@ -221,12 +222,12 @@ export default function RJSFComp(props) {
 		}
 		// 선행되어야할 함수가 없을 때
 		else {
-			if (executeState[nodeId]) {
-				if (executeState[nodeId].isExecuted) {
+			if (executeFlow[nodeId]) {
+				if (executeFlow[nodeId].isExecuted) {
 					return;
 				}
 			}
-			setExecuteState((prev) => {
+			setExecuteFlow((prev) => {
 				if (prev[nodeId]) return prev;
 				return { ...prev, [nodeId]: { isExecuted: false, output: {} } };
 			});
@@ -240,8 +241,8 @@ export default function RJSFComp(props) {
 		checkAllPreFunctionIsExecuted,
 		nodeId,
 		setExecuteNodeId,
-		setExecuteState,
-		executeState,
+		setExecuteFlow,
+		executeFlow,
 	]);
 
 	const setPostExecuteNodeId = React.useCallback(() => {
@@ -257,14 +258,14 @@ export default function RJSFComp(props) {
 
 	async function runFunctionFromServer() {
 		setIsloading(true);
-		const responseData = await postFunctionExecute(
+		const responseData = await postFunctionExecuteToST(
 			path,
 			changedData.formData,
 			enqueueSnackbar,
 			isSuccessFunctionExecute,
 		);
 		setResponseData(responseData);
-		setExecuteState((prev) => {
+		setExecuteFlow((prev) => {
 			return { ...prev, [nodeId]: { isExecuted: true, output: responseData } };
 		});
 		setExecuteNodeId((prev) => {
@@ -275,14 +276,11 @@ export default function RJSFComp(props) {
 
 	// Run 버튼을 눌렀을때, 필요 로직
 	async function onClickedFlowRunButton() {
-		setExecuteState({ [nodeId]: { isExecuted: false, output: {} } });
-		// if (isEmpty(executeState)){
-		// await checkPrePostFunction();
-		// } else initExecuteState();
+		setExecuteFlow({ [nodeId]: { isExecuted: false, output: {} } });
 	}
 
 	async function onClickedSingleRunButton() {
-		setExecuteState({ [nodeId]: { isExecuted: false, output: {} } });
+		setExecuteFlow({ [nodeId]: { isExecuted: false, output: {} } });
 	}
 
 	async function onSubmit() {
