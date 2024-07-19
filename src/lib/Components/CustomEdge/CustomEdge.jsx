@@ -18,7 +18,7 @@ export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
 				id={id}
 				path={edgePath}
 				style={{ stroke: 'blue', strokeDasharray: '6', strokeWidth: '3' }}
-			/>
+			/>CustomEdge
 			<EdgeLabelRenderer>
 				<button
 					style={{

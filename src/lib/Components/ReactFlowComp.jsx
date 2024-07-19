@@ -8,9 +8,7 @@ import ReactFlow, {
 	useEdgesState,
 	useReactFlow,
 	BackgroundVariant,
-	MarkerType,
 	useKeyPress,
-	Panel,
 } from 'reactflow';
 
 import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
@@ -21,7 +19,7 @@ import CircleNode from './CircleNode';
 import TextNode from './TextNode';
 import ButtonEdge from './ButtonEdge';
 import CustomNode from './CustomNode/CustomNode';
-import CustomEdge from './CustomEdge';
+import CustomEdge from './CustomEdge/CustomEdge';
 
 import { v4 as uuidv4 } from 'uuid';
 
