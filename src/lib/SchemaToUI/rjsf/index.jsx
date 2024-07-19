@@ -258,12 +258,19 @@ export default function RJSFComp(props) {
 
 	async function runFunctionFromServer() {
 		setIsloading(true);
-		const responseData = await postFunctionExecuteToST(
-			path,
-			changedData.formData,
-			enqueueSnackbar,
-			isSuccessFunctionExecute,
-		);
+		let responseData = {};
+		try{
+			responseData = await postFunctionExecuteToST(
+				path,
+				changedData.formData,
+				enqueueSnackbar,
+				isSuccessFunctionExecute,
+			);
+		} catch {
+			setIsloading(false);
+			isSuccessFunctionExecute(false);
+			return;
+		}
 		setResponseData(responseData);
 		setExecuteFlow((prev) => {
 			return { ...prev, [nodeId]: { isExecuted: true, output: responseData } };
