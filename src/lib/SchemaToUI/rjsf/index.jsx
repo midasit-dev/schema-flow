@@ -259,7 +259,7 @@ export default function RJSFComp(props) {
 	async function runFunctionFromServer() {
 		setIsloading(true);
 		let responseData = {};
-		try{
+		try {
 			responseData = await postFunctionExecuteToST(
 				path,
 				changedData.formData,

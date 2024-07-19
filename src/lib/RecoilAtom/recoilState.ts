@@ -38,12 +38,19 @@ export const ExecuteNodeId = atom<string[]>({
 export const ExecuteState = atom<any>({
 	key: 'ExecuteState',
 	default: {},
-	// {
-	// 	'nodeId' : { isExecuted : false, output : {} }
-	// }
+	/**
+	 * {
+	 * 	'nodeId' : { isExecuted : false, output : {} }
+	 * }
+	 */
 });
 
 export const ExecuteFlow = atom<any>({
 	key: 'ExecuteFlow',
 	default: {},
+	/**
+	 * {
+	 * 		'nodeId' : setExecute
+	 * }
+	 */
 });

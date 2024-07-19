@@ -1,16 +1,19 @@
-import { BaseEdge, EdgeLabelRenderer, getSimpleBezierPath , useReactFlow, getMarkerEnd , MarkerType } from 'reactflow';
+import {
+	BaseEdge,
+	EdgeLabelRenderer,
+	getSimpleBezierPath,
+	useReactFlow,
+} from 'reactflow';
 import './CustomEdge.css';
 
 export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
 	const { setEdges } = useReactFlow();
-	const [edgePath, labelX, labelY] = getSimpleBezierPath ({
+	const [edgePath, labelX, labelY] = getSimpleBezierPath({
 		sourceX,
 		sourceY,
 		targetX,
 		targetY,
 	});
-
-	const markerEndId = getMarkerEnd(MarkerType.ArrowClosed);
 
 	return (
 		<>
@@ -18,7 +21,7 @@ export default function CustomEdge({ id, sourceX, sourceY, targetX, targetY }) {
 				id={id}
 				path={edgePath}
 				style={{ stroke: 'blue', strokeDasharray: '6', strokeWidth: '3' }}
-			/>CustomEdge
+			/>
 			<EdgeLabelRenderer>
 				<button
 					style={{
