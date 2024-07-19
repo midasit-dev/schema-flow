@@ -42,7 +42,7 @@ const nodeTypes = {
 };
 
 const edgeTypes = {
-	'custom-edge': ButtonEdge,
+	'custom-edge': CustomEdge,
 };
 
 const nodeClassName = (node) => node.type;
@@ -175,20 +175,11 @@ const ReactFlowComp = () => {
 
 	const onConnect = useCallback(
 		(params) => {
-			console.log('onConnect', params);
 			// add button edge
 			const edge = {
 				...params,
-				type: 'default',
-				label: 'Delete',
+				type: 'custom-edge',
 				animated: true,
-				markerEnd: {
-					type: MarkerType.ArrowClosed,
-					width: 12,
-					height: 12,
-					color: '#000',
-				},
-				style: { stroke: 'blue', strokeWidth: 3, strokeDasharray: '6' },
 			};
 			setEdges((es) => addEdge(edge, es));
 		},
