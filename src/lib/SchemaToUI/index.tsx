@@ -48,7 +48,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const reactFlow = useReactFlow();
 
 	React.useEffect(() => {
-		if(isSuccess){
+		if (isSuccess) {
 			controls.start({
 				backgroundColor: [
 					'rgba(0, 0, 0, 0.7)',
@@ -65,7 +65,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 				],
 				transition: { duration: 1, ease: 'easeInOut', repeat: 1 },
 			});
-		} else if(isError) {
+		} else if (isError) {
 			controls.start({
 				backgroundColor: [
 					'rgba(0, 0, 0, 0.7)',
@@ -84,7 +84,6 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 				transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
 			});
 		}
-
 	}, [isSuccess, isError]);
 
 	const removeCustomNode = React.useCallback(
@@ -163,8 +162,8 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const setResponseData = React.useCallback((data: any) => {
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
-			if (data.hasOwnProperty("moapy.project.wgsd.wgsd_flow.Result3DPM")) {
-				data = data["moapy.project.wgsd.wgsd_flow.Result3DPM"].meshes.mesh3dpm;
+			if (data.hasOwnProperty('moapy.project.wgsd.wgsd_flow.Result3DPM')) {
+				data = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].meshes.mesh3dpm;
 				console.log('data', data);
 				setIs3dpm(true);
 				setIsOpenJsonView(false);
@@ -179,7 +178,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	function isSuccessFunctionExecute(result: boolean) {
 		if (result) {
 			setIsSuccess(true);
-			
+
 			// showSuccessSnackbar("Function executed successfully.");
 		} else {
 			setIsError(true);

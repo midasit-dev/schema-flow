@@ -42,3 +42,8 @@ export const ExecuteState = atom<any>({
 	// 	'nodeId' : { isExecuted : false, output : {} }
 	// }
 });
+
+export const ExecuteFlow = atom<any>({
+	key: 'ExecuteFlow',
+	default: {},
+});

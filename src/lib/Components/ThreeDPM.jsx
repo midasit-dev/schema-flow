@@ -71,7 +71,7 @@ function DataLine({ newData }) {
 function reCalculateData(data) {
 	const newData = data.map((d) => {
 		const x = d.Mx;
-		const y= d.My;
+		const y = d.My;
 		const z = d.Nz;
 		return [x * Math.pow(10, -6), z / 10000, y * Math.pow(10, -6)];
 	});
