@@ -12,7 +12,6 @@ import { isEmpty } from 'lodash';
 import JsonView from 'react18-json-view';
 import 'react18-json-view/src/style.css';
 
-import { useSnackbar } from 'notistack';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 
 import ThreeDPM from '../Components/ThreeDPM';
@@ -42,7 +41,6 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const [schema, setSchema] = React.useState(schemaInfo.schema);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const [isError, setIsError] = React.useState(false);
-	const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
 	const controls = useAnimation();
 	const reactFlow = useReactFlow();
@@ -266,7 +264,6 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 						schema={schema}
 						setSchema={setSchema}
 						path={schemaInfo.path}
-						enqueueSnackbar={enqueueSnackbar}
 						setResponseData={setResponseData}
 						setIsloading={setIsloading}
 						isSuccessFunctionExecute={isSuccessFunctionExecute}

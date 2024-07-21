@@ -19,14 +19,12 @@ async function postFunctionExecuteToST(path, body, enqueueSnackbar, isSuccessFun
 		},
 	);
 	if (res.ok) {
-		// enqueueSnackbar('Success', { variant: 'success' });
 		isSuccessFunctionExecute(true);
 		const data = await res.json();
 		console.log('data', data);
 		return data;
 	} else {
 		isSuccessFunctionExecute(false);
-		// enqueueSnackbar('Error', { variant: 'error' });
 		return {};
 	}
 }
@@ -73,22 +71,32 @@ export default function RJSFComp(props) {
 	const [isSingleRunClicked, setIsSingleRunClicked] = React.useState(false);
 	const [isFlowRunClicked, setIsFlowRunClicked] = React.useState(false);
 	const [isConnected, setIsConnected] = React.useState(false);
+	const [execute, setExecute] = React.useState(false);
 
 	React.useEffect(() => {
 		// console.log('schema', schema);
+		setExecuteState((prev) => {
+			return { ...prev, [nodeId]: setExecute };
+		});
 	}, []);
 
 	React.useEffect(() => {
-		// console.log('formSchema', formSchema);
-	}, [formSchema]);
+		console.log('executeState', executeState);
+		// const functionExecute = executeState[nodeId];
+		// if (functionExecute) {
+		// 	functionExecute(true);
+		// }
+	}, [executeState]);
 
 	React.useEffect(() => {
-		// console.log('RJSFComp id', nodeId);
-		// console.log('preFunctionIds', preFunctionIds);
-		// console.log('postFunctionIds', postFunctionIds);
-		// const updatedSchema = updateDefaults(inputSchema, outputSchema);
-		// console.log('updatedSchema', updatedSchema);
-	}, [preFunctionIds, postFunctionIds]);
+		async function run() {
+			if (execute) {
+				syncPreOutput2InputSchema();
+				await runFunctionFromServer();
+			}
+		}
+		run();
+	}, [execute]);
 
 	React.useEffect(() => {
 		if (isSingleRunClicked) {
@@ -107,8 +115,7 @@ export default function RJSFComp(props) {
 			if (executeNodeId.length > 0) {
 				if (executeNodeId.includes(nodeId) && executeFlow[nodeId]) {
 					if (executeFlow[nodeId].isExecuted === false) {
-						syncPreOutput2InputSchema();
-						await runFunctionFromServer();
+						executeState[nodeId](true);
 					}
 				} else if (executeNodeId.includes(nodeId) && isSingleRunClicked) {
 					await runFunctionFromServer();
@@ -270,6 +277,7 @@ export default function RJSFComp(props) {
 		} catch {
 			setIsloading(false);
 			isSuccessFunctionExecute(false);
+			setExecute(false);
 			return;
 		}
 		setResponseData(responseData);
@@ -280,6 +288,7 @@ export default function RJSFComp(props) {
 			return prev.filter((item) => item !== nodeId);
 		});
 		setIsloading(false);
+		setExecute(false);
 	}
 
 	// Run 버튼을 눌렀을때, 필요 로직
