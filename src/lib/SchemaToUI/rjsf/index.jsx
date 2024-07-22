@@ -68,7 +68,6 @@ export default function RJSFComp(props) {
 	const [isDisabled, setIsDisabled] = React.useState(false);
 	const [changedData, setChangedData] = React.useState({ formData: {} });
 	const [preFunctionIds, setPreFunctionIds] = React.useState([]);
-	const [postFunctionIds, setPostFunctionIds] = React.useState([]);
 	const [formSchema, setFormSchema] = React.useState(schema);
 	const [isSingleRunClicked, setIsSingleRunClicked] = React.useState(false);
 	const [isFlowRunClicked, setIsFlowRunClicked] = React.useState(false);
@@ -91,10 +90,6 @@ export default function RJSFComp(props) {
 	}, []);
 
 	React.useEffect(() => {
-		console.log('preFunctionIds', preFunctionIds);
-	}, [preFunctionIds]);
-
-	React.useEffect(() => {
 		async function run() {
 			if (execute) {
 				syncPreOutput2InputSchema();
@@ -110,7 +105,7 @@ export default function RJSFComp(props) {
 				if (prev.includes(nodeId)) return prev;
 				return [...prev, nodeId];
 			});
-		} else if (executeFlow[nodeId] && isSingleRunClicked === false) {
+		} else if (executeFlow[nodeId] && execute === false) {
 			setPreExecuteNodeId();
 		}
 	}, [executeFlow]);
@@ -135,15 +130,9 @@ export default function RJSFComp(props) {
 		let isConnectedEdge = false;
 		let preFunctionIds = [];
 		if (edgesInfo.length > 0) {
-			console.log('edgesInfo', edgesInfo);
 			for (let i = 0; i < edgesInfo.length; i++) {
 				if (edgesInfo[i].source === nodeId) {
 					isConnectedEdge = false;
-					const targetNodeId = edgesInfo[i].target;
-					setPostFunctionIds((prev) => {
-						if (prev.includes(targetNodeId)) return prev;
-						return [...prev, targetNodeId];
-					});
 				} else if (edgesInfo[i].target === nodeId) {
 					isConnectedEdge = true;
 					const sourceNodeId = edgesInfo[i].source;
@@ -302,17 +291,6 @@ export default function RJSFComp(props) {
 		executeState,
 	]);
 
-	const setPostExecuteNodeId = React.useCallback(() => {
-		if (postFunctionIds.length > 0) {
-			for (let i = 0; i < postFunctionIds.length; i++) {}
-		}
-	}, [postFunctionIds]);
-
-	const checkPrePostFunction = React.useCallback(async () => {
-		setPreExecuteNodeId();
-		// setPostExecuteNodeId();
-	}, [setPreExecuteNodeId]);
-
 	async function runFunctionFromServer() {
 		setIsloading(true);
 		let responseData = {};
@@ -341,13 +319,14 @@ export default function RJSFComp(props) {
 	// Run 버튼을 눌렀을때, 필요 로직
 	async function onClickedFlowRunButton() {
 		initExecuteState();
-		setExecuteFlow((prev) => {
-			return { [nodeId]: { isExecuted: false, output: {} } };
-		});
+		setExecuteFlow({ [nodeId]: { isExecuted: false, output: {} } });
 	}
 
 	async function onClickedSingleRunButton() {
-		initExecuteState();
+		executeState[nodeId]['setExecute'](false);
+		executeState[nodeId]['setIsOpenJsonView'](false);
+		executeState[nodeId]['setIsSuccess'](false);
+		executeState[nodeId]['setIsError'](false);
 		setExecuteFlow({ [nodeId]: { isExecuted: false, output: {} } });
 	}
 
