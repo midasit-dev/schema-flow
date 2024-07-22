@@ -23,7 +23,7 @@ const HandleWithValidation = ({ id, type, position, source }) => {
 			id={id}
 			type={type}
 			position={position}
-			onConnect={(params) => console.log('handle onConnect', params)}
+			onConnect={(params) => {}}
 			style={{ ...customStyle }}
 		/>
 	);

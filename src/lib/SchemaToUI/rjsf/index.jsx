@@ -21,7 +21,7 @@ async function postFunctionExecuteToST(path, body, enqueueSnackbar, isSuccessFun
 	if (res.ok) {
 		isSuccessFunctionExecute(true);
 		const data = await res.json();
-		console.log('data', data);
+		// console.log('data', data);
 		return data;
 	} else {
 		isSuccessFunctionExecute(false);
@@ -34,6 +34,7 @@ function updateDefaults(inputSchema, outputSchema) {
 		if (inputSchema.properties.hasOwnProperty(key)) {
 			// Update default values for matching keys
 			if (outputSchema[key] !== null) inputSchema.properties[key].default = outputSchema[key];
+			else continue;
 
 			// Recursively update nested properties if necessary
 			if (
@@ -41,6 +42,7 @@ function updateDefaults(inputSchema, outputSchema) {
 				!Array.isArray(outputSchema[key]) &&
 				inputSchema.properties[key].properties
 			) {
+				if (key === 'innerPolygon') console.log('innerPolygon');
 				updateDefaults(inputSchema.properties[key], outputSchema[key]);
 			}
 		}
@@ -89,11 +91,8 @@ export default function RJSFComp(props) {
 	}, []);
 
 	React.useEffect(() => {
-		// const functionExecute = executeState[nodeId];
-		// if (functionExecute) {
-		// 	functionExecute(true);
-		// }
-	}, [executeState]);
+		console.log('preFunctionIds', preFunctionIds);
+	}, [preFunctionIds]);
 
 	React.useEffect(() => {
 		async function run() {
@@ -134,7 +133,9 @@ export default function RJSFComp(props) {
 
 	React.useEffect(() => {
 		let isConnectedEdge = false;
+		let preFunctionIds = [];
 		if (edgesInfo.length > 0) {
+			console.log('edgesInfo', edgesInfo);
 			for (let i = 0; i < edgesInfo.length; i++) {
 				if (edgesInfo[i].source === nodeId) {
 					isConnectedEdge = false;
@@ -146,12 +147,10 @@ export default function RJSFComp(props) {
 				} else if (edgesInfo[i].target === nodeId) {
 					isConnectedEdge = true;
 					const sourceNodeId = edgesInfo[i].source;
-					setPreFunctionIds((prev) => {
-						if (prev.includes(sourceNodeId)) return prev;
-						return [...prev, sourceNodeId];
-					});
+					if (preFunctionIds.includes(sourceNodeId) === false) preFunctionIds.push(sourceNodeId);
 				}
 			}
+			setPreFunctionIds(preFunctionIds);
 		}
 		setIsConnected(isConnectedEdge);
 	}, [edgesInfo]);
@@ -206,18 +205,47 @@ export default function RJSFComp(props) {
 		[executeFlow],
 	);
 
-	const initExecuteState = React.useCallback(() => {
-		if (Object.keys(executeState).length > 0) {
-			for (let key in executeState) {
-				if (executeState[key]) {
-					executeState[key]['setExecute'](false);
-					executeState[key]['setIsOpenJsonView'](false);
-					executeState[key]['setIsSuccess'](false);
-					executeState[key]['setIsError'](false);
+	function checkConnectedNodes(Nodes = []) {
+		let connectedNodes = Nodes.length > 0 ? Nodes : [nodeId];
+		if (edgesInfo.length > 0) {
+			let sourceNodes = [];
+			connectedNodes.map((node) => {
+				for (let i = 0; i < edgesInfo.length; i++) {
+					if (edgesInfo[i].target === node) {
+						if (connectedNodes.includes(edgesInfo[i].source) === false) {
+							connectedNodes.push(edgesInfo[i].source);
+							sourceNodes.push(edgesInfo[i].source);
+						}
+					}
 				}
-			}
+				if (sourceNodes.length > 0) {
+					const newNodes = checkConnectedNodes(sourceNodes);
+					connectedNodes = connectedNodes.concat(newNodes);
+				}
+			});
 		}
-	}, [executeState]);
+		return connectedNodes;
+	}
+
+	const initExecuteState = React.useCallback(() => {
+		const resultNodes = checkConnectedNodes();
+		const flowNodes = [...new Set(resultNodes)];
+
+		if (Object.keys(executeState).length > 0) {
+			flowNodes.map((node) => {
+				for (let key in executeState) {
+					if (key === node) {
+						if (executeState[key]) {
+							executeState[key]['setExecute'](false);
+							executeState[key]['setIsOpenJsonView'](false);
+							executeState[key]['setIsSuccess'](false);
+							executeState[key]['setIsError'](false);
+						}
+					}
+				}
+			});
+		}
+	}, [executeState, checkConnectedNodes]);
 
 	const setPreExecuteNodeId = React.useCallback(() => {
 		// 선행되어야할 함수가 있을 때
