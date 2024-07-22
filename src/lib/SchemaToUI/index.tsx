@@ -24,8 +24,8 @@ const minRJSFWidth = 400;
 const maxWidth = 1200;
 const maxHeight = 620;
 
-export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
-	const { nodeId, schemaInfo } = props;
+export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; setIsShake: any }) {
+	const { nodeId, schemaInfo, setIsShake } = props;
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
 		height: 300,
@@ -46,7 +46,6 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const reactFlow = useReactFlow();
 
 	React.useEffect(() => {
-		// console.log('schema', schema);
 		setExecuteState((prev: any) => {
 			// prev example
 			// {
@@ -64,6 +63,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 					setIsOpenJsonView,
 					setIsSuccess,
 					setIsError,
+					setIsShake,
 				},
 			};
 		});

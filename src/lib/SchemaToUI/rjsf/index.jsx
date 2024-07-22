@@ -73,6 +73,7 @@ export default function RJSFComp(props) {
 	const [isFlowRunClicked, setIsFlowRunClicked] = React.useState(false);
 	const [isConnected, setIsConnected] = React.useState(false);
 	const [execute, setExecute] = React.useState(false);
+	const [allConnectedNodes, setAllConnectedNodes] = React.useState([]);
 
 	React.useEffect(() => {
 		setExecuteState((prev) => {
@@ -140,6 +141,8 @@ export default function RJSFComp(props) {
 				}
 			}
 			setPreFunctionIds(preFunctionIds);
+			const flowNodes = checkConnectedNodes();
+			setAllConnectedNodes(flowNodes);
 		}
 		setIsConnected(isConnectedEdge);
 	}, [edgesInfo]);
@@ -213,15 +216,13 @@ export default function RJSFComp(props) {
 				}
 			});
 		}
-		return connectedNodes;
+		const resultNodes = [...new Set(connectedNodes)];
+		return resultNodes;
 	}
 
 	const initExecuteState = React.useCallback(() => {
-		const resultNodes = checkConnectedNodes();
-		const flowNodes = [...new Set(resultNodes)];
-
 		if (Object.keys(executeState).length > 0) {
-			flowNodes.map((node) => {
+			allConnectedNodes.map((node) => {
 				for (let key in executeState) {
 					if (key === node) {
 						if (executeState[key]) {
@@ -234,7 +235,7 @@ export default function RJSFComp(props) {
 				}
 			});
 		}
-	}, [executeState, checkConnectedNodes]);
+	}, [executeState, allConnectedNodes]);
 
 	const setPreExecuteNodeId = React.useCallback(() => {
 		// 선행되어야할 함수가 있을 때
@@ -366,6 +367,22 @@ export default function RJSFComp(props) {
 		[setChangedData, setFormSchema],
 	);
 
+	function onMouseEnterHandler() {
+		allConnectedNodes.map((node) => {
+			if (executeState[node]) {
+				executeState[node]['setIsShake'](true);
+			}
+		});
+	}
+
+	function onMouseLeaveHandler() {
+		allConnectedNodes.map((node) => {
+			if (executeState[node]) {
+				executeState[node]['setIsShake'](false);
+			}
+		});
+	}
+
 	function onErrored(event) {
 		console.log('error', event);
 	}
@@ -398,6 +415,8 @@ export default function RJSFComp(props) {
 								className='btn flowrun-btn'
 								disabled={isDisabled}
 								onClick={() => setIsFlowRunClicked(true)}
+								onMouseEnter={onMouseEnterHandler}
+								onMouseLeave={onMouseLeaveHandler}
 							>
 								Flow Run
 							</button>

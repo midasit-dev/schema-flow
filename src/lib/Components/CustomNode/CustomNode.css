@@ -19,5 +19,5 @@
 
 /* Applying the shake animation */
 .shake {
-	animation: shake 1s infinite; /* Adjust the duration for a smoother effect */
+	animation: shake 2s infinite; /* Adjust the duration for a smoother effect */
 }
