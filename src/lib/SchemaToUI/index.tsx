@@ -95,16 +95,14 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 				],
 				transition: { duration: 1, ease: 'easeInOut', repeat: 1 },
 			});
+		} else if (!isSuccess && !isError) {
+			{
+				controls.start({
+					backgroundColor: ['rgba(0, 0, 0, 0.7)'],
+					transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
+				});
+			}
 		}
-		else if(!isSuccess && !isError){ {
-			controls.start({
-				backgroundColor: [
-					'rgba(0, 0, 0, 0.7)',
-				],
-				transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
-			});
-		}
-	}
 	}, [isSuccess, isError]);
 
 	const removeCustomNode = React.useCallback(
