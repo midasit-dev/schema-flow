@@ -36,9 +36,13 @@ export const ExecuteNodeId = atom<string[]>({
 });
 
 /**
- * {
- * 		'nodeId' : setExecute
- * }
+ * 	"nodeId": {
+ * 		'setExecute': setExecute,
+ * 		'setIsOpenJsonView': setIsOpenJsonView,
+ * 		'setIsSuccess': setIsSuccess,
+ * 		'setIsError': setIsError
+ * 	}
+ * };
  */
 export const ExecuteState = atom<any>({
 	key: 'ExecuteState',

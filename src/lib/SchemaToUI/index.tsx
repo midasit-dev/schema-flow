@@ -1,5 +1,4 @@
 import React from 'react';
-import { Panel } from '@midasit-dev/moaui';
 import { v4 as uuidv4 } from 'uuid';
 import ToComponent from './moaUI/ToComponent';
 import { Canvas, Canvases, Layer } from '../Common/types';
@@ -17,8 +16,8 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import ThreeDPM from '../Components/ThreeDPM';
 import { useReactFlow } from 'reactflow';
 // recoil
-import { useSetRecoilState } from 'recoil';
-import { FunctionListInfo } from '../RecoilAtom/recoilState';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { FunctionListInfo, ExecuteState } from '../RecoilAtom/recoilState';
 
 const maxRJSFWidth = 620;
 const minRJSFWidth = 400;
@@ -37,13 +36,38 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 	const [isloading, setIsloading] = React.useState(false);
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
 	const [is3dpm, setIs3dpm] = React.useState(false);
-	const setFunctionListInfo = useSetRecoilState(FunctionListInfo);
 	const [schema, setSchema] = React.useState(schemaInfo.schema);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const [isError, setIsError] = React.useState(false);
+	const setFunctionListInfo = useSetRecoilState(FunctionListInfo);
+	const [executeState, setExecuteState] = useRecoilState(ExecuteState);
 
 	const controls = useAnimation();
 	const reactFlow = useReactFlow();
+
+	React.useEffect(() => {
+		// console.log('schema', schema);
+		setExecuteState((prev: any) => {
+			// prev example
+			// {
+			// 	"nodeId": {
+			// 		'setExecute': setExecute,
+			// 		'setIsOpenJsonView': setIsOpenJsonView,
+			// 		'setIsSuccess': setIsSuccess,
+			// 		'setIsError': setIsError
+			// 	}
+			// };
+			return {
+				...prev,
+				[nodeId]: {
+					...prev[nodeId],
+					setIsOpenJsonView,
+					setIsSuccess,
+					setIsError,
+				},
+			};
+		});
+	}, []);
 
 	React.useEffect(() => {
 		if (isSuccess) {
@@ -56,10 +80,6 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 					'#008000',
 					'#109010',
 					'#008000',
-					// '#0f6a08',
-					// '#14540d',
-					// '#15400e',
-					// 'rgba(0, 0, 0, 0.7)',
 				],
 				transition: { duration: 1, ease: 'easeInOut', repeat: 1 },
 			});
@@ -72,16 +92,19 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any }) {
 					'#a51b0b',
 					'#d11507',
 					'#ff0000',
-					// '#d11507',
-					// '#a51b0b',
-					// '#7a1b0c',
-					// '#52170b',
-					// 'rgba(0, 0, 0, 0.7)',
-					// '#ff0000'
+				],
+				transition: { duration: 1, ease: 'easeInOut', repeat: 1 },
+			});
+		}
+		else if(!isSuccess && !isError){ {
+			controls.start({
+				backgroundColor: [
+					'rgba(0, 0, 0, 0.7)',
 				],
 				transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
 			});
 		}
+	}
 	}, [isSuccess, isError]);
 
 	const removeCustomNode = React.useCallback(

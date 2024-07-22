@@ -74,14 +74,21 @@ export default function RJSFComp(props) {
 	const [execute, setExecute] = React.useState(false);
 
 	React.useEffect(() => {
-		// console.log('schema', schema);
 		setExecuteState((prev) => {
-			return { ...prev, [nodeId]: setExecute };
+			// prev example
+			// {
+			// 	"nodeId": {
+			// 		'setExecute': setExecute,
+			// 		'setIsOpenJsonView': setIsOpenJsonView,
+			// 		'setIsSuccess': setIsSuccess,
+			// 		'setIsError': setIsError
+			// 	}
+			// };
+			return { ...prev, [nodeId]: { ...prev[nodeId], setExecute } };
 		});
 	}, []);
 
 	React.useEffect(() => {
-		console.log('executeState', executeState);
 		// const functionExecute = executeState[nodeId];
 		// if (functionExecute) {
 		// 	functionExecute(true);
@@ -115,7 +122,7 @@ export default function RJSFComp(props) {
 			if (executeNodeId.length > 0) {
 				if (executeNodeId.includes(nodeId) && executeFlow[nodeId]) {
 					if (executeFlow[nodeId].isExecuted === false) {
-						executeState[nodeId](true);
+						executeState[nodeId]['setExecute'](true);
 					}
 				} else if (executeNodeId.includes(nodeId) && isSingleRunClicked) {
 					await runFunctionFromServer();
@@ -199,6 +206,19 @@ export default function RJSFComp(props) {
 		[executeFlow],
 	);
 
+	const initExecuteState = React.useCallback(() => {
+		if (Object.keys(executeState).length > 0) {
+			for (let key in executeState) {
+				if (executeState[key]) {
+					executeState[key]['setExecute'](false);
+					executeState[key]['setIsOpenJsonView'](false);
+					executeState[key]['setIsSuccess'](false);
+					executeState[key]['setIsError'](false);
+				}
+			}
+		}
+	}, [executeState]);
+
 	const setPreExecuteNodeId = React.useCallback(() => {
 		// 선행되어야할 함수가 있을 때
 		if (preFunctionIds.length > 0) {
@@ -251,6 +271,7 @@ export default function RJSFComp(props) {
 		setExecuteNodeId,
 		setExecuteFlow,
 		executeFlow,
+		executeState,
 	]);
 
 	const setPostExecuteNodeId = React.useCallback(() => {
@@ -277,7 +298,6 @@ export default function RJSFComp(props) {
 		} catch {
 			setIsloading(false);
 			isSuccessFunctionExecute(false);
-			setExecute(false);
 			return;
 		}
 		setResponseData(responseData);
@@ -288,15 +308,18 @@ export default function RJSFComp(props) {
 			return prev.filter((item) => item !== nodeId);
 		});
 		setIsloading(false);
-		setExecute(false);
 	}
 
 	// Run 버튼을 눌렀을때, 필요 로직
 	async function onClickedFlowRunButton() {
-		setExecuteFlow({ [nodeId]: { isExecuted: false, output: {} } });
+		initExecuteState();
+		setExecuteFlow((prev) => {
+			return { [nodeId]: { isExecuted: false, output: {} } };
+		});
 	}
 
 	async function onClickedSingleRunButton() {
+		initExecuteState();
 		setExecuteFlow({ [nodeId]: { isExecuted: false, output: {} } });
 	}
 
