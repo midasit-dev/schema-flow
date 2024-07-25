@@ -31,7 +31,10 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 		height: 300,
 		layers: [],
 	});
-	const [response, setResponse] = React.useState({});
+	const [response, setResponse] = React.useState({  
+		mesh3dpm: null,
+		strength: null,
+		lcbs: null,});
 	const [isOpenJsonView, setIsOpenJsonView] = React.useState(false);
 	const [isloading, setIsloading] = React.useState(false);
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
@@ -182,16 +185,18 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
 			if (data.hasOwnProperty('moapy.project.wgsd.wgsd_flow.Result3DPM')) {
-				data = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].meshes.mesh3dpm;
+				const mesh3dpm = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].meshes.mesh3dpm;
+				const strength = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].strength;
+				const lcbs = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].lcbs;
 				console.log('data', data);
 				setIs3dpm(true);
 				setIsOpenJsonView(false);
+				setResponse({mesh3dpm, strength, lcbs});
 			} else {
 				setIs3dpm(false);
 				setIsOpenJsonView(true);
 			}
 		}
-		setResponse(data);
 	}, []);
 
 	function isSuccessFunctionExecute(result: boolean) {
