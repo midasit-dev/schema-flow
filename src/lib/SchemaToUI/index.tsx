@@ -195,6 +195,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 			} else {
 				setIs3dpm(false);
 				setIsOpenJsonView(true);
+				setResponse(data);
 			}
 		}
 	}, []);
