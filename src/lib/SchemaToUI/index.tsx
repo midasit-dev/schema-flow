@@ -24,17 +24,14 @@ const minRJSFWidth = 400;
 const maxWidth = 1200;
 const maxHeight = 620;
 
-export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; setIsShake: any }) {
-	const { nodeId, schemaInfo, setIsShake } = props;
+export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; setIsShake: any, input:any }) {
+	const { nodeId, schemaInfo, setIsShake, input } = props;
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
 		height: 300,
 		layers: [],
 	});
-	const [response, setResponse] = React.useState({  
-		mesh3dpm: null,
-		strength: null,
-		lcbs: null,});
+	const [response, setResponse] = React.useState({});
 	const [isOpenJsonView, setIsOpenJsonView] = React.useState(false);
 	const [isloading, setIsloading] = React.useState(false);
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
@@ -289,7 +286,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 					<RJSFComp
 						nodeId={nodeId}
 						schema={schema}
-						setSchema={setSchema}
+						input={input}
 						path={schemaInfo.path}
 						setResponseData={setResponseData}
 						setIsloading={setIsloading}
@@ -317,17 +314,25 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 					)}
 				</div>
 				{isOpenJsonView && (
-					<JsonView
-						src={response}
-						style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
-					/>
-				)}
-				{is3dpm && (
-					<div
-						style={{ width: '100%', height: maxHeight, overflow: 'auto', backgroundColor: 'white' }}
-					>
-						<ThreeDPM data={response} />
-					</div>
+					<>
+						{is3dpm ? (
+							<div
+								style={{
+									width: '100%',
+									height: maxHeight,
+									overflow: 'auto',
+									backgroundColor: 'white',
+								}}
+							>
+								<ThreeDPM data={response} />
+							</div>
+						) : (
+							<JsonView
+								src={response}
+								style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
+							/>
+						)}
+					</>
 				)}
 			</div>
 		</div>

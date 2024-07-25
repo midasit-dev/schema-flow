@@ -118,7 +118,7 @@ const ReactFlowComp = () => {
 
 	React.useEffect(() => {
 		// set functionlistInfo to localstorage
-		if (functionlistInfo.length > 0) {
+		if (Object.keys(functionlistInfo).length > 0) {
 			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
 			localStorage.setItem(
 				'FLOW',
@@ -147,6 +147,7 @@ const ReactFlowComp = () => {
 
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
+		console.log('schemadata', schemadata);
 		const id = schemadata.id.toString() + '_' + uuidv4().slice(0, 8);
 		const newNode = [
 			{
@@ -156,7 +157,17 @@ const ReactFlowComp = () => {
 					x: event.clientX,
 					y: event.clientY,
 				}),
-				data: { schemainfo: schemadata },
+				data: { schemainfo: schemadata,
+					input: {
+						UISchema: schemadata.id.includes("Concrete geometry") ? {
+							"Polygon": {
+								"points": {
+									"ui:widget": "table"
+								}
+							}
+						} : {}
+					}
+				 },
 			},
 		];
 		setNodes((nds) => nds.concat(newNode));

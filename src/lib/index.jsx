@@ -5,8 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { SelectedSchema, FunctionListInfo } from './RecoilAtom/recoilState';
 import { ReactFlowProvider } from 'reactflow';
-import ListComp from './Components/ListComp';
+import ListComp from './Components/Functionlist/ListComp';
 import SearchBar from './Components/Functionlist/Searchbar';
+import Category from './Components/Functionlist/Category';
 // import Test from './Components/Test';
 
 const getFunctionListFromST = async () => {
@@ -37,21 +38,21 @@ function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
 	const [searchTerm, setSearchTerm] = React.useState('');
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
-	const [originalFunctionListInfo, setOriginalFunctionListInfo] = React.useState([]);
+	const [originalDVFunctionListInfo, setOriginalDVFunctionListInfo] = React.useState([]);
+	const [originalSTFunctionListInfo, setOriginalSTFunctionListInfo] = React.useState([]);
+	const [selectedCategory, setSelectedCategory] = React.useState(null);
+
 	const setSchema = useSetRecoilState(SelectedSchema);
 
 	const toggleOpen = () => setIsopenList(!isopenList);
 
-	React.useEffect(() => {
-		const localFlow = localStorage.getItem('FLOW');
-		const functionlistInfoLocal = localFlow ? JSON.parse(localFlow)['functionlistInfo'] : [];
+	const formatFunctionName = React.useCallback((name) => {
+		name = name.replace(/_/g, ' ');
+		return name.charAt(0).toUpperCase() + name.slice(1);
+	}, []);
 
-		const formatFunctionName = (name) => {
-			name = name.replace(/_/g, ' ');
-			return name.charAt(0).toUpperCase() + name.slice(1);
-		};
-
-		async function fetchFunctionList() {
+	const fetchSTFunctionList = React.useCallback(
+		async (functionlistInfoLocal) => {
 			const functionlist = await getFunctionListFromST();
 			if (functionlist.length === 0) return;
 
@@ -67,7 +68,7 @@ function App() {
 				if (name === 'base' || name === 'project') return acc; // Consider removing this line if no longer needed
 
 				name = formatFunctionName(name);
-				const existingInfo = functionlistInfoLocal?.find((info) => info.name === name);
+				const existingInfo = functionlistInfoLocal?.ST?.find((info) => info.name === name);
 				const functionInfo = existingInfo
 					? { ...existingInfo, id: `Custom_${i}_${name}`, path }
 					: {
@@ -84,20 +85,78 @@ function App() {
 				acc.push(functionInfo);
 				return acc;
 			}, []);
-			setOriginalFunctionListInfo(newFunctionListInfo);
-			setFunctionListInfo(newFunctionListInfo);
-		}
+			setOriginalSTFunctionListInfo(newFunctionListInfo);
+			return { ST: newFunctionListInfo };
+		},
+		[setOriginalSTFunctionListInfo, formatFunctionName],
+	);
 
-		fetchFunctionList();
+	const fetchDVFunctionList = React.useCallback(
+		async (functionlistInfoLocal) => {
+			const functionlist = await getFunctionListFromDV();
+			if (functionlist.length === 0) return;
+
+			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {
+				const idx = path.indexOf('wgsd');
+				let parentFolder = '';
+				if (idx === -1) {
+					parentFolder = 'plugin/' + path.split('/').pop();
+				} else {
+					parentFolder = path.slice(idx);
+				}
+				let name = path.split('/').pop();
+				if (name === 'base' || name === 'project') return acc; // Consider removing this line if no longer needed
+
+				name = formatFunctionName(name);
+				const existingInfo = functionlistInfoLocal?.DV?.find((info) => info.name === name);
+				const functionInfo = existingInfo
+					? { ...existingInfo, id: `Custom_${i}_${name}`, path }
+					: {
+							id: `Custom_${i}_${name}`,
+							name,
+							schema: {},
+							isSelected: false,
+							isRendered: false,
+							viewCount: 0,
+							parentFolder: parentFolder,
+							path,
+					  };
+
+				acc.push(functionInfo);
+				return acc;
+			}, []);
+			setOriginalDVFunctionListInfo(newFunctionListInfo);
+			return { DV: newFunctionListInfo };
+		},
+		[setOriginalDVFunctionListInfo, formatFunctionName],
+	);
+
+	const loadData = React.useCallback(async () => {
+		let functionlistInfo = [];
+		const localFlow = localStorage.getItem('FLOW');
+		const functionlistInfoLocal = localFlow ? JSON.parse(localFlow)['functionlistInfo'] : [];
+
+		const resST = await fetchSTFunctionList(functionlistInfoLocal);
+		const resDV = await fetchDVFunctionList(functionlistInfoLocal);
+		functionlistInfo = { ...resST, ...resDV };
+		setFunctionListInfo(functionlistInfo);
+	}, [setFunctionListInfo, fetchSTFunctionList, fetchDVFunctionList]);
+
+	React.useEffect(() => {
+		loadData();
 	}, []);
 
 	React.useEffect(() => {
-		if (searchTerm === '') setFunctionListInfo(originalFunctionListInfo);
+		if (searchTerm === '') {
+		// 	setFunctionListInfo((prev) => {
+		// 	console.log('prev', prev);
+		// });
+	}
 		else {
-			const filteredList = originalFunctionListInfo.filter((item) =>
+			const filteredList = originalSTFunctionListInfo.filter((item) =>
 				item.name.toLowerCase().includes(searchTerm.trimStart().toLowerCase()),
 			);
-			setFunctionListInfo(filteredList);
+			// setFunctionListInfo(filteredList);
 		}
 	}, [searchTerm]);
 
@@ -165,11 +224,70 @@ function App() {
 				</motion.div>
 				<AnimatePresence>
 					{isopenList && (
+						<>
+							<motion.div
+								key={'div_schema_list1'}
+								initial={{ opacity: 0, scale: 1, x: '-50%' }}
+								animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+								exit={{ opacity: 0, scale: 1, x: '-50%' }}
+								transition={{ duration: 0.2 }}
+								style={{
+									width: '350px',
+									height: 'auto',
+									backgroundColor: 'rgba(241, 243, 245, 0.8)',
+									cursor: 'pointer',
+									position: 'absolute',
+									top: '24px',
+									left: '24px',
+									zIndex: '1000',
+									padding: '10px',
+									borderRadius: '8px',
+								}}
+							>
+								<SearchBar onSearch={handleSearch} />
+								<Category setSelectedCategory={setSelectedCategory} />
+								{selectedCategory !== null && (
+									<AnimatePresence>
+										{functionlistInfo.ST.map((functionInfo, index) => {
+											return (
+												<motion.div
+													key={'motiondiv_listcomp_' + index}
+													initial={{ opacity: 0, scale: 0.6, x: '-20%' }}
+													animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+													exit={{ opacity: 0, scale: 1, x: '100%' }}
+													transition={{ duration: 0.2 }}
+													style={{
+														backgroundColor: '#fff',
+														display: 'flex',
+														flexDirection: 'row',
+														alignItems: 'center',
+														justifyContent: 'flex-start',
+														padding: '5px',
+														borderRadius: '5px',
+														cursor: 'pointer',
+													}}
+												>
+													<div style={{ width: '5px', height: '5px', borderRadius: '60%', backgroundColor:"blue", marginLeft:"10px" }}></div>
+													<ListComp
+														key={'listcomp_' + index}
+														py={functionInfo.name}
+														index={index}
+														item={functionInfo}
+														onChangeSchema={handleChangeSchema}
+														onSetFunctionListInfo={handleSetSelectFunctionListInfo}
+													/>
+												</motion.div>
+											);
+										})}
+									</AnimatePresence>
+								)}
+								{/* 
+						</motion.div>
 						<motion.div
-							key={'div_schema_list'}
-							initial={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
-							animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-							exit={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
+							key={'div_schema_list2'}
+							initial={{ opacity: 0, scale: 1, x: '-50%' }}
+							animate={{ opacity: 1, scale: 1, x: '102%', y: 0 }}
+							exit={{ opacity: 0, scale: 1, x: '-50%'}}
 							transition={{ duration: 0.2 }}
 							style={{
 								width: 'auto',
@@ -186,17 +304,20 @@ function App() {
 							}}
 						>
 							<SearchBar onSearch={handleSearch} />
-							{functionlistInfo.map((py, index) => (
-								<ListComp
-									key={'listcomp_' + index}
-									py={py.name}
-									index={index}
-									item={functionlistInfo[index]}
-									onChangeSchema={handleChangeSchema}
-									onSetFunctionListInfo={handleSetSelectFunctionListInfo}
-								/>
-							))}
-						</motion.div>
+							{functionlistInfo.DV.map((functionInfo, index) => {
+								return(
+									<ListComp
+										key={'listcomp_' + index}
+										py={functionInfo.name}
+										index={index}
+										item={functionInfo}
+										onChangeSchema={handleChangeSchema}
+										onSetFunctionListInfo={handleSetSelectFunctionListInfo}
+									/>
+								)
+							})} */}
+							</motion.div>
+						</>
 					)}
 				</AnimatePresence>
 			</div>
