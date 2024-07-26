@@ -148,11 +148,10 @@ function App() {
 
 	React.useEffect(() => {
 		if (searchTerm === '') {
-		// 	setFunctionListInfo((prev) => {
-		// 	console.log('prev', prev);
-		// });
-	}
-		else {
+			// 	setFunctionListInfo((prev) => {
+			// 	console.log('prev', prev);
+			// });
+		} else {
 			const filteredList = originalSTFunctionListInfo.filter((item) =>
 				item.name.toLowerCase().includes(searchTerm.trimStart().toLowerCase()),
 			);
@@ -267,7 +266,15 @@ function App() {
 														cursor: 'pointer',
 													}}
 												>
-													<div style={{ width: '5px', height: '5px', borderRadius: '60%', backgroundColor:"blue", marginLeft:"10px" }}></div>
+													<div
+														style={{
+															width: '5px',
+															height: '5px',
+															borderRadius: '60%',
+															backgroundColor: 'blue',
+															marginLeft: '10px',
+														}}
+													></div>
 													<ListComp
 														key={'listcomp_' + index}
 														py={functionInfo.name}

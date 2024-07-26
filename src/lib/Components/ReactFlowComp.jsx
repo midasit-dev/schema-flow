@@ -157,17 +157,20 @@ const ReactFlowComp = () => {
 					x: event.clientX,
 					y: event.clientY,
 				}),
-				data: { schemainfo: schemadata,
+				data: {
+					schemainfo: schemadata,
 					input: {
-						UISchema: schemadata.id.includes("Concrete geometry") ? {
-							"Polygon": {
-								"points": {
-									"ui:widget": "table"
-								}
-							}
-						} : {}
-					}
-				 },
+						UISchema: schemadata.id.includes('Concrete geometry')
+							? {
+									Polygon: {
+										points: {
+											'ui:widget': 'table',
+										},
+									},
+							  }
+							: {},
+					},
+				},
 			},
 		];
 		setNodes((nds) => nds.concat(newNode));

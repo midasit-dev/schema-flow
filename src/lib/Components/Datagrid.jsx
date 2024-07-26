@@ -5,7 +5,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
 
 const MuiDataGridWidget = ({ id, value, onChange }) => {
-  console.log('value', value);
+	console.log('value', value);
 	const columns = [
 		{ field: 'x', headerName: 'X', width: 150, editable: true },
 		{ field: 'y', headerName: 'Y', width: 150, editable: true },
@@ -38,7 +38,14 @@ const MuiDataGridWidget = ({ id, value, onChange }) => {
 
 	return (
 		<div style={{ height: 300, width: '100%' }}>
-			<DataGrid rows={rows} columns={columns} processRowUpdate={handleProcessRowUpdate} rowHeight={30} autoHeight columnHeaderHeight={30} />
+			<DataGrid
+				rows={rows}
+				columns={columns}
+				processRowUpdate={handleProcessRowUpdate}
+				rowHeight={30}
+				autoHeight
+				columnHeaderHeight={30}
+			/>
 			<Button onClick={handleAddRow} variant='contained' color='primary' style={{ marginTop: 8 }}>
 				Add Point
 			</Button>

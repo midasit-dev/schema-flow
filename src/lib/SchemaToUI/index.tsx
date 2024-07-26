@@ -24,7 +24,12 @@ const minRJSFWidth = 400;
 const maxWidth = 1200;
 const maxHeight = 620;
 
-export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; setIsShake: any, input:any }) {
+export default function SchemaToUI(props: {
+	nodeId: string;
+	schemaInfo: any;
+	setIsShake: any;
+	input: any;
+}) {
 	const { nodeId, schemaInfo, setIsShake, input } = props;
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
@@ -188,7 +193,7 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 				console.log('data', data);
 				setIs3dpm(true);
 				setIsOpenJsonView(false);
-				setResponse({mesh3dpm, strength, lcbs});
+				setResponse({ mesh3dpm, strength, lcbs });
 			} else {
 				setIs3dpm(false);
 				setIsOpenJsonView(true);
