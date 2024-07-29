@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import { Categorylist } from '../../Common/string';
 // Import the CSS file
 import './Category.css';
 
@@ -147,7 +147,6 @@ export default function Category(props) {
 	const [selectedCard, setSelectedCard] = React.useState(null); // State for storing selected card
 
 	React.useEffect(() => {
-		console.log('Selected Card:', selectedCard);
 		setSelectedCategory(selectedCard);
 	}, [selectedCard]);
 
@@ -171,78 +170,24 @@ export default function Category(props) {
 			)}
 			{selectedCard === null && (
 				<AnimatePresence>
+				{Categorylist.map((category, index) => (
 					<motion.div
-						key={'Engineering Function by Python_WGSD_DV'}
-						initial={{ opacity: 0, y: '-50%' }}
+						key={`motion_${category.title}_${category.subTitle}_${category.status}`}
+						initial={{ opacity: 0, y: `${-50 - index * 30}%` }} // Adjusted to provide a consistent offset
 						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 1, y: '-100%' }}
-						transition={{ delay: 0.2 }}
+						exit={{ opacity: 0, y: `${-100 - index * 100}%` }}
+						transition={{ delay: 0.1 }}
 					>
 						<Card
-							title='Engineering Function by Python'
-							subTitle='WGSD'
-							status='DV'
-							onClick={handleCardClick}
+							title={category.title}
+							subTitle={category.subTitle}
+							status={category.status}
+							onClick={() => handleCardClick(category.title, category.subTitle, category.status)}
 						/>
 					</motion.div>
-					<motion.div
-						key={'Engineering Function by Python_WGSD_ST'}
-						initial={{ opacity: 0, y: '-80%' }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: '-180%' }}
-						transition={{ delay: 0.2 }}
-					>
-						<Card
-							title='Engineering Function by Python'
-							subTitle='WGSD'
-							status='ST'
-							onClick={handleCardClick}
-						/>
-					</motion.div>
-					<motion.div
-						key={'MIDAS CIVIL NX API_PLUGIN_DV'}
-						initial={{ opacity: 0, y: '-120%' }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: '-220%' }}
-						transition={{ delay: 0.2 }}
-					>
-						<Card
-							title='MIDAS CIVIL NX API'
-							subTitle='PLUGIN'
-							status='DV'
-							onClick={handleCardClick}
-						/>
-					</motion.div>
-					<motion.div
-						key={'MIDAS CIVIL NX API_PLUGIN_ST'}
-						initial={{ opacity: 0, y: '-160%' }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: '-260%' }}
-						transition={{ delay: 0.2 }}
-					>
-						<Card
-							title='MIDAS CIVIL NX API'
-							subTitle='PLUGIN'
-							status='ST'
-							onClick={handleCardClick}
-						/>
-					</motion.div>
-					<motion.div
-						key={'MOA (Midas Open API)_GPT_PR'}
-						initial={{ opacity: 0, y: '-200%' }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: '-300%' }}
-						transition={{ delay: 0.2 }}
-					>
-						<Card
-							title='MOA (Midas Open API)'
-							subTitle='GPT'
-							status='PR'
-							onClick={handleCardClick}
-						/>
-					</motion.div>
-					<AddFunctionButton />
-				</AnimatePresence>
+				))}
+				<AddFunctionButton />
+			</AnimatePresence>
 			)}
 		</div>
 	);

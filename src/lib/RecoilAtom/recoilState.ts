@@ -7,7 +7,7 @@ export const SelectedSchema = atom<any>({
 
 export const FunctionListInfo = atom<any>({
 	key: 'FunctionListInfo',
-	default: [],
+	default: {},
 	// {
 	// 	"DV":[
 	// 		{

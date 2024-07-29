@@ -8,10 +8,11 @@ import { ReactFlowProvider } from 'reactflow';
 import ListComp from './Components/Functionlist/ListComp';
 import SearchBar from './Components/Functionlist/Searchbar';
 import Category from './Components/Functionlist/Category';
+import { Categorylist } from './Common/string';
 // import Test from './Components/Test';
 
-const getFunctionListFromST = async () => {
-	const res = await fetch(`${process.env.REACT_APP_ACTUAL_ST_API_URL}backend/wgsd/functions`, {
+const getFunctionList = async (baseUrl) => {
+	const res = await fetch(`${baseUrl}backend/wgsd/functions`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -41,6 +42,7 @@ function App() {
 	const [originalDVFunctionListInfo, setOriginalDVFunctionListInfo] = React.useState([]);
 	const [originalSTFunctionListInfo, setOriginalSTFunctionListInfo] = React.useState([]);
 	const [selectedCategory, setSelectedCategory] = React.useState(null);
+	const [selectedList, setSelectedList] = React.useState(null);
 
 	const setSchema = useSetRecoilState(SelectedSchema);
 
@@ -53,7 +55,10 @@ function App() {
 
 	const fetchSTFunctionList = React.useCallback(
 		async (functionlistInfoLocal) => {
-			const functionlist = await getFunctionListFromST();
+			Categorylist.map((category) => {
+
+			});
+			const functionlist = await getFunctionList(`${process.env.REACT_APP_ACTUAL_ST_API_URL}`);
 			if (functionlist.length === 0) return;
 
 			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {
@@ -147,34 +152,39 @@ function App() {
 	}, []);
 
 	React.useEffect(() => {
+		if(selectedCategory === null) {
+			return;
+		} else {
+			console.log('selectedCategory:', selectedCategory);
+		}
+	}, [selectedCategory])
+
+	React.useEffect(() => {
 		if (searchTerm === '') {
-			// 	setFunctionListInfo((prev) => {
-			// 	console.log('prev', prev);
-			// });
+
 		} else {
 			const filteredList = originalSTFunctionListInfo.filter((item) =>
 				item.name.toLowerCase().includes(searchTerm.trimStart().toLowerCase()),
 			);
-			// setFunctionListInfo(filteredList);
 		}
 	}, [searchTerm]);
 
 	const handleSetSelectFunctionListInfo = React.useCallback(
 		(index, isSelected, schema) => {
-			setFunctionListInfo((prev) => {
-				return prev.map((item, idx) => {
-					if (idx !== index) {
-						// 현재 아이템이 선택 대상이 아닌 경우, isSelected가 true일 때만 false로 설정
-						return isSelected ? { ...item, isSelected: false } : item;
-					}
-					// 선택된 아이템에 대해 isSelected 상태와 선택된 경우 schema 업데이트
-					return {
-						...item,
-						isSelected,
-						...(isSelected && { schema }), // isSelected가 true일 경우에만 schema 추가
-					};
-				});
-			});
+			// setFunctionListInfo((prev) => {
+			// 	return prev.map((item, idx) => {
+			// 		if (idx !== index) {
+			// 			// 현재 아이템이 선택 대상이 아닌 경우, isSelected가 true일 때만 false로 설정
+			// 			return isSelected ? { ...item, isSelected: false } : item;
+			// 		}
+			// 		// 선택된 아이템에 대해 isSelected 상태와 선택된 경우 schema 업데이트
+			// 		return {
+			// 			...item,
+			// 			isSelected,
+			// 			...(isSelected && { schema }), // isSelected가 true일 경우에만 schema 추가
+			// 		};
+			// 	});
+			// });
 		},
 		[setFunctionListInfo],
 	);
