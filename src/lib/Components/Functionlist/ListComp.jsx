@@ -86,8 +86,6 @@ const ListComp = (props) => {
 				width: '100%',
 				height: '100%',
 				borderRadius: '5px',
-				borderBottom:
-					index !== functionListInfo[item.category].length - 1 ? '1px solid #c1c1c3' : 'none',
 				position: 'relative',
 				overflow: 'hidden', // 자식 요소가 부모 요소 밖으로 넘치지 않도록
 				marginRight: '20px',

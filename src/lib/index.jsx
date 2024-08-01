@@ -144,6 +144,7 @@ function App() {
 
 	React.useEffect(() => {
 		if (selectedCategory === null) {
+			setSearchTerm('');
 			setSelectedList(null);
 		} else {
 			if (selectedCategory.subTitle === 'WGSD') {
@@ -260,48 +261,52 @@ function App() {
 									borderRadius: '8px',
 								}}
 							>
-								<SearchBar onSearch={handleSearch} />
+								{selectedCategory && selectedList && <SearchBar onSearch={handleSearch} />}
+
 								<Category setSelectedCategory={setSelectedCategory} />
 								{selectedCategory !== null && selectedList !== null && (
 									<AnimatePresence>
-										{selectedList.map((functionInfo, index) => {
-											return (
-												<motion.div
-													key={'motiondiv_listcomp_' + index}
-													initial={{ opacity: 0, scale: 0.6, x: '-20%' }}
-													animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-													exit={{ opacity: 0, scale: 1, x: '20%' }}
-													transition={{ duration: 0.2 }}
-													style={{
-														backgroundColor: '#fff',
-														display: 'flex',
-														flexDirection: 'row',
-														alignItems: 'center',
-														justifyContent: 'flex-start',
-														padding: '5px',
-														borderRadius: '5px',
-														cursor: 'pointer',
-													}}
-												>
-													<div
+										<div style={{ height: '800px', overflowY: 'scroll' }}>
+											{selectedList.map((functionInfo, index) => {
+												return (
+													<motion.div
+														key={'motiondiv_listcomp_' + index}
+														initial={{ opacity: 0, scale: 0.6, x: '-20%' }}
+														animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+														exit={{ opacity: 0, scale: 1, x: '20%' }}
+														transition={{ duration: 0.2 }}
 														style={{
-															width: '5px',
-															height: '5px',
-															borderRadius: '60%',
-															backgroundColor: 'blue',
-															marginLeft: '10px',
+															backgroundColor: '#fff',
+															display: 'flex',
+															flexDirection: 'row',
+															alignItems: 'center',
+															justifyContent: 'flex-start',
+															padding: '5px',
+															borderRadius: '5px',
+															cursor: 'pointer',
 														}}
-													></div>
-													<ListComp
-														key={'listcomp_' + index}
-														index={index}
-														item={functionInfo}
-														onChangeSchema={handleChangeSchema}
-														onSetFunctionListInfo={handleSetSelectFunctionListInfo}
-													/>
-												</motion.div>
-											);
-										})}
+													>
+														<div
+															style={{
+																width: '5px',
+																height: '5px',
+																borderRadius: '60%',
+																backgroundColor: 'blue',
+																marginLeft: '10px',
+																marginRight: '10px',
+															}}
+														/>
+														<ListComp
+															key={'listcomp_' + index}
+															index={index}
+															item={functionInfo}
+															onChangeSchema={handleChangeSchema}
+															onSetFunctionListInfo={handleSetSelectFunctionListInfo}
+														/>
+													</motion.div>
+												);
+											})}
+										</div>
 									</AnimatePresence>
 								)}
 							</motion.div>
