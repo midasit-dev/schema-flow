@@ -79,12 +79,15 @@ function App() {
 
 	const loadData = React.useCallback(async () => {
 		const localFlow = localStorage.getItem('FLOW');
+		let functionlistInfoLocal = {};
 		// if local storage is not empty and it is an array type, remove local storage FLOW
 		if (localFlow && Array.isArray(localFlow.functionlistInfo)) {
 			//remove local storage FLOW
 			localStorage.removeItem('FLOW');
 		}
-		const functionlistInfoLocal = localFlow ? JSON.parse(localFlow)['functionlistInfo'] : {};
+		else if(localFlow) {
+			functionlistInfoLocal = JSON.parse(localFlow)['functionlistInfo']
+		}
 
 		Categorylist.map(async (category) => {
 			if (category.subTitle === 'WGSD') {
