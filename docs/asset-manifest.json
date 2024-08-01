@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/SchemaUIBuilder/static/css/main.4c919b79.css",
-    "main.js": "/SchemaUIBuilder/static/js/main.61a663032c18c5e39f6a.js",
-    "runtime.js": "/SchemaUIBuilder/static/js/runtime.bd341a95c7bcd1363ccc.js",
+    "main.js": "/SchemaUIBuilder/static/js/main.7279808dd211d0e19c05.js",
+    "runtime.js": "/SchemaUIBuilder/static/js/runtime.dd9b9c79c718b192ca32.js",
     "static/js/453.js": "/SchemaUIBuilder/static/js/453.1c552a723c85f3332af5.js",
-    "static/css/505.f5609df6.css": "/SchemaUIBuilder/static/css/505.f5609df6.css",
-    "static/js/505.js": "/SchemaUIBuilder/static/js/505.4751e68f2173d03b0a0f.js",
-    "static/js/890.js": "/SchemaUIBuilder/static/js/890.e06e0b63e646536f52f4.js",
+    "static/css/582.f4bde7ec.css": "/SchemaUIBuilder/static/css/582.f4bde7ec.css",
+    "static/js/582.js": "/SchemaUIBuilder/static/js/582.2ceb83fc58cbbfc14547.js",
+    "static/js/430.js": "/SchemaUIBuilder/static/js/430.ca9cfb246c2cdc592d87.js",
     "index.html": "/SchemaUIBuilder/index.html",
     "static/media/CircularProgress.svg": "/SchemaUIBuilder/static/media/CircularProgress.1753b237f046b83f7dd00116d0e84c84.svg"
   },
   "entrypoints": [
-    "static/js/runtime.bd341a95c7bcd1363ccc.js",
-    "static/css/505.f5609df6.css",
-    "static/js/505.4751e68f2173d03b0a0f.js",
-    "static/js/890.e06e0b63e646536f52f4.js",
+    "static/js/runtime.dd9b9c79c718b192ca32.js",
+    "static/css/582.f4bde7ec.css",
+    "static/js/582.2ceb83fc58cbbfc14547.js",
+    "static/js/430.ca9cfb246c2cdc592d87.js",
     "static/css/main.4c919b79.css",
-    "static/js/main.61a663032c18c5e39f6a.js"
+    "static/js/main.7279808dd211d0e19c05.js"
   ]
 }
