@@ -7,17 +7,31 @@ export const SelectedSchema = atom<any>({
 
 export const FunctionListInfo = atom<any>({
 	key: 'FunctionListInfo',
-	default: [],
-	// [
-	// 	{
-	// 		id : 1
-	// 		name : 'Function Name'
-	// 		schema : {}
-	// 		isSelected : false
-	// 		isRendered : false
-	// 		viewCount : 0
-	// 	}
-	// ]
+	default: {},
+	// {
+	// 	"DV":[
+	// 		{
+	// 			id : 1
+	// 			name : 'Function Name'
+	// 			schema : {}
+	// 			isSelected : false
+	// 			isRendered : false
+	// 			viewCount : 0
+	// 		},
+	// 		...
+	// 	],
+	// 	"ST":[
+	// 		{
+	// 			id : 1
+	// 			name : 'Function Name'
+	// 			schema : {}
+	// 			isSelected : false
+	// 			isRendered : false
+	// 			viewCount : 0
+	// 		},
+	// 		...
+	// 	],
+	// }
 });
 
 export const RJSFdimension = atom<any>({

@@ -24,17 +24,19 @@ const minRJSFWidth = 400;
 const maxWidth = 1200;
 const maxHeight = 620;
 
-export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; setIsShake: any }) {
-	const { nodeId, schemaInfo, setIsShake } = props;
+export default function SchemaToUI(props: {
+	nodeId: string;
+	schemaInfo: any;
+	setIsShake: any;
+	input: any;
+}) {
+	const { nodeId, schemaInfo, setIsShake, input } = props;
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
 		height: 300,
 		layers: [],
 	});
-	const [response, setResponse] = React.useState({  
-		mesh3dpm: null,
-		strength: null,
-		lcbs: null,});
+	const [response, setResponse] = React.useState({});
 	const [isOpenJsonView, setIsOpenJsonView] = React.useState(false);
 	const [isloading, setIsloading] = React.useState(false);
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
@@ -99,12 +101,10 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 				transition: { duration: 1, ease: 'easeInOut', repeat: 1 },
 			});
 		} else if (!isSuccess && !isError) {
-			{
-				controls.start({
-					backgroundColor: ['rgba(0, 0, 0, 0.7)'],
-					transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
-				});
-			}
+			controls.start({
+				backgroundColor: ['rgba(0, 0, 0, 0.7)'],
+				transition: { duration: 1, ease: 'easeInOut', repeat: 2 },
+			});
 		}
 	}, [isSuccess, isError]);
 
@@ -124,49 +124,17 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 				return edges;
 			});
 			setFunctionListInfo((prev: any) => {
-				return prev.map((item: any) => {
+				const updateitems = prev[schemaInfo.category].map((item: any) => {
 					if (item.id === functionId) {
 						const viewCount = item.viewCount - 1;
 						return { ...item, isRendered: viewCount > 0 ? true : false, viewCount: viewCount };
 					} else return item;
 				});
+				return { ...prev, [schemaInfo.category]: updateitems };
 			});
 		},
 		[reactFlow, setFunctionListInfo],
 	);
-
-	// const action = (key) => (
-	//   <Button sx={{m:0, p:0}} onClick={() => closeSnackbar(key)}>
-	//     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-	//       <path d="M0.759766 0.76001L9.24505 9.24529" stroke="#D5D9DE" strokeLinecap="round"/>
-	//       <path d="M9.24512 0.76001L0.759836 9.24529" stroke="#D5D9DE" strokeLinecap="round"/>
-	//     </svg>
-	//   </Button>
-	// );
-
-	// function showSuccessSnackbar(msg){
-	//   enqueueSnackbar(msg, {
-	//     variant: "customSuccess",
-	//     anchorOrigin: {
-	//       vertical: 'bottom',
-	//       horizontal: 'center',
-	//     },
-	//     action,
-	//     marginBottom: "2.5rem",
-	//   });
-	// }
-
-	// function showErrorSnackbar(msg){
-	//   enqueueSnackbar(msg, {
-	//     variant: "customError",
-	//     anchorOrigin: {
-	//       vertical: 'bottom',
-	//       horizontal: 'center',
-	//     },
-	//     action,
-	//     marginBottom: "2.5rem",
-	//   });
-	// }
 
 	React.useEffect(() => {
 		if (schemaInfo.schema.canvas === undefined) return;
@@ -188,10 +156,9 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 				const mesh3dpm = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].meshes.mesh3dpm;
 				const strength = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].strength;
 				const lcbs = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].lcbs;
-				console.log('data', data);
 				setIs3dpm(true);
 				setIsOpenJsonView(false);
-				setResponse({mesh3dpm, strength, lcbs});
+				setResponse({ mesh3dpm, strength, lcbs });
 			} else {
 				setIs3dpm(false);
 				setIsOpenJsonView(true);
@@ -289,8 +256,9 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 					<RJSFComp
 						nodeId={nodeId}
 						schema={schema}
-						setSchema={setSchema}
-						path={schemaInfo.path}
+						input={input}
+						executepath={schemaInfo.executepath}
+						baseURL={schemaInfo.baseURL}
 						setResponseData={setResponseData}
 						setIsloading={setIsloading}
 						isSuccessFunctionExecute={isSuccessFunctionExecute}
@@ -317,17 +285,25 @@ export default function SchemaToUI(props: { nodeId: string; schemaInfo: any; set
 					)}
 				</div>
 				{isOpenJsonView && (
-					<JsonView
-						src={response}
-						style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
-					/>
-				)}
-				{is3dpm && (
-					<div
-						style={{ width: '100%', height: maxHeight, overflow: 'auto', backgroundColor: 'white' }}
-					>
-						<ThreeDPM data={response} />
-					</div>
+					<>
+						{is3dpm ? (
+							<div
+								style={{
+									width: '100%',
+									height: maxHeight,
+									overflow: 'auto',
+									backgroundColor: 'white',
+								}}
+							>
+								<ThreeDPM data={response} />
+							</div>
+						) : (
+							<JsonView
+								src={response}
+								style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
+							/>
+						)}
+					</>
 				)}
 			</div>
 		</div>

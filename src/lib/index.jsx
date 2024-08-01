@@ -5,31 +5,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { SelectedSchema, FunctionListInfo } from './RecoilAtom/recoilState';
 import { ReactFlowProvider } from 'reactflow';
-import ListComp from './Components/ListComp';
+import ListComp from './Components/Functionlist/ListComp';
 import SearchBar from './Components/Functionlist/Searchbar';
-// import Test from './Components/Test';
+import Category from './Components/Functionlist/Category';
+import { Categorylist } from './Common/string';
 
-const getFunctionListFromST = async () => {
-	const res = await fetch(`${process.env.REACT_APP_ACTUAL_ST_API_URL}backend/wgsd/functions`, {
+const getFunctionListFromWGSD = async (URI) => {
+	const res = await fetch(`${URI}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
 	const data = await res.json();
-	console.log('data st', data);
-	return data;
-};
-
-const getFunctionListFromDV = async () => {
-	const res = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/functions`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
-	const data = await res.json();
-	console.log('data dv', data);
+	console.log(`${URI}`, data);
 	return data;
 };
 
@@ -37,78 +26,160 @@ function App() {
 	const [isopenList, setIsopenList] = React.useState(false);
 	const [searchTerm, setSearchTerm] = React.useState('');
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
-	const [originalFunctionListInfo, setOriginalFunctionListInfo] = React.useState([]);
+	const [originalFunctionListInfo, setOriginalFunctionListInfo] = React.useState({});
+	const [selectedCategory, setSelectedCategory] = React.useState(null);
+	const [selectedList, setSelectedList] = React.useState(null);
+
 	const setSchema = useSetRecoilState(SelectedSchema);
 
 	const toggleOpen = () => setIsopenList(!isopenList);
 
-	React.useEffect(() => {
-		const localFlow = localStorage.getItem('FLOW');
-		const functionlistInfoLocal = localFlow ? JSON.parse(localFlow)['functionlistInfo'] : [];
+	const formatFunctionName = React.useCallback((name) => {
+		name = name.replace(/_/g, ' ');
+		return name.charAt(0).toUpperCase() + name.slice(1);
+	}, []);
 
-		const formatFunctionName = (name) => {
-			name = name.replace(/_/g, ' ');
-			return name.charAt(0).toUpperCase() + name.slice(1);
-		};
-
-		async function fetchFunctionList() {
-			const functionlist = await getFunctionListFromST();
+	const fetchFunctionList = React.useCallback(
+		async (functionlistInfoLocal, baseURL, listpath, schemapath, executeServerPath, key) => {
+			const URI = `${baseURL}${listpath}`;
+			const functionlist = await getFunctionListFromWGSD(URI);
 			if (functionlist.length === 0) return;
 
 			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {
-				const idx = path.indexOf('wgsd');
-				let parentFolder = '';
-				if (idx === -1) {
-					parentFolder = 'plugin/' + path.split('/').pop();
-				} else {
-					parentFolder = path.slice(idx);
-				}
 				let name = path.split('/').pop();
-				if (name === 'base' || name === 'project') return acc; // Consider removing this line if no longer needed
-
+				const encodedPath = encodeURIComponent(path);
 				name = formatFunctionName(name);
-				const existingInfo = functionlistInfoLocal?.find((info) => info.name === name);
+				const existingInfo =
+					functionlistInfoLocal &&
+					functionlistInfoLocal[key] &&
+					functionlistInfoLocal[key].find((info) => info.name === name);
 				const functionInfo = existingInfo
-					? { ...existingInfo, id: `Custom_${i}_${name}`, path }
+					? { ...existingInfo, id: `${key}_${i}_${name}`, param: encodedPath }
 					: {
-							id: `Custom_${i}_${name}`,
+							id: `${key}_${i}_${name}`,
 							name,
+							category: key, // WGSD_DV, WGSD_ST
 							schema: {},
 							isSelected: false,
 							isRendered: false,
 							viewCount: 0,
-							parentFolder: parentFolder,
-							path,
+							param: encodedPath,
+							executepath: executeServerPath ? `${executeServerPath}${encodedPath}` : null,
+							schemapath: schemapath ? `${schemapath}${encodedPath}` : null,
+							baseURL: baseURL,
 					  };
 
 				acc.push(functionInfo);
 				return acc;
 			}, []);
-			setOriginalFunctionListInfo(newFunctionListInfo);
-			setFunctionListInfo(newFunctionListInfo);
-		}
+			return newFunctionListInfo;
+		},
+		[formatFunctionName],
+	);
 
-		fetchFunctionList();
+	const loadData = React.useCallback(async () => {
+		const localFlow = localStorage.getItem('FLOW');
+		// if local storage is not empty and it is an array type, remove local storage FLOW
+		if (localFlow && Array.isArray(localFlow.functionlistInfo)) {
+			//remove local storage FLOW
+			localStorage.removeItem('FLOW');
+		}
+		const functionlistInfoLocal = localFlow ? JSON.parse(localFlow)['functionlistInfo'] : {};
+
+		Categorylist.map(async (category) => {
+			if (category.subTitle === 'WGSD') {
+				let res = null;
+				let key = '';
+				let newFunctionList = {};
+				switch (category.status) {
+					case 'DV':
+						key = `${category.subTitle}_${category.status}`;
+						res = await fetchFunctionList(
+							functionlistInfoLocal,
+							process.env.REACT_APP_ACTUAL_DV_API_URL,
+							'backend/wgsd/functions',
+							'backend/wgsd/function-schemas/',
+							'backend/function-executor/python-execute/',
+							key,
+						);
+						newFunctionList = { [key]: res };
+						setOriginalFunctionListInfo((prev) => {
+							return { ...prev, ...newFunctionList };
+						});
+						setFunctionListInfo((prev) => {
+							const newdata = { ...prev, ...newFunctionList };
+							return newdata;
+						});
+						break;
+					case 'ST':
+						key = `${category.subTitle}_${category.status}`;
+						res = await fetchFunctionList(
+							functionlistInfoLocal,
+							process.env.REACT_APP_ACTUAL_ST_API_URL,
+							'backend/wgsd/functions',
+							'backend/wgsd/function-schemas/',
+							'backend/function-executor/python-execute/',
+							key,
+						);
+						newFunctionList = { [key]: res };
+						setOriginalFunctionListInfo((prev) => {
+							return { ...prev, ...newFunctionList };
+						});
+						setFunctionListInfo((prev) => {
+							const newdata = { ...prev, ...newFunctionList };
+							return newdata;
+						});
+						break;
+					default:
+						console.log('No status');
+						break;
+				}
+			}
+		});
+	}, [setFunctionListInfo, fetchFunctionList]);
+
+	React.useEffect(() => {
+		loadData();
 	}, []);
 
 	React.useEffect(() => {
-		if (searchTerm === '') setFunctionListInfo(originalFunctionListInfo);
-		else {
-			const filteredList = originalFunctionListInfo.filter((item) =>
-				item.name.toLowerCase().includes(searchTerm.trimStart().toLowerCase()),
-			);
-			setFunctionListInfo(filteredList);
+		if (selectedCategory === null) {
+			setSearchTerm('');
+			setSelectedList(null);
+		} else {
+			if (selectedCategory.subTitle === 'WGSD') {
+				const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
+				setSelectedList(functionlistInfo[key]);
+			}
+		}
+	}, [selectedCategory, functionlistInfo]);
+
+	React.useEffect(() => {
+		if (selectedCategory !== null) {
+			if (searchTerm === '') {
+				if (selectedCategory.subTitle === 'WGSD') {
+					const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
+					setSelectedList(originalFunctionListInfo[key]);
+				}
+			} else {
+				const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
+				const filteredList = originalFunctionListInfo[key].filter((item) =>
+					item.name.toLowerCase().includes(searchTerm.trimStart().toLowerCase()),
+				);
+				setSelectedList(filteredList);
+			}
 		}
 	}, [searchTerm]);
 
 	const handleSetSelectFunctionListInfo = React.useCallback(
-		(index, isSelected, schema) => {
+		(index, isSelected, category, schema) => {
 			setFunctionListInfo((prev) => {
-				return prev.map((item, idx) => {
+				const updatedItems = prev[category].map((item, idx) => {
 					if (idx !== index) {
 						// 현재 아이템이 선택 대상이 아닌 경우, isSelected가 true일 때만 false로 설정
-						return isSelected ? { ...item, isSelected: false } : item;
+						return isSelected ? { ...item, isSelected: false } : { ...item };
 					}
+
 					// 선택된 아이템에 대해 isSelected 상태와 선택된 경우 schema 업데이트
 					return {
 						...item,
@@ -116,6 +187,12 @@ function App() {
 						...(isSelected && { schema }), // isSelected가 true일 경우에만 schema 추가
 					};
 				});
+
+				// 기존 데이터 구조 유지, 변경된 데이터를 반영하여 새로운 객체 생성
+				return {
+					...prev,
+					[category]: updatedItems,
+				};
 			});
 		},
 		[setFunctionListInfo],
@@ -130,7 +207,6 @@ function App() {
 
 	const handleSearch = (term) => {
 		setSearchTerm(term);
-		console.log('Search term:', term);
 	};
 
 	return (
@@ -165,38 +241,76 @@ function App() {
 				</motion.div>
 				<AnimatePresence>
 					{isopenList && (
-						<motion.div
-							key={'div_schema_list'}
-							initial={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
-							animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-							exit={{ opacity: 0, scale: 0, x: '-50%', y: '-50%' }}
-							transition={{ duration: 0.2 }}
-							style={{
-								width: 'auto',
-								height: 'auto',
-								backgroundColor: 'rgba(252, 249, 235, 0.7)',
-								cursor: 'pointer',
-								position: 'absolute',
-								top: '24px',
-								left: '24px',
-								zIndex: '1000',
-								padding: '5px',
-								border: '1px solid #c1c1c3',
-								borderRadius: '8px',
-							}}
-						>
-							<SearchBar onSearch={handleSearch} />
-							{functionlistInfo.map((py, index) => (
-								<ListComp
-									key={'listcomp_' + index}
-									py={py.name}
-									index={index}
-									item={functionlistInfo[index]}
-									onChangeSchema={handleChangeSchema}
-									onSetFunctionListInfo={handleSetSelectFunctionListInfo}
-								/>
-							))}
-						</motion.div>
+						<>
+							<motion.div
+								key={'div_schema_list1'}
+								initial={{ opacity: 0, scale: 1, x: '-50%' }}
+								animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+								exit={{ opacity: 0, scale: 1, x: '-50%' }}
+								transition={{ duration: 0.2 }}
+								style={{
+									width: '350px',
+									height: 'auto',
+									backgroundColor: 'rgba(241, 243, 245, 0.8)',
+									cursor: 'pointer',
+									position: 'absolute',
+									top: '24px',
+									left: '24px',
+									zIndex: '1000',
+									padding: '10px',
+									borderRadius: '8px',
+								}}
+							>
+								{selectedCategory && selectedList && <SearchBar onSearch={handleSearch} />}
+
+								<Category setSelectedCategory={setSelectedCategory} />
+								{selectedCategory !== null && selectedList !== null && (
+									<AnimatePresence>
+										<div style={{ height: '800px', overflowY: 'scroll' }}>
+											{selectedList.map((functionInfo, index) => {
+												return (
+													<motion.div
+														key={'motiondiv_listcomp_' + index}
+														initial={{ opacity: 0, scale: 0.6, x: '-20%' }}
+														animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+														exit={{ opacity: 0, scale: 1, x: '20%' }}
+														transition={{ duration: 0.2 }}
+														style={{
+															backgroundColor: '#fff',
+															display: 'flex',
+															flexDirection: 'row',
+															alignItems: 'center',
+															justifyContent: 'flex-start',
+															padding: '5px',
+															borderRadius: '5px',
+															cursor: 'pointer',
+														}}
+													>
+														<div
+															style={{
+																width: '5px',
+																height: '5px',
+																borderRadius: '60%',
+																backgroundColor: 'blue',
+																marginLeft: '10px',
+																marginRight: '10px',
+															}}
+														/>
+														<ListComp
+															key={'listcomp_' + index}
+															index={index}
+															item={functionInfo}
+															onChangeSchema={handleChangeSchema}
+															onSetFunctionListInfo={handleSetSelectFunctionListInfo}
+														/>
+													</motion.div>
+												);
+											})}
+										</div>
+									</AnimatePresence>
+								)}
+							</motion.div>
+						</>
 					)}
 				</AnimatePresence>
 			</div>

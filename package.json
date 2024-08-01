@@ -29,6 +29,7 @@
 	"dependencies": {
 		"@craco/craco": "^7.1.0",
 		"@midasit-dev/moaui": "^0.1.136",
+		"@mui/x-data-grid": "^7.11.0",
 		"@react-three/drei": "^9.107.0",
 		"@react-three/fiber": "^8.16.8",
 		"@rjsf/core": "^5.18.4",
@@ -49,6 +50,7 @@
 		"react18-json-view": "^0.2.8",
 		"reactflow": "^11.11.3",
 		"recoil": "^0.7.7",
+		"styled-components": "^6.1.12",
 		"uuid": "^9.0.1",
 		"web-vitals": "^2.1.4"
 	},
