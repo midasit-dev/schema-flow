@@ -170,24 +170,24 @@ export default function Category(props) {
 			)}
 			{selectedCard === null && (
 				<AnimatePresence>
-				{Categorylist.map((category, index) => (
-					<motion.div
-						key={`motion_${category.title}_${category.subTitle}_${category.status}`}
-						initial={{ opacity: 0, y: `${-50 - index * 30}%` }} // Adjusted to provide a consistent offset
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: `${-100 - index * 100}%` }}
-						transition={{ delay: 0.1 }}
-					>
-						<Card
-							title={category.title}
-							subTitle={category.subTitle}
-							status={category.status}
-							onClick={() => handleCardClick(category.title, category.subTitle, category.status)}
-						/>
-					</motion.div>
-				))}
-				<AddFunctionButton />
-			</AnimatePresence>
+					{Categorylist.map((category, index) => (
+						<motion.div
+							key={`motion_${category.title}_${category.subTitle}_${category.status}`}
+							initial={{ opacity: 0, y: `${-50 - index * 30}%` }} // Adjusted to provide a consistent offset
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: `${-100 - index * 100}%` }}
+							transition={{ delay: 0.1 }}
+						>
+							<Card
+								title={category.title}
+								subTitle={category.subTitle}
+								status={category.status}
+								onClick={() => handleCardClick(category)}
+							/>
+						</motion.div>
+					))}
+					<AddFunctionButton />
+				</AnimatePresence>
 			)}
 		</div>
 	);

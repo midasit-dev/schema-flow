@@ -176,11 +176,12 @@ const ReactFlowComp = () => {
 		setNodes((nds) => nds.concat(newNode));
 		setEdges((eds) => eds.concat({ id, source: null, target: id }));
 		setFunctionListInfo((prev) => {
-			return prev.map((item) => {
+			const updatedItems = prev[schemadata.category].map((item) => {
 				if (item.isSelected)
 					return { ...item, isSelected: false, isRendered: true, viewCount: item.viewCount + 1 };
 				else return item;
 			});
+			return { ...prev, [schemadata.category]: updatedItems };
 		});
 		setSelectedschema({});
 	}

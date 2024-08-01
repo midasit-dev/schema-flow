@@ -7,18 +7,15 @@ import { isEmpty } from 'lodash';
 import './index.css';
 import MuiDataGridWidget from '../../Components/Datagrid';
 
-async function postFunctionExecuteToST(path, body, enqueueSnackbar, isSuccessFunctionExecute) {
+async function postFunctionExecuteToST(baseURL, executepath, body, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
-	const res = await fetch(
-		`${process.env.REACT_APP_ACTUAL_ST_API_URL}backend/function-executor/python-execute/${path}`,
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(body),
+	const res = await fetch(`${baseURL}${executepath}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
 		},
-	);
+		body: JSON.stringify(body),
+	});
 	if (res.ok) {
 		isSuccessFunctionExecute(true);
 		const data = await res.json();
@@ -55,8 +52,8 @@ export default function RJSFComp(props) {
 		nodeId,
 		schema,
 		input,
-		path,
-		enqueueSnackbar,
+		executepath,
+		baseURL,
 		setResponseData,
 		setIsloading,
 		isSuccessFunctionExecute,
@@ -288,7 +285,6 @@ export default function RJSFComp(props) {
 		setExecuteNodeId,
 		setExecuteFlow,
 		executeFlow,
-		executeState,
 	]);
 
 	async function runFunctionFromServer() {
@@ -296,9 +292,9 @@ export default function RJSFComp(props) {
 		let responseData = {};
 		try {
 			responseData = await postFunctionExecuteToST(
-				path,
+				baseURL,
+				executepath,
 				changedData.formData,
-				enqueueSnackbar,
 				isSuccessFunctionExecute,
 			);
 		} catch {

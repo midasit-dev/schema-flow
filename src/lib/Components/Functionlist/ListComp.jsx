@@ -4,16 +4,13 @@ import { SvgCheckCircle } from '../../SVGComps';
 import { FunctionListInfo } from '../../RecoilAtom/recoilState';
 import { useRecoilValue } from 'recoil';
 
-const getSchemaFromST = async (functionName) => {
-	const res = await fetch(
-		`${process.env.REACT_APP_ACTUAL_ST_API_URL}backend/wgsd/function-schemas/${functionName}`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
+const getSchemaFromST = async (URI) => {
+	const res = await fetch(`${URI}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
 		},
-	);
+	});
 	if (res.ok) {
 		const data = await res.json();
 		console.log('data', data);
@@ -22,18 +19,18 @@ const getSchemaFromST = async (functionName) => {
 };
 
 const ListComp = (props) => {
-	const { py, index, item, onChangeSchema, onSetFunctionListInfo } = props;
+	const { index, item, onChangeSchema, onSetFunctionListInfo } = props;
 	const functionListInfo = useRecoilValue(FunctionListInfo);
 
 	async function onClickPyHandler(e) {
 		// if function is already selected, then unselect it.
 		if (item.isSelected) {
-			onSetFunctionListInfo(index, false);
+			onSetFunctionListInfo(index, false, item.category);
 			onChangeSchema({});
 			return;
 		}
-		const encodedPath = encodeURIComponent(item.path);
-		const dereferencedFunctionSchema = await getSchemaFromST(encodedPath);
+		const URI = `${item.baseURL}${item.schemapath}`;
+		const dereferencedFunctionSchema = await getSchemaFromST(URI);
 		const paths = dereferencedFunctionSchema.paths;
 		let schema = {};
 		for (const key in paths) {
@@ -45,8 +42,8 @@ const ListComp = (props) => {
 		console.log('dereferencedFunctionSchema', schema);
 		schema.title = item.name;
 		// if function is not selected, then select it.
-		onSetFunctionListInfo(index, true, schema);
-		onChangeSchema({ id: `${item.id}`, schema: schema, path: encodedPath });
+		onSetFunctionListInfo(index, true, item.category, schema);
+		onChangeSchema({ id: `${item.id}`, schema: schema, path: item.param, category: item.category });
 	}
 
 	const ty = React.useMemo(() => 46, []);
@@ -89,7 +86,8 @@ const ListComp = (props) => {
 				width: '100%',
 				height: '100%',
 				borderRadius: '5px',
-				borderBottom: index !== functionListInfo.length - 1 ? '1px solid #c1c1c3' : 'none',
+				borderBottom:
+					index !== functionListInfo[item.category].length - 1 ? '1px solid #c1c1c3' : 'none',
 				position: 'relative',
 				overflow: 'hidden', // 자식 요소가 부모 요소 밖으로 넘치지 않도록
 				marginRight: '20px',
@@ -145,7 +143,7 @@ const ListComp = (props) => {
 					marginLeft: '3px',
 				}}
 			>
-				{py}
+				{item.name}
 				<div style={{ width: '20px', height: '20px', marginRight: '5px' }}>
 					{item.isRendered && item.viewCount > 1 && (
 						<div
