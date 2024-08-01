@@ -29,6 +29,7 @@ import { isEmpty, cloneDeep } from 'lodash';
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { SelectedSchema, FunctionListInfo, EgdesInfo } from '../RecoilAtom/recoilState';
+import { AiOutlineConsoleSql } from 'react-icons/ai';
 
 const nodeTypes = {
 	annotation: AnnotationNode,
@@ -75,25 +76,31 @@ const ReactFlowComp = () => {
 	React.useEffect(() => {
 		// get nodes, edges and functionlistInfo from localstorage
 		const localStorageFlow = localStorage.getItem('FLOW');
+		let localfunctionlistInfo = {};
 		if (localStorageFlow) {
-			const localFlow = JSON.parse(localStorageFlow);
-			const localNodes = localFlow['nodes'];
-			const localEdges = localFlow['edges'];
-			const localFunctionlistInfo = localFlow['functionlistInfo'];
+			const localFlowJson = JSON.parse(localStorageFlow);
+			const localNodes = localFlowJson['nodes'];
+			const localEdges = localFlowJson['edges'];
+			if (Array.isArray(localFlowJson.functionlistInfo)) {
+				localStorage.removeItem('FLOW');
+			} else {
+				localfunctionlistInfo = localFlowJson['functionlistInfo'];
+			}
 			if (localNodes) {
 				setNodes(localNodes);
 			}
 			if (localEdges) {
 				setEdges(localEdges);
 			}
-			if (localFunctionlistInfo) {
-				setFunctionListInfo(localFunctionlistInfo);
+			if (localfunctionlistInfo) {
+				setFunctionListInfo(localfunctionlistInfo);
 			}
 		}
 	}, []);
 
 	React.useEffect(() => {
 		// set nodes to localstorage
+
 		if (nodes.length > 0) {
 			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
 			localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, nodes: nodes }));

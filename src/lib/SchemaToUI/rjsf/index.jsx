@@ -3,13 +3,13 @@ import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { EgdesInfo, ExecuteNodeId, ExecuteFlow, ExecuteState } from '../../RecoilAtom/recoilState';
-import { isEmpty } from 'lodash';
+import { isEmpty, update } from 'lodash';
 import './index.css';
 import MuiDataGridWidget from '../../Components/Datagrid';
 
-async function postFunctionExecuteToST(baseURL, executepath, body, isSuccessFunctionExecute) {
+async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
-	const res = await fetch(`${baseURL}${executepath}`, {
+	const res = await fetch(`${executeURI}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -29,18 +29,23 @@ async function postFunctionExecuteToST(baseURL, executepath, body, isSuccessFunc
 
 function updateDefaults(inputSchema, outputSchema) {
 	for (const key in outputSchema) {
-		if (inputSchema.properties.hasOwnProperty(key)) {
-			// Update default values for matching keys
-			if (outputSchema[key] !== null) inputSchema.properties[key].default = outputSchema[key];
-			else continue;
+		if (inputSchema.properties) {
+			if (inputSchema.properties.hasOwnProperty(key)) {
+				if (outputSchema[key] !== null) inputSchema.properties[key].default = outputSchema[key];
+				else continue;
 
-			// Recursively update nested properties if necessary
-			if (
-				typeof outputSchema[key] === 'object' &&
-				!Array.isArray(outputSchema[key]) &&
-				inputSchema.properties[key].properties
-			) {
-				updateDefaults(inputSchema.properties[key], outputSchema[key]);
+				// Recursively update nested properties if necessary
+				if (
+					typeof outputSchema[key] === 'object' &&
+					!Array.isArray(outputSchema[key]) &&
+					inputSchema.properties[key].properties
+				) {
+					updateDefaults(inputSchema.properties[key], outputSchema[key]);
+				}
+			}
+		} else if (inputSchema.hasOwnProperty('anyOf')) {
+			for (let i = 0; i < inputSchema.anyOf.length; i++) {
+				updateDefaults(inputSchema.anyOf[i], outputSchema);
 			}
 		}
 	}
@@ -52,8 +57,7 @@ export default function RJSFComp(props) {
 		nodeId,
 		schema,
 		input,
-		executepath,
-		baseURL,
+		executeURI,
 		setResponseData,
 		setIsloading,
 		isSuccessFunctionExecute,
@@ -292,8 +296,7 @@ export default function RJSFComp(props) {
 		let responseData = {};
 		try {
 			responseData = await postFunctionExecuteToST(
-				baseURL,
-				executepath,
+				executeURI,
 				changedData.formData,
 				isSuccessFunctionExecute,
 			);

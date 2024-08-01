@@ -108,6 +108,10 @@ export default function SchemaToUI(props: {
 		}
 	}, [isSuccess, isError]);
 
+	React.useEffect(() => {
+		console.log("schemaInfo", schemaInfo);
+	}, [schemaInfo]);
+
 	const removeCustomNode = React.useCallback(
 		(nodeId: string, functionId: string) => {
 			console.log('removeCustomNode', nodeId, functionId);
@@ -257,8 +261,7 @@ export default function SchemaToUI(props: {
 						nodeId={nodeId}
 						schema={schema}
 						input={input}
-						executepath={schemaInfo.executepath}
-						baseURL={schemaInfo.baseURL}
+						executeURI={schemaInfo.executeURI}
 						setResponseData={setResponseData}
 						setIsloading={setIsloading}
 						isSuccessFunctionExecute={isSuccessFunctionExecute}

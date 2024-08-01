@@ -48,6 +48,7 @@ function App() {
 			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {
 				let name = path.split('/').pop();
 				const encodedPath = encodeURIComponent(path);
+				console.log('encodedPath', encodedPath);
 				name = formatFunctionName(name);
 				const existingInfo =
 					functionlistInfoLocal &&
@@ -72,6 +73,7 @@ function App() {
 				acc.push(functionInfo);
 				return acc;
 			}, []);
+			console.log('newFunctionListInfo', newFunctionListInfo);
 			return newFunctionListInfo;
 		},
 		[formatFunctionName],
@@ -81,12 +83,13 @@ function App() {
 		const localFlow = localStorage.getItem('FLOW');
 		let functionlistInfoLocal = {};
 		// if local storage is not empty and it is an array type, remove local storage FLOW
-		if (localFlow && Array.isArray(localFlow.functionlistInfo)) {
-			//remove local storage FLOW
-			localStorage.removeItem('FLOW');
-		}
-		else if(localFlow) {
-			functionlistInfoLocal = JSON.parse(localFlow)['functionlistInfo']
+		if (localFlow) {
+			const localFlowJson = JSON.parse(localFlow);
+			if (Array.isArray(localFlowJson.functionlistInfo)) {
+				localStorage.removeItem('FLOW');
+			} else if (localFlowJson.functionlistInfo) {
+				functionlistInfoLocal = localFlowJson.functionlistInfo;
+			}
 		}
 
 		Categorylist.map(async (category) => {

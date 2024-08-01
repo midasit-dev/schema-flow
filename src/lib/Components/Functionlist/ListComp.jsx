@@ -29,8 +29,9 @@ const ListComp = (props) => {
 			onChangeSchema({});
 			return;
 		}
-		const URI = `${item.baseURL}${item.schemapath}`;
-		const dereferencedFunctionSchema = await getSchemaFromST(URI);
+		const schemaURI = `${item.baseURL}${item.schemapath}`;
+		const executeURI = `${item.baseURL}${item.executepath}`;
+		const dereferencedFunctionSchema = await getSchemaFromST(schemaURI);
 		const paths = dereferencedFunctionSchema.paths;
 		let schema = {};
 		for (const key in paths) {
@@ -43,7 +44,7 @@ const ListComp = (props) => {
 		schema.title = item.name;
 		// if function is not selected, then select it.
 		onSetFunctionListInfo(index, true, item.category, schema);
-		onChangeSchema({ id: `${item.id}`, schema: schema, path: item.param, category: item.category });
+		onChangeSchema({ id: `${item.id}`, schema: schema, path: item.param, category: item.category, executeURI: executeURI });
 	}
 
 	const ty = React.useMemo(() => 46, []);
