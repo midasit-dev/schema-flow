@@ -1,0 +1,810 @@
+{
+	"properties": {
+		"material": {
+			"properties": {
+				"concrete": {
+					"properties": {
+						"grade": {
+							"properties": {
+								"design_code": {
+									"type": "string",
+									"title": "Design Code",
+									"description": "Design code",
+									"default": "ACI318M-19"
+								},
+								"grade": {
+									"type": "string",
+									"title": "Grade",
+									"description": "Grade of the concrete",
+									"default": "C12"
+								}
+							},
+							"type": "object",
+							"title": "GSD Concrete Grade",
+							"description": "GSD concrete class",
+							"dataclassname": "moapy.project.wgsd.wgsd_flow.ConcreteGrade"
+						},
+						"curve_uls": {
+							"items": {
+								"properties": {
+									"stress": {
+										"type": "number",
+										"title": "Stress",
+										"description": "Stress",
+										"default": 0
+									},
+									"strain": {
+										"type": "number",
+										"title": "Strain",
+										"description": "Strain",
+										"default": 0
+									}
+								},
+								"type": "object",
+								"title": "Stress Strain Component",
+								"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+							},
+							"type": "array",
+							"title": "Curve Uls",
+							"description": "Stress strain curve concrete ULS",
+							"default": [
+								{
+									"stress": 0,
+									"strain": 0
+								},
+								{
+									"stress": 0,
+									"strain": 0.0006
+								},
+								{
+									"stress": 34,
+									"strain": 0.0006
+								},
+								{
+									"stress": 34,
+									"strain": 0.003
+								}
+							]
+						},
+						"curve_sls": {
+							"items": {
+								"properties": {
+									"stress": {
+										"type": "number",
+										"title": "Stress",
+										"description": "Stress",
+										"default": 0
+									},
+									"strain": {
+										"type": "number",
+										"title": "Strain",
+										"description": "Strain",
+										"default": 0
+									}
+								},
+								"type": "object",
+								"title": "Stress Strain Component",
+								"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+							},
+							"type": "array",
+							"title": "Curve Sls",
+							"description": "Stress strain curve",
+							"default": [
+								{
+									"stress": 0,
+									"strain": 0
+								},
+								{
+									"stress": 32.8,
+									"strain": 0.001
+								}
+							]
+						}
+					},
+					"type": "object",
+					"title": "GSD Material Concrete",
+					"description": "GSD material for Concrete class",
+					"dataclassname": "moapy.project.wgsd.wgsd_flow.MaterialConcrete"
+				},
+				"rebar": {
+					"anyOf": [
+						{
+							"properties": {
+								"grade": {
+									"properties": {
+										"design_code": {
+											"type": "string",
+											"title": "Design Code",
+											"description": "Design code",
+											"default": "ACI318M-19"
+										},
+										"grade": {
+											"type": "string",
+											"title": "Grade",
+											"description": "Grade of the rebar",
+											"default": "Grade 420"
+										}
+									},
+									"type": "object",
+									"title": "GSD Rebar Grade",
+									"description": "GSD rebar grade class",
+									"dataclassname": "moapy.project.wgsd.wgsd_flow.RebarGrade"
+								},
+								"curve_uls": {
+									"items": {
+										"properties": {
+											"stress": {
+												"type": "number",
+												"title": "Stress",
+												"description": "Stress",
+												"default": 0
+											},
+											"strain": {
+												"type": "number",
+												"title": "Strain",
+												"description": "Strain",
+												"default": 0
+											}
+										},
+										"type": "object",
+										"title": "Stress Strain Component",
+										"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+									},
+									"type": "array",
+									"title": "Curve Uls",
+									"description": "Stress strain curve",
+									"default": [
+										{
+											"stress": 0,
+											"strain": 0
+										},
+										{
+											"stress": 500,
+											"strain": 0.0025
+										},
+										{
+											"stress": 500,
+											"strain": 0.05
+										}
+									]
+								},
+								"curve_sls": {
+									"items": {
+										"properties": {
+											"stress": {
+												"type": "number",
+												"title": "Stress",
+												"description": "Stress",
+												"default": 0
+											},
+											"strain": {
+												"type": "number",
+												"title": "Strain",
+												"description": "Strain",
+												"default": 0
+											}
+										},
+										"type": "object",
+										"title": "Stress Strain Component",
+										"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+									},
+									"type": "array",
+									"title": "Curve Sls",
+									"description": "Stress strain curve",
+									"default": [
+										{
+											"stress": 0,
+											"strain": 0
+										},
+										{
+											"stress": 500,
+											"strain": 0.0025
+										},
+										{
+											"stress": 500,
+											"strain": 0.05
+										}
+									]
+								}
+							},
+							"type": "object",
+							"title": "GSD Material Rebar",
+							"description": "GSD rebar class",
+							"dataclassname": "moapy.project.wgsd.wgsd_flow.MaterialRebar"
+						},
+						{
+							"type": "null"
+						}
+					],
+					"description": "Rebar properties",
+					"default": {
+						"grade": {
+							"design_code": "ACI318M-19",
+							"grade": "Grade 420"
+						},
+						"curve_uls": [
+							{
+								"strain": 0,
+								"stress": 0
+							},
+							{
+								"strain": 0.0025,
+								"stress": 500
+							},
+							{
+								"strain": 0.05,
+								"stress": 500
+							}
+						],
+						"curve_sls": [
+							{
+								"strain": 0,
+								"stress": 0
+							},
+							{
+								"strain": 0.0025,
+								"stress": 500
+							},
+							{
+								"strain": 0.05,
+								"stress": 500
+							}
+						]
+					}
+				},
+				"tendon": {
+					"anyOf": [
+						{
+							"properties": {
+								"grade": {
+									"properties": {
+										"design_code": {
+											"type": "string",
+											"title": "Design Code",
+											"description": "Design code",
+											"default": "ACI318M-19"
+										},
+										"grade": {
+											"type": "string",
+											"title": "Grade",
+											"description": "Grade of the tendon",
+											"default": "Grade 420"
+										}
+									},
+									"type": "object",
+									"title": "GSD Tendon Grade",
+									"description": "GSD Tendon grade class",
+									"dataclassname": "moapy.project.wgsd.wgsd_flow.TendonGrade"
+								},
+								"curve_uls": {
+									"items": {
+										"properties": {
+											"stress": {
+												"type": "number",
+												"title": "Stress",
+												"description": "Stress",
+												"default": 0
+											},
+											"strain": {
+												"type": "number",
+												"title": "Strain",
+												"description": "Strain",
+												"default": 0
+											}
+										},
+										"type": "object",
+										"title": "Stress Strain Component",
+										"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+									},
+									"type": "array",
+									"title": "Curve Uls",
+									"description": "Stress strain curve",
+									"default": [
+										{
+											"stress": 0,
+											"strain": 0
+										},
+										{
+											"stress": 1450,
+											"strain": 0.00725
+										},
+										{
+											"stress": 1750,
+											"strain": 0.05
+										}
+									]
+								},
+								"curve_sls": {
+									"items": {
+										"properties": {
+											"stress": {
+												"type": "number",
+												"title": "Stress",
+												"description": "Stress",
+												"default": 0
+											},
+											"strain": {
+												"type": "number",
+												"title": "Strain",
+												"description": "Strain",
+												"default": 0
+											}
+										},
+										"type": "object",
+										"title": "Stress Strain Component",
+										"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+									},
+									"type": "array",
+									"title": "Curve Sls",
+									"description": "Stress strain curve",
+									"default": [
+										{
+											"stress": 0,
+											"strain": 0
+										},
+										{
+											"stress": 1450,
+											"strain": 0.00725
+										},
+										{
+											"stress": 1750,
+											"strain": 0.05
+										}
+									]
+								}
+							},
+							"type": "object",
+							"title": "GSD Material Tendon",
+							"description": "GSD tendon class",
+							"dataclassname": "moapy.project.wgsd.wgsd_flow.MaterialTendon"
+						},
+						{
+							"type": "null"
+						}
+					],
+					"description": "Tendon properties",
+					"default": {
+						"grade": {
+							"design_code": "ACI318M-19",
+							"grade": "Grade 420"
+						},
+						"curve_uls": [
+							{
+								"strain": 0,
+								"stress": 0
+							},
+							{
+								"strain": 0.00725,
+								"stress": 1450
+							},
+							{
+								"strain": 0.05,
+								"stress": 1750
+							}
+						],
+						"curve_sls": [
+							{
+								"strain": 0,
+								"stress": 0
+							},
+							{
+								"strain": 0.00725,
+								"stress": 1450
+							},
+							{
+								"strain": 0.05,
+								"stress": 1750
+							}
+						]
+					}
+				}
+			},
+			"type": "object",
+			"title": "GSD Material",
+			"description": "GSD concrete class",
+			"dataclassname": "moapy.project.wgsd.wgsd_flow.Material"
+		},
+		"geometry": {
+			"properties": {
+				"concrete": {
+					"properties": {
+						"outerPolygon": {
+							"items": {
+								"properties": {
+									"x": {
+										"type": "number",
+										"title": "X"
+									},
+									"y": {
+										"type": "number",
+										"title": "Y"
+									}
+								},
+								"type": "object",
+								"required": ["x", "y"],
+								"title": "Point",
+								"description": "Point class",
+								"dataclassname": "moapy.project.wgsd.wgsd_flow.Point"
+							},
+							"type": "array",
+							"title": "Outerpolygon",
+							"description": "Outer polygon of the concrete",
+							"default": [
+								{
+									"x": 0,
+									"y": 0
+								},
+								{
+									"x": 400,
+									"y": 0
+								},
+								{
+									"x": 400,
+									"y": 600
+								},
+								{
+									"x": 0,
+									"y": 600
+								}
+							]
+						},
+						"innerPolygon": {
+							"items": {
+								"properties": {
+									"x": {
+										"type": "number",
+										"title": "X"
+									},
+									"y": {
+										"type": "number",
+										"title": "Y"
+									}
+								},
+								"type": "object",
+								"required": ["x", "y"],
+								"title": "Point",
+								"description": "Point class",
+								"dataclassname": "moapy.project.wgsd.wgsd_flow.Point"
+							},
+							"type": "array",
+							"title": "Innerpolygon",
+							"description": "Inner polygon of the concrete",
+							"default": []
+						},
+						"material": {
+							"properties": {
+								"design_code": {
+									"type": "string",
+									"title": "Design Code",
+									"description": "Design code",
+									"default": "ACI318M-19"
+								},
+								"grade": {
+									"type": "string",
+									"title": "Grade",
+									"description": "Grade of the concrete",
+									"default": "C12"
+								}
+							},
+							"type": "object",
+							"title": "GSD Concrete Grade",
+							"description": "GSD concrete class",
+							"dataclassname": "moapy.project.wgsd.wgsd_flow.ConcreteGrade"
+						}
+					},
+					"type": "object",
+					"title": "GSD Concrete Geometry",
+					"description": "GSD concrete geometry class",
+					"dataclassname": "moapy.project.wgsd.wgsd_flow.ConcreteGeometry"
+				},
+				"rebar": {
+					"anyOf": [
+						{
+							"properties": {
+								"points": {
+									"items": {
+										"properties": {
+											"x": {
+												"type": "number",
+												"title": "X"
+											},
+											"y": {
+												"type": "number",
+												"title": "Y"
+											}
+										},
+										"type": "object",
+										"required": ["x", "y"],
+										"title": "Point",
+										"description": "Point class",
+										"dataclassname": "moapy.project.wgsd.wgsd_flow.Point"
+									},
+									"type": "array",
+									"title": "Points",
+									"description": "Rebar Points",
+									"default": [
+										{
+											"x": 40,
+											"y": 40
+										},
+										{
+											"x": 360,
+											"y": 40
+										},
+										{
+											"x": 360,
+											"y": 560
+										},
+										{
+											"x": 40,
+											"y": 560
+										}
+									]
+								},
+								"prop": {
+									"properties": {
+										"area": {
+											"type": "number",
+											"title": "Area",
+											"description": "Area of the rebar",
+											"default": 287
+										},
+										"material": {
+											"properties": {
+												"design_code": {
+													"type": "string",
+													"title": "Design Code",
+													"description": "Design code",
+													"default": "ACI318M-19"
+												},
+												"grade": {
+													"type": "string",
+													"title": "Grade",
+													"description": "Grade of the rebar",
+													"default": "Grade 420"
+												}
+											},
+											"type": "object",
+											"title": "GSD Rebar Grade",
+											"description": "GSD rebar grade class",
+											"dataclassname": "moapy.project.wgsd.wgsd_flow.RebarGrade"
+										}
+									},
+									"type": "object",
+									"title": "GSD Rebar Properties",
+									"description": "GSD rebar prop",
+									"dataclassname": "moapy.project.wgsd.wgsd_flow.RebarProp"
+								}
+							},
+							"type": "object",
+							"title": "GSD Rebar Geometry",
+							"description": "GSD rebar geometry class",
+							"dataclassname": "moapy.project.wgsd.wgsd_flow.RebarGeometry"
+						},
+						{
+							"type": "null"
+						}
+					],
+					"description": "Rebar geometry",
+					"default": {
+						"points": [
+							{
+								"x": 40,
+								"y": 40
+							},
+							{
+								"x": 360,
+								"y": 40
+							},
+							{
+								"x": 360,
+								"y": 560
+							},
+							{
+								"x": 40,
+								"y": 560
+							}
+						],
+						"prop": {
+							"area": 287,
+							"material": {
+								"design_code": "ACI318M-19",
+								"grade": "Grade 420"
+							}
+						}
+					}
+				},
+				"tendon": {
+					"anyOf": [
+						{
+							"properties": {
+								"points": {
+									"items": {
+										"properties": {
+											"x": {
+												"type": "number",
+												"title": "X"
+											},
+											"y": {
+												"type": "number",
+												"title": "Y"
+											}
+										},
+										"type": "object",
+										"required": ["x", "y"],
+										"title": "Point",
+										"description": "Point class",
+										"dataclassname": "moapy.project.wgsd.wgsd_flow.Point"
+									},
+									"type": "array",
+									"title": "Points",
+									"description": "Tendon Points",
+									"default": []
+								},
+								"prop": {
+									"properties": {
+										"area": {
+											"type": "number",
+											"title": "Area",
+											"description": "Area of the tendon",
+											"default": 287
+										},
+										"material": {
+											"properties": {
+												"design_code": {
+													"type": "string",
+													"title": "Design Code",
+													"description": "Design code",
+													"default": "ACI318M-19"
+												},
+												"grade": {
+													"type": "string",
+													"title": "Grade",
+													"description": "Grade of the tendon",
+													"default": "Grade 420"
+												}
+											},
+											"type": "object",
+											"title": "GSD Tendon Grade",
+											"description": "GSD Tendon grade class",
+											"dataclassname": "moapy.project.wgsd.wgsd_flow.TendonGrade"
+										},
+										"prestress": {
+											"type": "number",
+											"title": "Prestress",
+											"description": "Prestress of the tendon",
+											"default": 0
+										}
+									},
+									"type": "object",
+									"title": "GSD Tendon Properties",
+									"description": "GSD Tendon prop",
+									"dataclassname": "moapy.project.wgsd.wgsd_flow.TendonProp"
+								}
+							},
+							"type": "object",
+							"title": "GSD Tendon Geometry",
+							"description": "GSD tendon geometry class",
+							"dataclassname": "moapy.project.wgsd.wgsd_flow.TendonGeometry"
+						},
+						{
+							"type": "null"
+						}
+					],
+					"description": "Tendon geometry",
+					"default": {
+						"points": [],
+						"prop": {
+							"area": 287,
+							"material": {
+								"design_code": "ACI318M-19",
+								"grade": "Grade 420"
+							},
+							"prestress": 0
+						}
+					}
+				}
+			},
+			"type": "object",
+			"title": "GSD Geometry",
+			"description": "GSD geometry class",
+			"dataclassname": "moapy.project.wgsd.wgsd_flow.Geometry"
+		},
+		"lcb": {
+			"properties": {
+				"uls": {
+					"properties": {
+						"lcoms": {
+							"items": {
+								"properties": {
+									"name": {
+										"type": "string",
+										"title": "Name",
+										"description": "load combination name",
+										"default": "lcom"
+									},
+									"f": {
+										"properties": {
+											"Nz": {
+												"type": "number",
+												"title": "Nz",
+												"description": "Axial force",
+												"default": 0
+											},
+											"Mx": {
+												"type": "number",
+												"title": "Mx",
+												"description": "Moment about x-axis",
+												"default": 0
+											},
+											"My": {
+												"type": "number",
+												"title": "My",
+												"description": "Moment about y-axis",
+												"default": 0
+											}
+										},
+										"type": "object",
+										"title": "Force",
+										"description": "Force class",
+										"dataclassname": "moapy.project.wgsd.wgsd_flow.Force"
+									}
+								},
+								"type": "object",
+								"title": "Lcom Result",
+								"description": "Lcom result class",
+								"dataclassname": "moapy.project.wgsd.wgsd_flow.Lcom"
+							},
+							"type": "array",
+							"title": "Lcoms",
+							"description": "load combination result",
+							"default": [
+								{
+									"name": "uls1",
+									"f": {
+										"Mx": 10,
+										"My": 50,
+										"Nz": 100
+									}
+								}
+							]
+						}
+					},
+					"type": "object",
+					"title": "Strength Result",
+					"description": "Strength result class",
+					"dataclassname": "moapy.project.wgsd.wgsd_flow.Lcoms"
+				}
+			},
+			"type": "object",
+			"title": "GSD Load Combination",
+			"description": "GSD load combination class",
+			"dataclassname": "moapy.project.wgsd.wgsd_flow.Lcb"
+		},
+		"opt": {
+			"properties": {
+				"dgncode": {
+					"type": "string",
+					"enum": ["ACI318M-19", "Eurocode2-04"],
+					"title": "Dgncode",
+					"description": "Design code",
+					"default": "EN1992:2004"
+				},
+				"by_ecc_pu": {
+					"type": "string",
+					"enum": ["ecc", "P-U"],
+					"title": "By Ecc Pu",
+					"description": "ecc or P-U",
+					"default": "ecc"
+				}
+			},
+			"type": "object",
+			"title": "GSD Options",
+			"description": "GSD options class",
+			"dataclassname": "moapy.project.wgsd.wgsd_flow.PMOptions"
+		}
+	},
+	"type": "object",
+	"required": ["material", "geometry", "lcb", "opt"],
+	"title": "Calc 3dpm"
+}

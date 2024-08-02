@@ -5,7 +5,8 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { EgdesInfo, ExecuteNodeId, ExecuteFlow, ExecuteState } from '../../RecoilAtom/recoilState';
 import { isEmpty, update } from 'lodash';
 import './index.css';
-import MuiDataGridWidget from '../../Components/Datagrid';
+import MuiDataGridWidget from '../../Components/InputComp/Datagrid';
+import MatlConcgradeField from '../../Components/InputComp/MatlConc_grade';
 
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
@@ -78,6 +79,7 @@ export default function RJSFComp(props) {
 	const [allConnectedNodes, setAllConnectedNodes] = React.useState([]);
 
 	React.useEffect(() => {
+		console.log('uischema', input.UISchema);
 		setExecuteState((prev) => {
 			// prev example
 			// {
@@ -392,9 +394,9 @@ export default function RJSFComp(props) {
 					schema={formSchema}
 					uiSchema={input.UISchema}
 					widgets={{
-						table: MuiDataGridWidget,
-						test: MuiDataGridWidget,
+						point_table: MuiDataGridWidget,
 					}}
+					fields={{ matlConcGradeField: MatlConcgradeField }}
 					validator={validator}
 					formData={changedData.formData}
 					onChange={onChangedData}

@@ -13,7 +13,7 @@ import 'react18-json-view/src/style.css';
 
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 
-import ThreeDPM from '../Components/ThreeDPM';
+import ThreeDPM from '../Components/OutputComp/ThreeDPM';
 import { useReactFlow } from 'reactflow';
 // recoil
 import { useSetRecoilState, useRecoilState } from 'recoil';
@@ -107,10 +107,6 @@ export default function SchemaToUI(props: {
 			});
 		}
 	}, [isSuccess, isError]);
-
-	React.useEffect(() => {
-		console.log("schemaInfo", schemaInfo);
-	}, [schemaInfo]);
 
 	const removeCustomNode = React.useCallback(
 		(nodeId: string, functionId: string) => {

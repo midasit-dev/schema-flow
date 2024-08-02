@@ -44,7 +44,13 @@ const ListComp = (props) => {
 		schema.title = item.name;
 		// if function is not selected, then select it.
 		onSetFunctionListInfo(index, true, item.category, schema);
-		onChangeSchema({ id: `${item.id}`, schema: schema, path: item.param, category: item.category, executeURI: executeURI });
+		onChangeSchema({
+			id: `${item.id}`,
+			schema: schema,
+			path: item.param,
+			category: item.category,
+			executeURI: executeURI,
+		});
 	}
 
 	const ty = React.useMemo(() => 46, []);

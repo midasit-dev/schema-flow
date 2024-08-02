@@ -152,9 +152,35 @@ const ReactFlowComp = () => {
 		}
 	}, [CPressed]);
 
+	// temp make ui schema
+	function tempMakeUISchema(id) {
+		if (id.includes('Concrete geometry')) {
+			return {
+				Polygon: {
+					points: {
+						'ui:widget': 'point_table',
+					},
+				},
+			};
+		} else if (id.includes('Calc 3dpm')) {
+			return {
+				material: {
+					concrete: {
+						grade: {
+							'ui:field': 'matlConcGradeField',
+						},
+					},
+				},
+			};
+		} else return {};
+	}
+
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
 		console.log('schemadata', schemadata);
+
+		const uiSchema = tempMakeUISchema(schemadata.id);
+		console.log('uiSchema', uiSchema);
 		const id = schemadata.id.toString() + '_' + uuidv4().slice(0, 8);
 		const newNode = [
 			{
@@ -167,15 +193,7 @@ const ReactFlowComp = () => {
 				data: {
 					schemainfo: schemadata,
 					input: {
-						UISchema: schemadata.id.includes('Concrete geometry')
-							? {
-									Polygon: {
-										points: {
-											'ui:widget': 'table',
-										},
-									},
-							  }
-							: {},
+						UISchema: uiSchema,
 					},
 				},
 			},

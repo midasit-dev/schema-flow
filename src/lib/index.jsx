@@ -22,7 +22,7 @@ const getFunctionListFromWGSD = async (URI) => {
 	return data;
 };
 
-function App() {
+function App(props) {
 	const [isopenList, setIsopenList] = React.useState(false);
 	const [searchTerm, setSearchTerm] = React.useState('');
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
@@ -48,7 +48,6 @@ function App() {
 			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {
 				let name = path.split('/').pop();
 				const encodedPath = encodeURIComponent(path);
-				console.log('encodedPath', encodedPath);
 				name = formatFunctionName(name);
 				const existingInfo =
 					functionlistInfoLocal &&
@@ -73,7 +72,7 @@ function App() {
 				acc.push(functionInfo);
 				return acc;
 			}, []);
-			console.log('newFunctionListInfo', newFunctionListInfo);
+
 			return newFunctionListInfo;
 		},
 		[formatFunctionName],
@@ -155,7 +154,16 @@ function App() {
 		} else {
 			if (selectedCategory.subTitle === 'WGSD') {
 				const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
-				setSelectedList(functionlistInfo[key]);
+				setSelectedList((prev) => {
+					if (!prev) return functionlistInfo[key];
+					const list = functionlistInfo[key];
+					const newList = prev.map((item) => {
+						const updatedItem = list.find((listItem) => listItem.id === item.id);
+						return updatedItem ? updatedItem : item;
+					});
+					console.log('newList', newList);
+					return newList;
+				});
 			}
 		}
 	}, [selectedCategory, functionlistInfo]);
@@ -165,11 +173,11 @@ function App() {
 			if (searchTerm === '') {
 				if (selectedCategory.subTitle === 'WGSD') {
 					const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
-					setSelectedList(originalFunctionListInfo[key]);
+					setSelectedList(functionlistInfo[key]);
 				}
 			} else {
 				const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
-				const filteredList = originalFunctionListInfo[key].filter((item) =>
+				const filteredList = functionlistInfo[key].filter((item) =>
 					item.name.toLowerCase().includes(searchTerm.trimStart().toLowerCase()),
 				);
 				setSelectedList(filteredList);
@@ -179,6 +187,7 @@ function App() {
 
 	const handleSetSelectFunctionListInfo = React.useCallback(
 		(index, isSelected, category, schema) => {
+			console.log('index', index);
 			setFunctionListInfo((prev) => {
 				const updatedItems = prev[category].map((item, idx) => {
 					if (idx !== index) {
@@ -267,7 +276,9 @@ function App() {
 									borderRadius: '8px',
 								}}
 							>
-								{selectedCategory && selectedList && <SearchBar onSearch={handleSearch} />}
+								{selectedCategory && selectedList && (
+									<SearchBar onSearch={handleSearch} test={'TEST'} />
+								)}
 
 								<Category setSelectedCategory={setSelectedCategory} />
 								{selectedCategory !== null && selectedList !== null && (

@@ -1,4 +1,4 @@
-import Moaui from '@midasit-dev/moaui';
+import Moaui from '@midasit-dev/moaui-components-v1';
 
 enum AvailableComps {
 	Alert = 'Alert',
