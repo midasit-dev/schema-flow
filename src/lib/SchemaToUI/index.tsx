@@ -14,7 +14,6 @@ import 'react18-json-view/src/style.css';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 
 import ThreeDPM from '../Components/OutputComp/ThreeDPM';
-import ImageViewer from '../Components/OutputComp/ImageViewer';
 import MarkdownViewer from '../Components/OutputComp/MarkdownViewer';
 import { useReactFlow } from 'reactflow';
 // recoil
