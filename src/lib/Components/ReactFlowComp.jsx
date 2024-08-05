@@ -192,13 +192,13 @@ const ReactFlowComp = () => {
 				data: {
 					schemainfo: schemadata,
 					input: {
-						param : {},
+						param: {},
 						UISchema: inputUISchema,
 					},
-					output : {
-						param : {},
+					output: {
+						param: {},
 						UISchema: {},
-					}
+					},
 				},
 			},
 		];

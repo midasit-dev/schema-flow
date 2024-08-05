@@ -14,6 +14,8 @@ import 'react18-json-view/src/style.css';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 
 import ThreeDPM from '../Components/OutputComp/ThreeDPM';
+import ImageViewer from '../Components/OutputComp/ImageViewer';
+import MarkdownViewer from '../Components/OutputComp/MarkdownViewer';
 import { useReactFlow } from 'reactflow';
 // recoil
 import { useSetRecoilState, useRecoilState } from 'recoil';
@@ -294,7 +296,9 @@ export default function SchemaToUI(props: {
 									backgroundColor: 'white',
 								}}
 							>
-								<ThreeDPM data={response} />
+								{/* <ThreeDPM data={response} /> */}
+								{/* <ImageViewer /> */}
+								<MarkdownViewer />
 							</div>
 						) : (
 							<JsonView

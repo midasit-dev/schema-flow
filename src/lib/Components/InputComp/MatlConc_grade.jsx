@@ -5,7 +5,6 @@ import { useViewport } from 'reactflow';
 export default function MatlConc_grade(props) {
 	const { schema, formData, onChange } = props;
 	const { zoom } = useViewport();
-	console.log('MatlConc_grade props', props);
 
 	React.useEffect(() => {
 		console.log('zoom', zoom);

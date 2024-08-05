@@ -9,6 +9,8 @@ import ListComp from './Components/Functionlist/ListComp';
 import SearchBar from './Components/Functionlist/Searchbar';
 import Category from './Components/Functionlist/Category';
 import { Categorylist } from './Common/string';
+import MarkdownViewer from './Components/OutputComp/MarkdownViewer';
+import ImageViewer from './Components/OutputComp/ImageViewer';
 
 const getFunctionListFromWGSD = async (URI) => {
 	const res = await fetch(`${URI}`, {
