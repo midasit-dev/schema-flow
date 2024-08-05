@@ -31,22 +31,22 @@ const ListComp = (props) => {
 		}
 		const schemaURI = `${item.baseURL}${item.schemapath}`;
 		const executeURI = `${item.baseURL}${item.executepath}`;
-		const dereferencedFunctionSchema = await getSchemaFromST(schemaURI);
-		const paths = dereferencedFunctionSchema.paths;
-		let schema = {};
+		const openAPIschema = await getSchemaFromST(schemaURI);
+		const paths = openAPIschema.paths;
+		let dereferencedFunctionSchema = {};
 		for (const key in paths) {
 			// ex) key is '/moapy/project/wgsd/wgsd_flow/calc_3dpm'
 			if (paths[key]['post']['requestBody']['content']['application/json']['schema'])
-				schema = paths[key]['post']['requestBody']['content']['application/json']['schema'];
+				dereferencedFunctionSchema = paths[key]['post']['requestBody']['content']['application/json']['schema'];
 			else alert('No schema found in the selected function');
 		}
-		console.log('dereferencedFunctionSchema', schema);
-		schema.title = item.name;
+		console.log('dereferencedFunctionSchema', dereferencedFunctionSchema);
+		dereferencedFunctionSchema.title = item.name;
 		// if function is not selected, then select it.
-		onSetFunctionListInfo(index, true, item.category, schema);
+		onSetFunctionListInfo(index, true, item.category, dereferencedFunctionSchema);
 		onChangeSchema({
 			id: `${item.id}`,
-			schema: schema,
+			schema: dereferencedFunctionSchema,
 			path: item.param,
 			category: item.category,
 			executeURI: executeURI,
