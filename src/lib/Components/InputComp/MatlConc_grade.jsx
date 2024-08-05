@@ -4,12 +4,12 @@ import { useViewport } from 'reactflow';
 
 export default function MatlConc_grade(props) {
 	const { schema, formData, onChange } = props;
-  const { zoom } = useViewport();
+	const { zoom } = useViewport();
 	console.log('MatlConc_grade props', props);
 
-  React.useEffect(() => {
-    console.log('zoom', zoom);
-  }, [zoom])
+	React.useEffect(() => {
+		console.log('zoom', zoom);
+	}, [zoom]);
 
 	return (
 		<div style={{ width: '100%' }}>
@@ -17,7 +17,13 @@ export default function MatlConc_grade(props) {
 			{Object.keys(schema.properties).map((key) => (
 				<div
 					key={'div_' + key}
-					style={{ display: 'flex', flexDirection:"row", justifyContent:"space-between", alignItems:"center", marginBottom: '10px' }}
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						marginBottom: '10px',
+					}}
 				>
 					<Typography variant='h1' size='large'>
 						{schema.properties[key].title}
@@ -29,10 +35,10 @@ export default function MatlConc_grade(props) {
 								['TEST2', 2],
 							])
 						}
-            width={'200px'}
+						width={'200px'}
 						onChange={() => {}}
 						value={1}
-            listWidth={`${zoom * 200}px`}
+						listWidth={`${zoom * 200}px`}
 						backgroundColor='white'
 						placeholder={key}
 						maxLength={10}

@@ -29,7 +29,6 @@ import { isEmpty, cloneDeep } from 'lodash';
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { SelectedSchema, FunctionListInfo, EgdesInfo } from '../RecoilAtom/recoilState';
-import { AiOutlineConsoleSql } from 'react-icons/ai';
 
 const nodeTypes = {
 	annotation: AnnotationNode,
@@ -153,7 +152,7 @@ const ReactFlowComp = () => {
 	}, [CPressed]);
 
 	// temp make ui schema
-	function tempMakeUISchema(id) {
+	function temp_MakeInputUISchema(id) {
 		if (id.includes('Concrete geometry')) {
 			return {
 				Polygon: {
@@ -179,8 +178,8 @@ const ReactFlowComp = () => {
 		const schemadata = cloneDeep(selectedschema);
 		console.log('schemadata', schemadata);
 
-		const uiSchema = tempMakeUISchema(schemadata.id);
-		console.log('uiSchema', uiSchema);
+		const inputUISchema = temp_MakeInputUISchema(schemadata.id);
+		console.log('uiSchema', inputUISchema);
 		const id = schemadata.id.toString() + '_' + uuidv4().slice(0, 8);
 		const newNode = [
 			{
@@ -193,8 +192,13 @@ const ReactFlowComp = () => {
 				data: {
 					schemainfo: schemadata,
 					input: {
-						UISchema: uiSchema,
+						param : {},
+						UISchema: inputUISchema,
 					},
+					output : {
+						param : {},
+						UISchema: {},
+					}
 				},
 			},
 		];
