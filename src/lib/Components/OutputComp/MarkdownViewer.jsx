@@ -22,8 +22,8 @@ export default function MarkdownViewer({ mdData = '' }) {
 			<ReactMD
 				remarkPlugins={[remarkMath]}
 				rehypePlugins={[rehypeKatex]}
-				urlTransform={url => {
-					if (url.startsWith('data:image')) return url;
+				urlTransform={(url, key, node) => {
+					if (node.tagName === 'img' && url.startsWith('data:image')) return url;
 					else defaultUrlTransform(url);
 				}}
 			>
