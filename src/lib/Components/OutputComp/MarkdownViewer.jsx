@@ -1,7 +1,7 @@
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
-import ReactMD from 'react-markdown';
+import ReactMD, { defaultUrlTransform } from 'react-markdown';
 import 'katex/dist/katex.min.css';
 import { GuideBox } from '@midasit-dev/moaui-components-v1';
 
@@ -21,19 +21,10 @@ export default function MarkdownViewer({ mdData = '' }) {
 			</ReactMD> */}
 			<ReactMD
 				remarkPlugins={[remarkMath]}
-				rehypePlugins={[rehypeKatex, rehypeRaw]}
-				components={{
-					img: ({ node, ...props }) => {
-						console.log({node, props});
-						
-						return (
-							<img
-								{...props}
-								style={{ maxWidth: '100%', height: 'auto' }} // 반응형 이미지
-								alt={props.alt}
-							/>
-						)
-					},
+				rehypePlugins={[rehypeKatex]}
+				urlTransform={url => {
+					if (url.startsWith('data:image')) return url;
+					else defaultUrlTransform(url);
 				}}
 			>
 				{text}
