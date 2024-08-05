@@ -42,7 +42,7 @@ const ListComp = (props) => {
 			else alert('No schema found in the selected function');
 		}
 		console.log('dereferencedFunctionSchema', dereferencedFunctionSchema);
-		dereferencedFunctionSchema.title = item.name;
+		dereferencedFunctionSchema.title = `${item.name} (${item.category})`;
 		// if function is not selected, then select it.
 		onSetFunctionListInfo(index, true, item.category, dereferencedFunctionSchema);
 		onChangeSchema({
