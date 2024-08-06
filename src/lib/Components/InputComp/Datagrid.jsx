@@ -1,64 +1,107 @@
-// MuiDataGridWidget.js
-
 import React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
+import { GuideBox, Panel, DataGrid, Button } from '@midasit-dev/moaui-components-v1';
 
-const MuiDataGridWidget = (props) => {
-	console.log('props', props);
-	const columns = [
-		{ field: 'x', headerName: 'X', width: 150, editable: true },
-		{ field: 'y', headerName: 'Y', width: 150, editable: true },
-	];
+export default function Datagrid(props) {
+	console.log('Datagrid props', props);
+	const [rowDatas, setRowDatas] = React.useState([
+		{ id: 1, stress: 1, strain: 2 },
+		{ id: 2, stress: 3, strain: 4 },
+		{ id: 3, stress: 5, strain: 6 },
+		{ id: 4, stress: 7, strain: 8 },
+		{ id: 5, stress: 9, strain: 10 },
+	]);
+	const [height, setHeight] = React.useState(0);
 
-	const handleProcessRowUpdate = (newRow) => {
-		const updatedRows = props.value.map((row) => (row.id === newRow.id ? newRow : row));
-		props.onChange(updatedRows);
-		return newRow;
-	};
+	React.useEffect(() => {
+		if (props.formData) {
+			const rows = props.formData.map((point, index) => ({
+				id: index, // Unique id for each row
+				...point,
+			}));
+			console.log('rows', rows);
+			setRowDatas(rows);
+			props.formData.length > 2
+				? setHeight(props.formData.length * 42.2)
+				: setHeight(props.formData.length * 52.3);
+		}
+	}, [props.formData]);
 
-	const handleAddRow = () => {
-		const newRow = {
-			id: props.value.length, // Unique id for each row
-			x: 0,
-			y: 0,
-		};
-		props.onChange([...props.value, newRow]);
-	};
+	function onClickAdd() {
+		// add new row (use setRowDatas function)
+		const newId = rowDatas.length + 1;
+		setRowDatas([...rowDatas, { id: newId, stress: 0, strain: 0 }]);
+	}
 
-	const handleDeleteRow = (idToDelete) => {
-		const updatedRows = props.value.filter((row) => row.id !== idToDelete);
-		props.onChange(updatedRows);
-	};
-
-	const rows = props.value.map((point, index) => ({
-		id: index, // Unique id for each row
-		...point,
-	}));
+	function onClickDelete() {
+		// delete last row (use setRowDatas function)
+		// consider rowDatas.length > 0
+		if (rowDatas.length > 0) {
+			setRowDatas(rowDatas.slice(0, rowDatas.length - 1));
+		}
+	}
 
 	return (
-		<div style={{ height: 300, width: '100%' }}>
+		<div style={{ height: height, marginTop: '40px' }}>
+			<GuideBox horRight row width={'100%'} marginBottom={1} spacing={1}>
+				<Button width='auto' color='normal' onClick={onClickAdd}>
+					Add
+				</Button>
+				<Button width='20px' color='negative' onClick={onClickDelete}>
+					Delete
+				</Button>
+			</GuideBox>
 			<DataGrid
-				rows={rows}
-				columns={columns}
-				processRowUpdate={handleProcessRowUpdate}
-				rowHeight={30}
-				autoHeight
-				columnHeaderHeight={30}
+				columns={[
+					{
+						editable: false,
+						field: 'id',
+						headerName: 'Id',
+						width: 60,
+					},
+					{
+						editable: true,
+						field: 'stress',
+						headerName: 'Stress',
+						width: 150,
+					},
+					{
+						editable: true,
+						field: 'strain',
+						headerName: 'Strain',
+						width: 150,
+					},
+				]}
+				initialState={{
+					pagination: {
+						paginationModel: {
+							pageSize: 5,
+						},
+					},
+				}}
+				pageSizeOptions={[5]}
+				rows={rowDatas}
+				hideFooter
+				hideFooterPagination
+				hideFooterSelectedRowCount
+				processRowUpdate={(newValue) => {
+					console.log('newValue', newValue);
+					setRowDatas(
+						rowDatas.map((row) =>
+							row.id === newValue.id
+								? {
+										Id: newValue['id'],
+										Stress: Number(newValue['stress']),
+										Strain: Number(newValue['strain']),
+								  }
+								: row,
+						),
+					);
+					return newValue;
+				}}
+				onProcessRowUpdateError={(error) => {
+					console.log('error', error);
+				}}
 			/>
-			<Button onClick={handleAddRow} variant='contained' color='primary' style={{ marginTop: 8 }}>
-				Add Point
-			</Button>
-			<Button
-				onClick={() => handleDeleteRow(rows.length - 1)}
-				variant='contained'
-				color='secondary'
-				style={{ marginTop: 8, marginLeft: 8 }}
-			>
-				Delete Point
-			</Button>
 		</div>
 	);
-};
-
-export default MuiDataGridWidget;
+}

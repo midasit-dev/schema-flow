@@ -164,9 +164,23 @@ const ReactFlowComp = () => {
 		} else if (id.includes('Calc 3dpm')) {
 			return {
 				material: {
+					'ui:options': {
+						label: false,
+						hideDescription: true,
+					},
 					concrete: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
 						grade: {
 							'ui:field': 'matlConcGradeField',
+						},
+						curve_uls: {
+							'ui:field': 'matlConcCurveULSField',
+						},
+						curve_sls: {
+							'ui:field': 'matlConcCurveSLSField',
 						},
 					},
 				},
@@ -190,6 +204,7 @@ const ReactFlowComp = () => {
 					y: event.clientY,
 				}),
 				data: {
+					title: schemadata.title,
 					schemainfo: schemadata,
 					input: {
 						param: {},

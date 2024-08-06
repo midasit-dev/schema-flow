@@ -21,7 +21,7 @@ export default function MatlConc_grade(props) {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						alignItems: 'center',
-						marginBottom: '10px',
+						marginBottom: '15px',
 					}}
 				>
 					<Typography variant='h1' size='large'>

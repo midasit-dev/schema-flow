@@ -25,6 +25,7 @@ const CustomNode = React.memo((props) => {
 					<div>
 						<SchemaToUI
 							nodeId={id}
+							title={data.title}
 							schemaInfo={data.schemainfo}
 							setIsShake={setIsShake}
 							input={data.input}

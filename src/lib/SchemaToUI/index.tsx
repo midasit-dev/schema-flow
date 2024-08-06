@@ -27,11 +27,12 @@ const maxHeight = 620;
 
 export default function SchemaToUI(props: {
 	nodeId: string;
+	title: string;
 	schemaInfo: any;
 	setIsShake: any;
 	input: any;
 }) {
-	const { nodeId, schemaInfo, setIsShake, input } = props;
+	const { nodeId, title, schemaInfo, setIsShake, input } = props;
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
 		height: 300,
@@ -212,7 +213,7 @@ export default function SchemaToUI(props: {
 					fontFamily: 'pretendard',
 				}}
 			>
-				{schemaInfo.schema.title} {isSuccess ? '- Success' : isError ? '- Error' : ''}
+				{title} {isSuccess ? '- Success' : isError ? '- Error' : ''}
 				<div
 					className='btnClose'
 					style={{
