@@ -42,6 +42,7 @@ export default function SchemaToUI(props: {
 	const [isloading, setIsloading] = React.useState(false);
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
 	const [is3dpm, setIs3dpm] = React.useState(false);
+	const [isMarkdown, setIsMd] = React.useState(false);
 	const [schema, setSchema] = React.useState(schemaInfo.schema);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const [isError, setIsError] = React.useState(false);
@@ -158,10 +159,18 @@ export default function SchemaToUI(props: {
 				const strength = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].strength;
 				const lcbs = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].lcbs;
 				setIs3dpm(true);
+				setIsMd(false);
 				setIsOpenJsonView(false);
 				setResponse({ mesh3dpm, strength, lcbs });
+			} else if (data.hasOwnProperty('moapy.project.wgsd.wgsd_oapi.ResultMD')) {
+				const md = data['moapy.project.wgsd.wgsd_oapi.ResultMD'].md;
+				setIs3dpm(false);
+				setIsMd(true);
+				setIsOpenJsonView(false);
+				setResponse(md);
 			} else {
 				setIs3dpm(false);
+				setIsMd(false);
 				setIsOpenJsonView(true);
 				setResponse(data);
 			}
@@ -279,7 +288,7 @@ export default function SchemaToUI(props: {
 							onClick={onClickOpenJsonView}
 						>
 							<AnimatePresence mode={'wait'}>
-								{isOpenJsonView || is3dpm ? <SvgLeftArrow /> : <SvgRightArrow />}
+								{isOpenJsonView || is3dpm || isMarkdown ? <SvgLeftArrow /> : <SvgRightArrow />}
 							</AnimatePresence>
 						</div>
 					)}
@@ -295,9 +304,18 @@ export default function SchemaToUI(props: {
 									backgroundColor: 'white',
 								}}
 							>
-								{/* <ThreeDPM data={response} /> */}
-								{/* <ImageViewer /> */}
-								<MarkdownViewer />
+								<ThreeDPM data={response} />
+							</div>
+						) : isMarkdown ? (
+							<div
+								style={{
+									width: '100%',
+									height: maxHeight,
+									overflow: 'auto',
+									backgroundColor: 'lightgray', // 배경 색상은 원하는 색상으로 설정할 수 있습니다.
+								}}
+							>
+								<MarkdownViewer mdData={response}  /> {/* 또는 다른 적합한 컴포넌트 */}
 							</div>
 						) : (
 							<JsonView
