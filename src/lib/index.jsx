@@ -40,39 +40,45 @@ function App(props) {
 	}, []);
 
 	const fetchFunctionList = React.useCallback(
-		async (functionlistInfoLocal, baseURL, listpath, schemapath, executeServerPath, key) => {
+		async (functionlistInfoLocal, baseURL, listpath, schemapath, executeServerPath, key, filter) => {
 			const URI = `${baseURL}${listpath}`;
 			const functionlist = await getFunctionListFromWGSD(URI);
-			if (functionlist.length === 0) return;
-
-			const newFunctionListInfo = functionlist.reduce((acc, path, i) => {
-				let name = path.split('/').pop();
-				const encodedPath = encodeURIComponent(path);
-				name = formatFunctionName(name);
-				const existingInfo =
-					functionlistInfoLocal &&
-					functionlistInfoLocal[key] &&
-					functionlistInfoLocal[key].find((info) => info.name === name);
-				const functionInfo = existingInfo
-					? { ...existingInfo, id: `${key}_${i}_${name}`, param: encodedPath }
-					: {
-							id: `${key}_${i}_${name}`,
-							name,
-							category: key, // WGSD_DV, WGSD_ST
-							schema: {},
-							isSelected: false,
-							isRendered: false,
-							viewCount: 0,
-							param: encodedPath,
-							executepath: executeServerPath ? `${executeServerPath}${encodedPath}` : null,
-							schemapath: schemapath ? `${schemapath}${encodedPath}` : null,
-							baseURL: baseURL,
-					  };
-
-				acc.push(functionInfo);
-				return acc;
-			}, []);
-
+			if (functionlist.length === 0) return [];
+			const filterLowerCase = filter.toLowerCase();
+			const newFunctionListInfo = functionlist
+				// 필터링: 함수 이름에서 filter 값과 같은 것이 포함된 경우만 선택
+				.filter((path) => {
+					const pathLowerCase = path.toLowerCase();
+					return pathLowerCase.includes(filterLowerCase);
+				})
+				.reduce((acc, path, i) => {
+					let name = path.split('/').pop();
+					const encodedPath = encodeURIComponent(path);
+					name = formatFunctionName(name);
+					const existingInfo =
+						functionlistInfoLocal &&
+						functionlistInfoLocal[key] &&
+						functionlistInfoLocal[key].find((info) => info.name === name);
+					const functionInfo = existingInfo
+						? { ...existingInfo, id: `${key}_${i}_${name}`, param: encodedPath }
+						: {
+								id: `${key}_${i}_${name}`,
+								name,
+								category: key, // WGSD_DV, WGSD_ST
+								schema: {},
+								isSelected: false,
+								isRendered: false,
+								viewCount: 0,
+								param: encodedPath,
+								executepath: executeServerPath ? `${executeServerPath}${encodedPath}` : null,
+								schemapath: schemapath ? `${schemapath}${encodedPath}` : null,
+								baseURL: baseURL,
+						  };
+	
+					acc.push(functionInfo);
+					return acc;
+				}, []);
+	
 			return newFunctionListInfo;
 		},
 		[formatFunctionName],
@@ -92,53 +98,53 @@ function App(props) {
 		}
 
 		Categorylist.map(async (category) => {
-			if (category.subTitle === 'WGSD') {
-				let res = null;
-				let key = '';
-				let newFunctionList = {};
-				switch (category.status) {
-					case 'DV':
-						key = `${category.subTitle}_${category.status}`;
-						res = await fetchFunctionList(
-							functionlistInfoLocal,
-							process.env.REACT_APP_ACTUAL_DV_API_URL,
-							'backend/wgsd/functions',
-							'backend/wgsd/function-schemas/',
-							'backend/function-executor/python-execute/',
-							key,
-						);
-						newFunctionList = { [key]: res };
-						setOriginalFunctionListInfo((prev) => {
-							return { ...prev, ...newFunctionList };
-						});
-						setFunctionListInfo((prev) => {
-							const newdata = { ...prev, ...newFunctionList };
-							return newdata;
-						});
-						break;
-					case 'ST':
-						key = `${category.subTitle}_${category.status}`;
-						res = await fetchFunctionList(
-							functionlistInfoLocal,
-							process.env.REACT_APP_ACTUAL_ST_API_URL,
-							'backend/wgsd/functions',
-							'backend/wgsd/function-schemas/',
-							'backend/function-executor/python-execute/',
-							key,
-						);
-						newFunctionList = { [key]: res };
-						setOriginalFunctionListInfo((prev) => {
-							return { ...prev, ...newFunctionList };
-						});
-						setFunctionListInfo((prev) => {
-							const newdata = { ...prev, ...newFunctionList };
-							return newdata;
-						});
-						break;
-					default:
-						console.log('No status');
-						break;
-				}
+			let res = null;
+			let key = '';
+			let newFunctionList = {};
+			switch (category.status) {
+				case 'DV':
+					key = `${category.subTitle}_${category.status}`;
+					res = await fetchFunctionList(
+						functionlistInfoLocal,
+						process.env.REACT_APP_ACTUAL_DV_API_URL,
+						'backend/wgsd/functions',
+						'backend/wgsd/function-schemas/',
+						'backend/function-executor/python-execute/',
+						key,
+						category.subTitle,
+					);
+					newFunctionList = { [key]: res };
+					setOriginalFunctionListInfo((prev) => {
+						return { ...prev, ...newFunctionList };
+					});
+					setFunctionListInfo((prev) => {
+						const newdata = { ...prev, ...newFunctionList };
+						return newdata;
+					});
+					break;
+				case 'ST':
+					key = `${category.subTitle}_${category.status}`;
+					res = await fetchFunctionList(
+						functionlistInfoLocal,
+						process.env.REACT_APP_ACTUAL_ST_API_URL,
+						'backend/wgsd/functions',
+						'backend/wgsd/function-schemas/',
+						'backend/function-executor/python-execute/',
+						key,
+						category.subTitle
+					);
+					newFunctionList = { [key]: res };
+					setOriginalFunctionListInfo((prev) => {
+						return { ...prev, ...newFunctionList };
+					});
+					setFunctionListInfo((prev) => {
+						const newdata = { ...prev, ...newFunctionList };
+						return newdata;
+					});
+					break;
+				default:
+					console.log('No status');
+					break;
 			}
 		});
 	}, [setFunctionListInfo, fetchFunctionList]);
@@ -152,7 +158,7 @@ function App(props) {
 			setSearchTerm('');
 			setSelectedList(null);
 		} else {
-			if (selectedCategory.subTitle === 'WGSD') {
+			if (selectedCategory.subTitle === 'WGSD' || selectedCategory.subTitle === 'PLUGINS') {
 				const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
 				setSelectedList((prev) => {
 					if (!prev) return functionlistInfo[key];
@@ -171,7 +177,7 @@ function App(props) {
 	React.useEffect(() => {
 		if (selectedCategory !== null) {
 			if (searchTerm === '') {
-				if (selectedCategory.subTitle === 'WGSD') {
+				if (selectedCategory.subTitle === 'WGSD' || selectedCategory.subTitle === 'PLUGINS') {
 					const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
 					setSelectedList(functionlistInfo[key]);
 				}

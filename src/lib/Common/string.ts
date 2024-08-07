@@ -11,12 +11,12 @@ const Categorylist = [
 	},
 	{
 		title: 'MIDAS CIVIL NX API',
-		subTitle: 'PLUGIN',
+		subTitle: 'PLUGINS',
 		status: 'DV',
 	},
 	{
 		title: 'MIDAS CIVIL NX API',
-		subTitle: 'PLUGIN',
+		subTitle: 'PLUGINS',
 		status: 'ST',
 	},
 	{
