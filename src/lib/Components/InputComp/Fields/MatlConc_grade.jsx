@@ -37,10 +37,11 @@ export default function MatlConc_grade(props) {
 						width={'200px'}
 						onChange={() => {}}
 						value={1}
-						listWidth={`${zoom * 200}px`}
+						listWidth={'200px'}
 						backgroundColor='white'
 						placeholder={key}
 						maxLength={10}
+						scale={zoom}
 					/>
 				</div>
 			))}
