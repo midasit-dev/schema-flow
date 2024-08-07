@@ -22,7 +22,7 @@
 							"type": "object",
 							"title": "GSD Concrete Grade",
 							"description": "GSD concrete class",
-							"dataclassname": "moapy.project.wgsd.wgsd_flow.ConcreteGrade"
+							"dataclassname": "moapy.wgsd.wgsd_flow.ConcreteGrade"
 						},
 						"curve_uls": {
 							"items": {
@@ -42,7 +42,7 @@
 								},
 								"type": "object",
 								"title": "Stress Strain Component",
-								"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+								"dataclassname": "moapy.wgsd.wgsd_flow.Stress_Strain_Component"
 							},
 							"type": "array",
 							"title": "Curve Uls",
@@ -84,7 +84,7 @@
 								},
 								"type": "object",
 								"title": "Stress Strain Component",
-								"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+								"dataclassname": "moapy.wgsd.wgsd_flow.Stress_Strain_Component"
 							},
 							"type": "array",
 							"title": "Curve Sls",
@@ -104,7 +104,7 @@
 					"type": "object",
 					"title": "GSD Material Concrete",
 					"description": "GSD material for Concrete class",
-					"dataclassname": "moapy.project.wgsd.wgsd_flow.MaterialConcrete"
+					"dataclassname": "moapy.wgsd.wgsd_flow.MaterialConcrete"
 				},
 				"rebar": {
 					"anyOf": [
@@ -128,7 +128,7 @@
 									"type": "object",
 									"title": "GSD Rebar Grade",
 									"description": "GSD rebar grade class",
-									"dataclassname": "moapy.project.wgsd.wgsd_flow.RebarGrade"
+									"dataclassname": "moapy.wgsd.wgsd_flow.RebarGrade"
 								},
 								"curve_uls": {
 									"items": {
@@ -148,7 +148,7 @@
 										},
 										"type": "object",
 										"title": "Stress Strain Component",
-										"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+										"dataclassname": "moapy.wgsd.wgsd_flow.Stress_Strain_Component"
 									},
 									"type": "array",
 									"title": "Curve Uls",
@@ -186,7 +186,7 @@
 										},
 										"type": "object",
 										"title": "Stress Strain Component",
-										"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+										"dataclassname": "moapy.wgsd.wgsd_flow.Stress_Strain_Component"
 									},
 									"type": "array",
 									"title": "Curve Sls",
@@ -210,7 +210,7 @@
 							"type": "object",
 							"title": "GSD Material Rebar",
 							"description": "GSD rebar class",
-							"dataclassname": "moapy.project.wgsd.wgsd_flow.MaterialRebar"
+							"dataclassname": "moapy.wgsd.wgsd_flow.MaterialRebar"
 						},
 						{
 							"type": "null"
@@ -274,7 +274,7 @@
 									"type": "object",
 									"title": "GSD Tendon Grade",
 									"description": "GSD Tendon grade class",
-									"dataclassname": "moapy.project.wgsd.wgsd_flow.TendonGrade"
+									"dataclassname": "moapy.wgsd.wgsd_flow.TendonGrade"
 								},
 								"curve_uls": {
 									"items": {
@@ -294,7 +294,7 @@
 										},
 										"type": "object",
 										"title": "Stress Strain Component",
-										"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+										"dataclassname": "moapy.wgsd.wgsd_flow.Stress_Strain_Component"
 									},
 									"type": "array",
 									"title": "Curve Uls",
@@ -332,7 +332,7 @@
 										},
 										"type": "object",
 										"title": "Stress Strain Component",
-										"dataclassname": "moapy.project.wgsd.wgsd_flow.Stress_Strain_Component"
+										"dataclassname": "moapy.wgsd.wgsd_flow.Stress_Strain_Component"
 									},
 									"type": "array",
 									"title": "Curve Sls",
@@ -356,7 +356,7 @@
 							"type": "object",
 							"title": "GSD Material Tendon",
 							"description": "GSD tendon class",
-							"dataclassname": "moapy.project.wgsd.wgsd_flow.MaterialTendon"
+							"dataclassname": "moapy.wgsd.wgsd_flow.MaterialTendon"
 						},
 						{
 							"type": "null"
@@ -402,7 +402,7 @@
 			"type": "object",
 			"title": "GSD Material",
 			"description": "GSD concrete class",
-			"dataclassname": "moapy.project.wgsd.wgsd_flow.Material"
+			"dataclassname": "moapy.wgsd.wgsd_flow.Material"
 		},
 		"geometry": {
 			"properties": {
@@ -424,7 +424,7 @@
 								"required": ["x", "y"],
 								"title": "Point",
 								"description": "Point class",
-								"dataclassname": "moapy.project.wgsd.wgsd_flow.Point"
+								"dataclassname": "moapy.wgsd.wgsd_flow.Point"
 							},
 							"type": "array",
 							"title": "Outerpolygon",
@@ -464,7 +464,7 @@
 								"required": ["x", "y"],
 								"title": "Point",
 								"description": "Point class",
-								"dataclassname": "moapy.project.wgsd.wgsd_flow.Point"
+								"dataclassname": "moapy.wgsd.wgsd_flow.Point"
 							},
 							"type": "array",
 							"title": "Innerpolygon",
@@ -489,13 +489,13 @@
 							"type": "object",
 							"title": "GSD Concrete Grade",
 							"description": "GSD concrete class",
-							"dataclassname": "moapy.project.wgsd.wgsd_flow.ConcreteGrade"
+							"dataclassname": "moapy.wgsd.wgsd_flow.ConcreteGrade"
 						}
 					},
 					"type": "object",
 					"title": "GSD Concrete Geometry",
 					"description": "GSD concrete geometry class",
-					"dataclassname": "moapy.project.wgsd.wgsd_flow.ConcreteGeometry"
+					"dataclassname": "moapy.wgsd.wgsd_flow.ConcreteGeometry"
 				},
 				"rebar": {
 					"anyOf": [
@@ -517,7 +517,7 @@
 										"required": ["x", "y"],
 										"title": "Point",
 										"description": "Point class",
-										"dataclassname": "moapy.project.wgsd.wgsd_flow.Point"
+										"dataclassname": "moapy.wgsd.wgsd_flow.Point"
 									},
 									"type": "array",
 									"title": "Points",
@@ -567,19 +567,19 @@
 											"type": "object",
 											"title": "GSD Rebar Grade",
 											"description": "GSD rebar grade class",
-											"dataclassname": "moapy.project.wgsd.wgsd_flow.RebarGrade"
+											"dataclassname": "moapy.wgsd.wgsd_flow.RebarGrade"
 										}
 									},
 									"type": "object",
 									"title": "GSD Rebar Properties",
 									"description": "GSD rebar prop",
-									"dataclassname": "moapy.project.wgsd.wgsd_flow.RebarProp"
+									"dataclassname": "moapy.wgsd.wgsd_flow.RebarProp"
 								}
 							},
 							"type": "object",
 							"title": "GSD Rebar Geometry",
 							"description": "GSD rebar geometry class",
-							"dataclassname": "moapy.project.wgsd.wgsd_flow.RebarGeometry"
+							"dataclassname": "moapy.wgsd.wgsd_flow.RebarGeometry"
 						},
 						{
 							"type": "null"
@@ -634,7 +634,7 @@
 										"required": ["x", "y"],
 										"title": "Point",
 										"description": "Point class",
-										"dataclassname": "moapy.project.wgsd.wgsd_flow.Point"
+										"dataclassname": "moapy.wgsd.wgsd_flow.Point"
 									},
 									"type": "array",
 									"title": "Points",
@@ -667,7 +667,7 @@
 											"type": "object",
 											"title": "GSD Tendon Grade",
 											"description": "GSD Tendon grade class",
-											"dataclassname": "moapy.project.wgsd.wgsd_flow.TendonGrade"
+											"dataclassname": "moapy.wgsd.wgsd_flow.TendonGrade"
 										},
 										"prestress": {
 											"type": "number",
@@ -679,13 +679,13 @@
 									"type": "object",
 									"title": "GSD Tendon Properties",
 									"description": "GSD Tendon prop",
-									"dataclassname": "moapy.project.wgsd.wgsd_flow.TendonProp"
+									"dataclassname": "moapy.wgsd.wgsd_flow.TendonProp"
 								}
 							},
 							"type": "object",
 							"title": "GSD Tendon Geometry",
 							"description": "GSD tendon geometry class",
-							"dataclassname": "moapy.project.wgsd.wgsd_flow.TendonGeometry"
+							"dataclassname": "moapy.wgsd.wgsd_flow.TendonGeometry"
 						},
 						{
 							"type": "null"
@@ -708,7 +708,7 @@
 			"type": "object",
 			"title": "GSD Geometry",
 			"description": "GSD geometry class",
-			"dataclassname": "moapy.project.wgsd.wgsd_flow.Geometry"
+			"dataclassname": "moapy.wgsd.wgsd_flow.Geometry"
 		},
 		"lcb": {
 			"properties": {
@@ -747,13 +747,13 @@
 										"type": "object",
 										"title": "Force",
 										"description": "Force class",
-										"dataclassname": "moapy.project.wgsd.wgsd_flow.Force"
+										"dataclassname": "moapy.wgsd.wgsd_flow.Force"
 									}
 								},
 								"type": "object",
 								"title": "Lcom Result",
 								"description": "Lcom result class",
-								"dataclassname": "moapy.project.wgsd.wgsd_flow.Lcom"
+								"dataclassname": "moapy.wgsd.wgsd_flow.Lcom"
 							},
 							"type": "array",
 							"title": "Lcoms",
@@ -773,13 +773,13 @@
 					"type": "object",
 					"title": "Strength Result",
 					"description": "Strength result class",
-					"dataclassname": "moapy.project.wgsd.wgsd_flow.Lcoms"
+					"dataclassname": "moapy.wgsd.wgsd_flow.Lcoms"
 				}
 			},
 			"type": "object",
 			"title": "GSD Load Combination",
 			"description": "GSD load combination class",
-			"dataclassname": "moapy.project.wgsd.wgsd_flow.Lcb"
+			"dataclassname": "moapy.wgsd.wgsd_flow.Lcb"
 		},
 		"opt": {
 			"properties": {
@@ -801,7 +801,7 @@
 			"type": "object",
 			"title": "GSD Options",
 			"description": "GSD options class",
-			"dataclassname": "moapy.project.wgsd.wgsd_flow.PMOptions"
+			"dataclassname": "moapy.wgsd.wgsd_flow.PMOptions"
 		}
 	},
 	"type": "object",

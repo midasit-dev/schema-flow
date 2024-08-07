@@ -155,16 +155,16 @@ export default function SchemaToUI(props: {
 	const setResponseData = React.useCallback((data: any) => {
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
-			if (data.hasOwnProperty('moapy.project.wgsd.wgsd_flow.Result3DPM')) {
-				const mesh3dpm = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].meshes.mesh3dpm;
-				const strength = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].strength;
-				const lcbs = data['moapy.project.wgsd.wgsd_flow.Result3DPM'].lcbs;
+			if (data.hasOwnProperty('moapy.wgsd.wgsd_flow.Result3DPM')) {
+				const mesh3dpm = data['moapy.wgsd.wgsd_flow.Result3DPM'].meshes.mesh3dpm;
+				const strength = data['moapy.wgsd.wgsd_flow.Result3DPM'].strength;
+				const lcbs = data['moapy.wgsd.wgsd_flow.Result3DPM'].lcbs;
 				setIs3dpm(true);
 				setIsMd(false);
 				setIsOpenJsonView(false);
 				setResponse({ mesh3dpm, strength, lcbs });
-			} else if (data.hasOwnProperty('moapy.project.wgsd.wgsd_oapi.ResultMD')) {
-				const md = data['moapy.project.wgsd.wgsd_oapi.ResultMD'].md;
+			} else if (data.hasOwnProperty('moapy.wgsd.wgsd_oapi.ResultMD')) {
+				const md = data['moapy.wgsd.wgsd_oapi.ResultMD'].md;
 				setIs3dpm(false);
 				setIsMd(true);
 				setIsOpenJsonView(false);

@@ -22,19 +22,19 @@
 							"type": "object",
 							"title": "GSD Concrete Grade",
 							"description": "GSD concrete class",
-							"dataclassname": "moapy.project.wgsd.wgsd_flow.ConcreteGrade"
+							"dataclassname": "moapy.wgsd.wgsd_flow.ConcreteGrade"
 						}
 					},
 					"type": "object",
 					"title": "GSD Material Concrete",
 					"description": "GSD material for Concrete class",
-					"dataclassname": "moapy.project.wgsd.wgsd_flow.MaterialConcrete"
+					"dataclassname": "moapy.wgsd.wgsd_flow.MaterialConcrete"
 				}
 			},
 			"type": "object",
 			"title": "GSD Material",
 			"description": "GSD concrete class",
-			"dataclassname": "moapy.project.wgsd.wgsd_flow.Material"
+			"dataclassname": "moapy.wgsd.wgsd_flow.Material"
 		}
 	},
 	"type": "object",
