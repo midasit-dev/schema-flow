@@ -6,10 +6,6 @@ export default function MatlConc_grade(props) {
 	const { schema, formData, onChange } = props;
 	const { zoom } = useViewport();
 
-	React.useEffect(() => {
-		console.log('zoom', zoom);
-	}, [zoom]);
-
 	return (
 		<div style={{ width: '100%' }}>
 			<h4>{schema.title}</h4>

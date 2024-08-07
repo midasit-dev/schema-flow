@@ -8,6 +8,8 @@ import './index.css';
 import MuiDataGridWidget from '../../Components/InputComp/Widgets/Datagrid_mui';
 import MatlConcgradeField from '../../Components/InputComp/Fields/MatlConc_grade';
 import DataGridField from '../../Components/InputComp/Fields/Datagrid';
+import MatlConc_curve_uls from '../../Components/InputComp/Fields/MatlConc_curve_uls';
+import OuterPolygonField from '../../Components/InputComp/Fields/OuterPolygonField';
 
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
@@ -78,6 +80,10 @@ export default function RJSFComp(props) {
 	const [isConnected, setIsConnected] = React.useState(false);
 	const [execute, setExecute] = React.useState(false);
 	const [allConnectedNodes, setAllConnectedNodes] = React.useState([]);
+
+	React.useEffect(() => {
+		console.log("changedData", changedData)
+	}, [changedData])
 
 	React.useEffect(() => {
 		console.log('uischema', input.UISchema);
@@ -399,8 +405,9 @@ export default function RJSFComp(props) {
 					}}
 					fields={{
 						matlConcGradeField: MatlConcgradeField,
-						matlConcCurveULSField: DataGridField,
-						matlConcCurveSLSField: DataGridField,
+						matlConcCurveULSField: MatlConc_curve_uls,
+						matlConcCurveSLSField: MatlConc_curve_uls,
+						outerPolygonField : OuterPolygonField
 					}}
 					validator={validator}
 					formData={changedData.formData}

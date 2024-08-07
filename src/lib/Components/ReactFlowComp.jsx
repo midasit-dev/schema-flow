@@ -183,7 +183,66 @@ const ReactFlowComp = () => {
 							'ui:field': 'matlConcCurveSLSField',
 						},
 					},
+					rebar:{
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						anyOf:[
+							{
+								'ui:options': {
+									label: false,
+									hideDescription: true,
+								},
+								grade: {
+									'ui:field': 'matlConcGradeField',
+								},
+								curve_uls: {
+									'ui:field': 'matlConcCurveULSField',
+								},
+								curve_sls: {
+									'ui:field': 'matlConcCurveSLSField',
+								},
+							}
+						]
+					},
+					tendon:{
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						anyOf:[
+							{
+								'ui:options': {
+									label: false,
+									hideDescription: true,
+								},
+								grade: {
+									'ui:field': 'matlConcGradeField',
+								},
+								curve_uls: {
+									'ui:field': 'matlConcCurveULSField',
+								},
+								curve_sls: {
+									'ui:field': 'matlConcCurveSLSField',
+								},
+							}
+						]
+					},
 				},
+				geometry:{
+					concrete:{
+						outerPolygon:{
+							'ui:field': 'matlConcCurveULSField',
+						},
+						innerPolygon:{
+							'ui:field': 'matlConcCurveULSField',
+						},
+						// material:{
+						// 	'ui:field': 'matlConcGradeField',
+						// }
+					}
+				}
 			};
 		} else return {};
 	}

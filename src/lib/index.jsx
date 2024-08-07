@@ -175,7 +175,6 @@ function App(props) {
 						const updatedItem = list.find((listItem) => listItem.id === item.id);
 						return updatedItem ? updatedItem : item;
 					});
-					console.log('newList', newList);
 					return newList;
 				});
 			}
@@ -201,7 +200,6 @@ function App(props) {
 
 	const handleSetSelectFunctionListInfo = React.useCallback(
 		(index, isSelected, category, schema) => {
-			console.log('index', index);
 			setFunctionListInfo((prev) => {
 				const updatedItems = prev[category].map((item, idx) => {
 					if (idx !== index) {
