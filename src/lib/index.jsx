@@ -40,7 +40,15 @@ function App(props) {
 	}, []);
 
 	const fetchFunctionList = React.useCallback(
-		async (functionlistInfoLocal, baseURL, listpath, schemapath, executeServerPath, key, filter) => {
+		async (
+			functionlistInfoLocal,
+			baseURL,
+			listpath,
+			schemapath,
+			executeServerPath,
+			key,
+			filter, // category subtitle ex) plugins, wgsd
+		) => {
 			const URI = `${baseURL}${listpath}`;
 			const functionlist = await getFunctionListFromWGSD(URI);
 			if (functionlist.length === 0) return [];
@@ -74,11 +82,11 @@ function App(props) {
 								schemapath: schemapath ? `${schemapath}${encodedPath}` : null,
 								baseURL: baseURL,
 						  };
-	
+
 					acc.push(functionInfo);
 					return acc;
 				}, []);
-	
+
 			return newFunctionListInfo;
 		},
 		[formatFunctionName],
@@ -131,7 +139,7 @@ function App(props) {
 						'backend/wgsd/function-schemas/',
 						'backend/function-executor/python-execute/',
 						key,
-						category.subTitle
+						category.subTitle,
 					);
 					newFunctionList = { [key]: res };
 					setOriginalFunctionListInfo((prev) => {

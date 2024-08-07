@@ -1,18 +1,12 @@
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import rehypeRaw from 'rehype-raw';
 import ReactMD, { defaultUrlTransform } from 'react-markdown';
 import 'katex/dist/katex.min.css';
 import { GuideBox } from '@midasit-dev/moaui-components-v1';
 
-const text = "";
-
 export default function MarkdownViewer(props) {
 	return (
 		<GuideBox>
-			{/* <ReactMD remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-				{text}
-			</ReactMD> */}
 			<ReactMD
 				remarkPlugins={[remarkMath]}
 				rehypePlugins={[rehypeKatex]}

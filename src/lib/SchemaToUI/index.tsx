@@ -316,7 +316,7 @@ export default function SchemaToUI(props: {
 									backgroundColor: 'lightgray', // 배경 색상은 원하는 색상으로 설정할 수 있습니다.
 								}}
 							>
-								<MarkdownViewer mdData={response}  /> {/* 또는 다른 적합한 컴포넌트 */}
+								<MarkdownViewer mdData={response} /> {/* 또는 다른 적합한 컴포넌트 */}
 							</div>
 						) : (
 							<JsonView
