@@ -6,10 +6,9 @@ export default function Grade(props) {
 	console.log('Grade props', props);
 	const { schema, formData, onChange } = props;
 	const { zoom } = useViewport();
-	const [value, setValue] = React.useState(formData.Object.keys(formData)[0]);
+
 	function onChangeHandler(event) {
 		console.log('onChangeHandler', event);
-		setValue(event.value)
 		// onChange(value);
 	}
 
@@ -38,7 +37,7 @@ export default function Grade(props) {
 							["TEST", 2]])}
 							width={'200px'}
 							onChange={onChangeHandler}
-							value={value}
+							value={1}
 							listWidth={'200px'}
 							backgroundColor='white'
 							placeholder={key}

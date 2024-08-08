@@ -7,12 +7,13 @@ export default function Optwidget(props) {
 	const { zoom } = useViewport();
 	console.log('Opt props', props);
 	// console.log("schema", schema);
-
+	const [value, setValue] = React.useState(schema.default);
 	const itemData = new Map(schema.enum.map((item) => [item, item]));
 
-	function onChangeHandler(value) {
-		console.log('onChangeHandler', value);
-		// onChange(value);
+	function onChangeHandler(event) {
+		console.log('onChangeHandler', event);
+		setValue(event.target.value);
+		onChange(event.target.value);
 	}
 
 	return (
@@ -34,7 +35,7 @@ export default function Optwidget(props) {
 					itemList={itemData}
 					width={'200px'}
 					onChange={onChangeHandler}
-					value={schema.default}
+					value={value}
 					listWidth={'200px'}
 					backgroundColor='white'
 					placeholder={schema.title}
