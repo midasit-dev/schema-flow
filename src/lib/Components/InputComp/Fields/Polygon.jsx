@@ -11,10 +11,6 @@ export default function PolygonField(props) {
 	const [height, setHeight] = React.useState(75);
 
 	React.useEffect(() => {
-		console.log('height', height);
-	}, [height]);
-
-	React.useEffect(() => {
 		if (props.formData && props.formData.length > 0) {
 			const rows = props.formData.map((point, index) => ({
 				id: index, // Unique id for each row

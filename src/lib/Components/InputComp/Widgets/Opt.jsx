@@ -3,15 +3,13 @@ import { Typography, DropList } from '@midasit-dev/moaui-components-v1';
 import { useViewport } from 'reactflow';
 
 export default function Optwidget(props) {
+	// console.log('Opt props', props);
 	const { schema, formData, onChange } = props;
 	const { zoom } = useViewport();
-	console.log('Opt props', props);
-	// console.log("schema", schema);
 	const [value, setValue] = React.useState(schema.default);
 	const itemData = new Map(schema.enum.map((item) => [item, item]));
 
 	function onChangeHandler(event) {
-		console.log('onChangeHandler', event);
 		setValue(event.target.value);
 		onChange(event.target.value);
 	}
