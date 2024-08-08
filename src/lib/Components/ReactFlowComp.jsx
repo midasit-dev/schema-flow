@@ -183,12 +183,12 @@ const ReactFlowComp = () => {
 							'ui:field': 'matlConcCurveSLSField',
 						},
 					},
-					rebar:{
+					rebar: {
 						'ui:options': {
 							label: false,
 							hideDescription: true,
 						},
-						anyOf:[
+						anyOf: [
 							{
 								'ui:options': {
 									label: false,
@@ -203,15 +203,15 @@ const ReactFlowComp = () => {
 								curve_sls: {
 									'ui:field': 'matlConcCurveSLSField',
 								},
-							}
-						]
+							},
+						],
 					},
-					tendon:{
+					tendon: {
 						'ui:options': {
 							label: false,
 							hideDescription: true,
 						},
-						anyOf:[
+						anyOf: [
 							{
 								'ui:options': {
 									label: false,
@@ -226,23 +226,31 @@ const ReactFlowComp = () => {
 								curve_sls: {
 									'ui:field': 'matlConcCurveSLSField',
 								},
-							}
-						]
+							},
+						],
 					},
 				},
-				geometry:{
-					concrete:{
-						outerPolygon:{
-							'ui:field': 'matlConcCurveULSField',
+				geometry: {
+					'ui:options': {
+						label: true,
+						hideDescription: true,
+					},
+					concrete: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
 						},
-						innerPolygon:{
-							'ui:field': 'matlConcCurveULSField',
+						outerPolygon: {
+							'ui:field': 'polygonField',
 						},
-						// material:{
-						// 	'ui:field': 'matlConcGradeField',
-						// }
-					}
-				}
+						innerPolygon: {
+							'ui:field': 'polygonField',
+						},
+						material:{
+							'ui:field': 'matlConcGradeField',
+						}
+					},
+				},
 			};
 		} else return {};
 	}

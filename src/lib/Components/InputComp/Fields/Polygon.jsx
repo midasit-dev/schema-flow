@@ -1,54 +1,82 @@
 import React from 'react';
-import { GuideBox, Panel, DataGrid, Button } from '@midasit-dev/moaui-components-v1';
+import { GuideBox, Panel, DataGrid, Button, Typography } from '@midasit-dev/moaui-components-v1';
+import { set } from 'lodash';
 
-export default function MatlConc_curve_uls(props) {
+const heightArr = [72.5, 105, 137, 169, 201];
+
+export default function OuterPolygonField(props) {
 	console.log('Datagrid props', props);
 	const [rowDatas, setRowDatas] = React.useState([
 		{
 			id: 0,
-			stress: 0,
-			strain: 0,
+			x: 0,
+			y: 0,
 		},
 		{
 			id: 1,
-			stress: 0,
-			strain: 0.0006,
+			x: 0,
+			y: 0.0006,
 		},
 		{
 			id: 2,
-			stress: 34,
-			strain: 0.0006,
+			x: 34,
+			y: 0.0006,
 		},
 		{
 			id: 3,
-			stress: 34,
-			strain: 0.003,
+			x: 34,
+			y: 0.003,
 		},
 	]);
-	const [columnDatas, setColumnDatas] = React.useState(['stress', 'strain']);
-	const [height, setHeight] = React.useState(200);
+	const [columnHeaderDatas, setColumnHeaderDatas] = React.useState(["x", "y"]);
+	const [columns, setColumns] = React.useState([{}]);
+	const [height, setHeight] = React.useState(75);
+
+	React.useEffect(() => {
+		console.log("height", height);
+	}, [height]);
 
 	React.useEffect(() => {
 		if (props.formData && props.formData.length > 0) {
-      console.log('props.formData', props.formData);
 			const rows = props.formData.map((point, index) => ({
 				id: index, // Unique id for each row
 				...point,
 			}));
 			const columns = Object.keys(props.formData[0]);
-			setColumnDatas(columns);
+			setColumnHeaderDatas(columns);
 			setRowDatas(rows);
-			props.formData.length > 2
-				? setHeight(props.formData.length * 42.2)
-				: setHeight(props.formData.length * 52.3);
+			props.formData.length < 6 ? setHeight(heightArr[props.formData.length - 1]) : setHeight(253.5);
+		} else {
+			setColumnHeaderDatas([]);
+			setRowDatas([]);
 		}
 	}, [props.formData]);
+
+	React.useEffect(() => {
+		if(columnHeaderDatas.length > 0) {
+			let columns = [{
+				editable: false,
+				field: 'id',
+				headerName: 'Id',
+				width: 60,
+			}];
+			columnHeaderDatas.forEach((column, index) => {
+				columns.push({
+					editable: true,
+					field: column,
+					headerName: column.charAt(0).toUpperCase() + column.slice(1),
+					width: 150,
+				});
+			});
+			setColumns(columns);
+		}
+	}, [columnHeaderDatas])
 
 	function onClickAdd() {
 		// add new row (use setRowDatas function)
 		const newId = rowDatas.length + 1;
-		setRowDatas([...rowDatas, { id: newId, stress: 0, strain: 0 }]);
-		props.onChange([...props.formData, { stress: 0, strain: 0 }]);
+		setRowDatas([...rowDatas, { id: newId, x: 0, y: 0 }]);
+		props.onChange([...props.formData, { x: 0, y: 0 }]);
 	}
 
 	function onClickDelete() {
@@ -61,7 +89,10 @@ export default function MatlConc_curve_uls(props) {
 	}
 
 	return (
-		<div style={{ height: height, marginTop: '40px' }}>
+		<div style={{ height: height, marginTop: '20px', marginBottom: '60px' }}>
+			<Typography variant='h1' size='large'>
+				{props.schema.title}
+			</Typography>
 			<GuideBox horRight row width={'100%'} marginBottom={1} spacing={1}>
 				<Button width='auto' color='normal' onClick={onClickAdd}>
 					Add
@@ -71,26 +102,7 @@ export default function MatlConc_curve_uls(props) {
 				</Button>
 			</GuideBox>
 			<DataGrid
-				columns={[
-					{
-						editable: false,
-						field: 'id',
-						headerName: 'Id',
-						width: 60,
-					},
-					{
-						editable: true,
-						field: columnDatas[0],
-						headerName: columnDatas[0].charAt(0).toUpperCase() + columnDatas[0].slice(1),
-						width: 150,
-					},
-					{
-						editable: true,
-						field: columnDatas[1],
-						headerName: columnDatas[1].charAt(0).toUpperCase() + columnDatas[1].slice(1),
-						width: 150,
-					},
-				]}
+				columns={columns}
 				initialState={{
 					pagination: {
 						paginationModel: {
@@ -123,8 +135,8 @@ export default function MatlConc_curve_uls(props) {
 							row.id === newValue.id
 								? {
 										id: newValue['id'],
-										stress: Number(newValue['stress']),
-										strain: Number(newValue['strain']),
+										x: Number(newValue['x']),
+										y: Number(newValue['y']),
 								  }
 								: row,
 						),

@@ -28,7 +28,7 @@
 	],
 	"dependencies": {
 		"@craco/craco": "^7.1.0",
-		"@midasit-dev/moaui-components-v1": "^0.1.146",
+		"@midasit-dev/moaui-components-v1": "^0.1.147",
 		"@mui/x-data-grid": "^7.11.0",
 		"@react-three/drei": "^9.107.0",
 		"@react-three/fiber": "^8.16.8",

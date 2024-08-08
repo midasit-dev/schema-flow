@@ -1,36 +1,52 @@
 import React from 'react';
-import { GuideBox, Panel, DataGrid, Button } from '@midasit-dev/moaui-components-v1';
+import { GuideBox, DataGrid, Button } from '@midasit-dev/moaui-components-v1';
 
-export default function Datagrid(props) {
-	console.log('Datagrid props', props);
+const heightArr = [72.5, 105, 137, 169, 201];
+
+export default function MatlConc_curve_uls(props) {
+	// console.log('Datagrid props', props);
 	const [rowDatas, setRowDatas] = React.useState([
-		{ id: 1, stress: 1, strain: 2 },
-		{ id: 2, stress: 3, strain: 4 },
-		{ id: 3, stress: 5, strain: 6 },
-		{ id: 4, stress: 7, strain: 8 },
-		{ id: 5, stress: 9, strain: 10 },
+		{
+			id: 0,
+			stress: 0,
+			strain: 0,
+		},
+		{
+			id: 1,
+			stress: 0,
+			strain: 0.0006,
+		},
+		{
+			id: 2,
+			stress: 34,
+			strain: 0.0006,
+		},
+		{
+			id: 3,
+			stress: 34,
+			strain: 0.003,
+		},
 	]);
-	const [height, setHeight] = React.useState(0);
+	const [columnDatas, setColumnDatas] = React.useState(['stress', 'strain']);
+	const [height, setHeight] = React.useState(100);
 
 	React.useEffect(() => {
-		if (props.formData) {
+		if (props.formData && props.formData.length > 0) {
 			const rows = props.formData.map((point, index) => ({
 				id: index, // Unique id for each row
 				...point,
 			}));
-			console.log('rows', rows);
+			const columns = Object.keys(props.formData[0]);
+			setColumnDatas(columns);
 			setRowDatas(rows);
-			props.formData.length > 2
-				? setHeight(props.formData.length * 42.2)
-				: setHeight(props.formData.length * 52.3);
+			props.formData.length < 6 ? setHeight(heightArr[props.formData.length - 1]) : setHeight(253.5);
 		}
 	}, [props.formData]);
 
 	function onClickAdd() {
 		// add new row (use setRowDatas function)
 		const newId = rowDatas.length + 1;
-		const newRow = { id: newId, stress: 0, strain: 0 };
-		setRowDatas([...rowDatas, newRow]);
+		setRowDatas([...rowDatas, { id: newId, stress: 0, strain: 0 }]);
 		props.onChange([...props.formData, { stress: 0, strain: 0 }]);
 	}
 
@@ -63,14 +79,14 @@ export default function Datagrid(props) {
 					},
 					{
 						editable: true,
-						field: 'stress',
-						headerName: 'Stress',
+						field: columnDatas[0],
+						headerName: columnDatas[0].charAt(0).toUpperCase() + columnDatas[0].slice(1),
 						width: 150,
 					},
 					{
 						editable: true,
-						field: 'strain',
-						headerName: 'Strain',
+						field: columnDatas[1],
+						headerName: columnDatas[1].charAt(0).toUpperCase() + columnDatas[1].slice(1),
 						width: 150,
 					},
 				]}
@@ -83,28 +99,31 @@ export default function Datagrid(props) {
 				}}
 				pageSizeOptions={[5]}
 				rows={rowDatas}
-				hideFooter
-				hideFooterPagination
-				hideFooterSelectedRowCount
+				hideFooter={rowDatas.length > 5 ? false : true}
+				hideFooterPagination={rowDatas.length > 5 ? false : true}
+				hideFooterSelectedRowCount={rowDatas.length > 5 ? false : true}
 				processRowUpdate={(newValue) => {
-					console.log('newValue', newValue);
 					props.onChange(
-						props.formData.map((row, index) =>
-							index === newValue.id
-								? {
-										stress: Number(newValue['stress']),
-										strain: Number(newValue['strain']),
-								  }
-								: row,
-						),
+						props.formData.map((row, index) => {
+							if (index === newValue.id) {
+								for (const key in newValue) {
+									if (key !== 'id') {
+										row[key] = Number(newValue[key]);
+									}
+								}
+								return row;
+							}
+							return row;
+						}),
 					);
+					console.log('newValue', newValue);
 					setRowDatas(
 						rowDatas.map((row) =>
 							row.id === newValue.id
 								? {
-										Id: newValue['id'],
-										Stress: Number(newValue['stress']),
-										Strain: Number(newValue['strain']),
+										id: newValue['id'],
+										stress: Number(newValue['stress']),
+										strain: Number(newValue['strain']),
 								  }
 								: row,
 						),
@@ -114,8 +133,6 @@ export default function Datagrid(props) {
 				onProcessRowUpdateError={(error) => {
 					console.log('error', error);
 				}}
-				cellFontSize='10px'
-				columnFontSize='12px'
 			/>
 		</div>
 	);

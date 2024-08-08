@@ -304,39 +304,39 @@ export default function SchemaToUI(props: {
 					)}
 				</div>
 				<>
-					{(is3dpm && isOpenResultView) && (
+					{is3dpm && isOpenResultView && (
 						<div
-						style={{
-							width: '100%',
-							height: maxHeight,
-							overflow: 'auto',
-							backgroundColor: 'white',
-						}}
+							style={{
+								width: '100%',
+								height: maxHeight,
+								overflow: 'auto',
+								backgroundColor: 'white',
+							}}
 						>
-						<ThreeDPM data={response} />
+							<ThreeDPM data={response} />
 						</div>
 					)}
 
-					{(isMarkdown && isOpenResultView) && (
+					{isMarkdown && isOpenResultView && (
 						<div
-						style={{
-							width: '100%',
-							height: maxHeight,
-							overflow: 'auto',
-							backgroundColor: 'white',
-						}}
+							style={{
+								width: '100%',
+								height: maxHeight,
+								overflow: 'auto',
+								backgroundColor: 'white',
+							}}
 						>
-						<MarkdownViewer mdData={response} /> {/* 또는 다른 적합한 컴포넌트 */}
+							<MarkdownViewer mdData={response} /> {/* 또는 다른 적합한 컴포넌트 */}
 						</div>
 					)}
 
-					{(isJsonResult && isOpenResultView) && (
+					{isJsonResult && isOpenResultView && (
 						<JsonView
-						src={response}
-						style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
+							src={response}
+							style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
 						/>
 					)}
-					</>
+				</>
 			</div>
 		</div>
 	);
