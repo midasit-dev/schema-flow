@@ -3,7 +3,7 @@ import { Typography, DropList } from '@midasit-dev/moaui-components-v1';
 import { useViewport } from 'reactflow';
 
 export default function Grade(props) {
-	console.log('Grade props', props);
+	// console.log('Grade props', props);
 	const { schema, formData, onChange } = props;
 	const { zoom } = useViewport();
 

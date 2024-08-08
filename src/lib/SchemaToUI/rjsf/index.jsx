@@ -11,6 +11,7 @@ import DataGridField from '../../Components/InputComp/Fields/Datagrid';
 import Curve_uls_sls_Field from '../../Components/InputComp/Fields/Curve_uls_sls';
 import PolygonField from '../../Components/InputComp/Fields/Polygon';
 import LcomField from '../../Components/InputComp/Fields/Lcom';
+import LcomFixedField from '../../Components/InputComp/Fields/Lcom_Fixed';
 import OptWidget from '../../Components/InputComp/Widgets/Opt';
 
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
@@ -411,6 +412,7 @@ export default function RJSFComp(props) {
 						matlConcCurveSLSField: Curve_uls_sls_Field,
 						polygonField: PolygonField,
 						lcomField: LcomField,
+						lcomFixedField: LcomFixedField,
 					}}
 					validator={validator}
 					formData={changedData.formData}

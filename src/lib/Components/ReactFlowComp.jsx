@@ -335,7 +335,155 @@ const ReactFlowComp = () => {
 					},
 				},
 			};
-		} else return {};
+		} 
+		else if (id.includes('Report rc cracked stress')) {
+			return {
+				material: {
+					'ui:options': {
+						label: false,
+						hideDescription: true,
+					},
+					concrete: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						grade: {
+							'ui:field': 'matlConcGradeField',
+						},
+						curve_uls: {
+							'ui:field': 'matlConcCurveULSField',
+						},
+						curve_sls: {
+							'ui:field': 'matlConcCurveSLSField',
+						},
+					},
+					rebar: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						anyOf: [
+							{
+								'ui:options': {
+									label: false,
+									hideDescription: true,
+								},
+								grade: {
+									'ui:field': 'matlConcGradeField',
+								},
+								curve_uls: {
+									'ui:field': 'matlConcCurveULSField',
+								},
+								curve_sls: {
+									'ui:field': 'matlConcCurveSLSField',
+								},
+							},
+						],
+					},
+					tendon: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						anyOf: [
+							{
+								'ui:options': {
+									label: false,
+									hideDescription: true,
+								},
+								grade: {
+									'ui:field': 'matlConcGradeField',
+								},
+								curve_uls: {
+									'ui:field': 'matlConcCurveULSField',
+								},
+								curve_sls: {
+									'ui:field': 'matlConcCurveSLSField',
+								},
+							},
+						],
+					},
+				},
+				geometry: {
+					'ui:options': {
+						label: true,
+						hideDescription: true,
+					},
+					concrete: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						material: {
+							'ui:field': 'matlConcGradeField',
+						},
+						outerPolygon: {
+							'ui:field': 'polygonField',
+						},
+						innerPolygon: {
+							'ui:field': 'polygonField',
+						},
+					},
+					rebar: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						anyOf: [
+							{
+								'ui:options': {
+									label: false,
+									hideDescription: true,
+								},
+								points: {
+									'ui:field': 'polygonField',
+								},
+								prop: {
+									'ui:options': {
+										label: false,
+										hideDescription: true,
+									},
+									material: {
+										'ui:field': 'matlConcGradeField',
+									},
+								},
+							},
+						],
+					},
+					tendon: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						anyOf: [
+							{
+								'ui:options': {
+									label: false,
+									hideDescription: true,
+								},
+								points: {
+									'ui:field': 'polygonField',
+								},
+								prop: {
+									'ui:options': {
+										label: false,
+										hideDescription: true,
+									},
+									material: {
+										'ui:field': 'matlConcGradeField',
+									},
+								},
+							},
+						],
+					},
+				},
+				lcom:{
+					'ui:field': 'lcomFixedField',
+				}
+			}
+		}
+		else return {};
 	}
 
 	function addCustomNode(event) {
