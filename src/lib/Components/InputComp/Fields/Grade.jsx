@@ -33,8 +33,7 @@ export default function Grade(props) {
 							{schema.properties[key].title}
 						</Typography>
 						<DropList
-							itemList={new Map([[formData[key], 1],
-							["TEST", 2]])}
+							itemList={new Map([[formData[key], 1]])}
 							width={'200px'}
 							onChange={onChangeHandler}
 							value={1}
