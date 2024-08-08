@@ -39,7 +39,9 @@ export default function MatlConc_curve_uls(props) {
 			const columns = Object.keys(props.formData[0]);
 			setColumnDatas(columns);
 			setRowDatas(rows);
-			props.formData.length < 6 ? setHeight(heightArr[props.formData.length - 1]) : setHeight(253.5);
+			props.formData.length < 6
+				? setHeight(heightArr[props.formData.length - 1])
+				: setHeight(253.5);
 		}
 	}, [props.formData]);
 
@@ -60,7 +62,7 @@ export default function MatlConc_curve_uls(props) {
 	}
 
 	return (
-		<div style={{ height: height + 40, marginTop: '10px', marginBottom:"10px" }}>
+		<div style={{ height: height + 40, marginTop: '10px', marginBottom: '10px' }}>
 			<Typography variant='h1' size='large'>
 				{props.schema.title}
 			</Typography>

@@ -77,5 +77,5 @@
 }
 
 .form-group.field.field-object {
-  margin-bottom: 0 !important; /* 0으로 설정하거나 원하는 값으로 설정 */
+	margin-bottom: 0 !important; /* 0으로 설정하거나 원하는 값으로 설정 */
 }

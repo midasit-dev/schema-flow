@@ -5,20 +5,20 @@ import { useViewport } from 'reactflow';
 export default function Optwidget(props) {
 	const { schema, formData, onChange } = props;
 	const { zoom } = useViewport();
-	console.log("Opt props", props);
+	console.log('Opt props', props);
 	// console.log("schema", schema);
 
-	const data = schema.enum.map((item, index) => {
-		return { value: item, label: item };
-	});
+	const itemData = new Map(schema.enum.map((item) => [item, item]));
+
+	function onChangeHandler(value) {
+		console.log('onChangeHandler', value);
+		// onChange(value);
+	}
 
 	return (
-		<div style={{ width: '100%', height: '100px', marginTop: '10px', marginBottom: '10px' }}>
-			<div style={{ marginBottom: '15px' }}>
-				<h4>{schema.title}</h4>
-			</div>
+		<div style={{ width: '100%', marginTop: '10px', marginBottom: '10px' }}>
 			<div
-				key={`div_${schema.title}` }
+				key={`div_${schema.title}`}
 				style={{
 					display: 'flex',
 					flexDirection: 'row',
@@ -31,13 +31,13 @@ export default function Optwidget(props) {
 					{schema.title}
 				</Typography>
 				<DropList
-					itemList={new Map([[formData[key], 1]])}
+					itemList={itemData}
 					width={'200px'}
-					onChange={() => {}}
-					value={1}
+					onChange={onChangeHandler}
+					value={schema.default}
 					listWidth={'200px'}
 					backgroundColor='white'
-					placeholder={key}
+					placeholder={schema.title}
 					maxLength={10}
 					scale={zoom}
 				/>

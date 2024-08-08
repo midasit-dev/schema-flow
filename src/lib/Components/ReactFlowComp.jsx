@@ -315,15 +315,23 @@ const ReactFlowComp = () => {
 						},
 						lcoms: {
 							'ui:field': 'lcomField',
-						}
-					}
-				},
-				opt:{
-					dgncode:{
-						'ui:widget': 'optWidget',
+						},
 					},
-					by_ecc_pu:{
+				},
+				opt: {
+					dgncode: {
 						'ui:widget': 'optWidget',
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+					},
+					by_ecc_pu: {
+						'ui:widget': 'optWidget',
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
 					},
 				},
 			};

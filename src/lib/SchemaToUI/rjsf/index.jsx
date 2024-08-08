@@ -397,7 +397,7 @@ export default function RJSFComp(props) {
 	}
 
 	return (
-		<div key={"rjsf_div"} style={{ paddingRight: '10px' }}>
+		<div key={'rjsf_div'} style={{ paddingRight: '10px' }}>
 			{!isEmpty(formSchema) && (
 				<Form
 					schema={formSchema}
