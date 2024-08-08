@@ -92,7 +92,7 @@ export default function RJSFComp(props) {
 			// {
 			// 	"nodeId": {
 			// 		'setExecute': setExecute,
-			// 		'setIsOpenJsonView': setIsOpenJsonView,
+			// 		'setIsResultView': setIsResultView,
 			// 		'setIsSuccess': setIsSuccess,
 			// 		'setIsError': setIsError
 			// 	}
@@ -236,7 +236,7 @@ export default function RJSFComp(props) {
 					if (key === node) {
 						if (executeState[key]) {
 							executeState[key]['setExecute'](false);
-							executeState[key]['setIsOpenJsonView'](false);
+							executeState[key]['setIsResultView'](false);
 							executeState[key]['setIsSuccess'](false);
 							executeState[key]['setIsError'](false);
 						}
@@ -332,7 +332,7 @@ export default function RJSFComp(props) {
 
 	async function onClickedSingleRunButton() {
 		executeState[nodeId]['setExecute'](false);
-		executeState[nodeId]['setIsOpenJsonView'](false);
+		executeState[nodeId]['setIsResultView'](false);
 		executeState[nodeId]['setIsSuccess'](false);
 		executeState[nodeId]['setIsError'](false);
 		setExecuteFlow({ [nodeId]: { isExecuted: false, output: {} } });

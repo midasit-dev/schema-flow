@@ -39,11 +39,12 @@ export default function SchemaToUI(props: {
 		layers: [],
 	});
 	const [response, setResponse] = React.useState({});
-	const [isOpenJsonView, setIsOpenJsonView] = React.useState(false);
 	const [isloading, setIsloading] = React.useState(false);
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
+	const [isJsonResult, setIsJsonResult] = React.useState(false);
 	const [is3dpm, setIs3dpm] = React.useState(false);
 	const [isMarkdown, setIsMd] = React.useState(false);
+	const [isOpenResultView, setIsResultView] = React.useState(false);
 	const [schema, setSchema] = React.useState(schemaInfo.schema);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const [isError, setIsError] = React.useState(false);
@@ -68,7 +69,7 @@ export default function SchemaToUI(props: {
 				...prev,
 				[nodeId]: {
 					...prev[nodeId],
-					setIsOpenJsonView,
+					setIsResultView,
 					setIsSuccess,
 					setIsError,
 					setIsShake,
@@ -144,13 +145,21 @@ export default function SchemaToUI(props: {
 		setCanvas(schemaInfo.schema.canvas);
 	}, [schemaInfo]);
 
+	React.useEffect(() => {
+		if (isJsonResult || is3dpm || isMarkdown) {
+			setIsResultView(true);
+		} else {
+			setIsResultView(false);
+		}
+	}, [isJsonResult, is3dpm, isMarkdown]);
+
 	const onClickCloseHandler = React.useCallback(() => {
 		removeCustomNode(nodeId, schemaInfo.id);
 	}, [nodeId, schemaInfo.id, removeCustomNode]);
 
-	const onClickOpenJsonView = React.useCallback(() => {
-		setIsOpenJsonView(!isOpenJsonView);
-	}, [isOpenJsonView]);
+	const onClickOpenResultView = React.useCallback(() => {
+		setIsResultView(!isOpenResultView);
+	}, [isOpenResultView]);
 
 	const setResponseData = React.useCallback((data: any) => {
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
@@ -161,18 +170,18 @@ export default function SchemaToUI(props: {
 				const lcbs = data['moapy.wgsd.wgsd_flow.Result3DPM'].lcbs;
 				setIs3dpm(true);
 				setIsMd(false);
-				setIsOpenJsonView(false);
+				setIsJsonResult(false);
 				setResponse({ mesh3dpm, strength, lcbs });
 			} else if (data.hasOwnProperty('moapy.wgsd.wgsd_oapi.ResultMD')) {
 				const md = data['moapy.wgsd.wgsd_oapi.ResultMD'].md;
 				setIs3dpm(false);
 				setIsMd(true);
-				setIsOpenJsonView(false);
+				setIsJsonResult(false);
 				setResponse(md);
 			} else {
 				setIs3dpm(false);
 				setIsMd(false);
-				setIsOpenJsonView(true);
+				setIsJsonResult(true);
 				setResponse(data);
 			}
 		}
@@ -247,7 +256,7 @@ export default function SchemaToUI(props: {
 				<div
 					key={`PanelCanvas-${uuid}`}
 					style={{
-						width: isOpenJsonView ? '60%' : '100%',
+						width: '100%',
 						height: '100%',
 						maxWidth: maxRJSFWidth,
 						maxHeight: maxHeight,
@@ -286,46 +295,48 @@ export default function SchemaToUI(props: {
 								cursor: 'pointer',
 								zIndex: 100,
 							}}
-							onClick={onClickOpenJsonView}
+							onClick={onClickOpenResultView}
 						>
 							<AnimatePresence mode={'wait'}>
-								{isOpenJsonView || is3dpm || isMarkdown ? <SvgLeftArrow /> : <SvgRightArrow />}
+								{isOpenResultView ? <SvgLeftArrow /> : <SvgRightArrow />}
 							</AnimatePresence>
 						</div>
 					)}
 				</div>
-				{isOpenJsonView && (
-					<>
-						{is3dpm ? (
-							<div
-								style={{
-									width: '100%',
-									height: maxHeight,
-									overflow: 'auto',
-									backgroundColor: 'white',
-								}}
-							>
-								<ThreeDPM data={response} />
-							</div>
-						) : isMarkdown ? (
-							<div
-								style={{
-									width: '100%',
-									height: maxHeight,
-									overflow: 'auto',
-									backgroundColor: 'lightgray', // 배경 색상은 원하는 색상으로 설정할 수 있습니다.
-								}}
-							>
-								<MarkdownViewer mdData={response} /> {/* 또는 다른 적합한 컴포넌트 */}
-							</div>
-						) : (
-							<JsonView
-								src={response}
-								style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
-							/>
-						)}
+				<>
+					{(is3dpm && isOpenResultView) && (
+						<div
+						style={{
+							width: '100%',
+							height: maxHeight,
+							overflow: 'auto',
+							backgroundColor: 'white',
+						}}
+						>
+						<ThreeDPM data={response} />
+						</div>
+					)}
+
+					{(isMarkdown && isOpenResultView) && (
+						<div
+						style={{
+							width: '100%',
+							height: maxHeight,
+							overflow: 'auto',
+							backgroundColor: 'white',
+						}}
+						>
+						<MarkdownViewer mdData={response} /> {/* 또는 다른 적합한 컴포넌트 */}
+						</div>
+					)}
+
+					{(isJsonResult && isOpenResultView) && (
+						<JsonView
+						src={response}
+						style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
+						/>
+					)}
 					</>
-				)}
 			</div>
 		</div>
 	);
