@@ -240,15 +240,90 @@ const ReactFlowComp = () => {
 							label: false,
 							hideDescription: true,
 						},
+						material: {
+							'ui:field': 'matlConcGradeField',
+						},
 						outerPolygon: {
 							'ui:field': 'polygonField',
 						},
 						innerPolygon: {
 							'ui:field': 'polygonField',
 						},
-						material:{
-							'ui:field': 'matlConcGradeField',
+					},
+					rebar: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						anyOf: [
+							{
+								'ui:options': {
+									label: false,
+									hideDescription: true,
+								},
+								points: {
+									'ui:field': 'polygonField',
+								},
+								prop: {
+									'ui:options': {
+										label: false,
+										hideDescription: true,
+									},
+									material: {
+										'ui:field': 'matlConcGradeField',
+									},
+								},
+							},
+						],
+					},
+					tendon: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						anyOf: [
+							{
+								'ui:options': {
+									label: false,
+									hideDescription: true,
+								},
+								points: {
+									'ui:field': 'polygonField',
+								},
+								prop: {
+									'ui:options': {
+										label: false,
+										hideDescription: true,
+									},
+									material: {
+										'ui:field': 'matlConcGradeField',
+									},
+								},
+							},
+						],
+					},
+				},
+				lcb: {
+					'ui:options': {
+						label: false,
+						hideDescription: true,
+					},
+					uls: {
+						'ui:options': {
+							label: false,
+							hideDescription: true,
+						},
+						lcoms: {
+							'ui:field': 'lcomField',
 						}
+					}
+				},
+				opt:{
+					dgncode:{
+						'ui:widget': 'optWidget',
+					},
+					by_ecc_pu:{
+						'ui:widget': 'optWidget',
 					},
 				},
 			};

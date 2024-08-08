@@ -10,6 +10,8 @@ import GradeField from '../../Components/InputComp/Fields/Grade';
 import DataGridField from '../../Components/InputComp/Fields/Datagrid';
 import Curve_uls_sls_Field from '../../Components/InputComp/Fields/Curve_uls_sls';
 import PolygonField from '../../Components/InputComp/Fields/Polygon';
+import LcomField from '../../Components/InputComp/Fields/Lcom';
+import OptWidget from '../../Components/InputComp/Widgets/Opt';
 
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
@@ -395,19 +397,20 @@ export default function RJSFComp(props) {
 	}
 
 	return (
-		<div style={{ paddingRight: '10px' }}>
+		<div key={"rjsf_div"} style={{ paddingRight: '10px' }}>
 			{!isEmpty(formSchema) && (
 				<Form
 					schema={formSchema}
 					uiSchema={input.UISchema}
 					widgets={{
-						point_table: MuiDataGridWidget,
+						optWidget: OptWidget,
 					}}
 					fields={{
 						matlConcGradeField: GradeField,
 						matlConcCurveULSField: Curve_uls_sls_Field,
 						matlConcCurveSLSField: Curve_uls_sls_Field,
 						polygonField: PolygonField,
+						lcomField: LcomField,
 					}}
 					validator={validator}
 					formData={changedData.formData}

@@ -267,7 +267,7 @@ export default function SchemaToUI(props: {
 						borderBottom: '1px solid #c1c1c3',
 						backgroundColor: 'rgba(255, 255, 255, 0.9)',
 						position: 'relative',
-						padding: '10px',
+						padding: '10px 0px 10px 20px',
 					}}
 				>
 					{/* {canvas.layers.map((layer: Layer, index: number) => {
