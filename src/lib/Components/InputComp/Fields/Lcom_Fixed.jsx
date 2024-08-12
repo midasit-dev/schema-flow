@@ -3,26 +3,24 @@ import { GuideBox, DataGrid, Button, Typography } from '@midasit-dev/moaui-compo
 
 const heightArr = [72.5, 105, 137, 169, 201];
 
-export default function LcomField(props) {
-	// console.log('LcomField props', props);
+export default function Lcom_FiexedField(props) {
+	console.log('LcomField props', props);
 	const [rowDatas, setRowDatas] = React.useState([]);
 	const [columnHeaderDatas, setColumnHeaderDatas] = React.useState(['name', 'Nz', 'Mx', 'My']);
 	const [columns, setColumns] = React.useState([{}]);
-	const [height, setHeight] = React.useState(75);
+	const [height, setHeight] = React.useState(72.5);
 
 	React.useEffect(() => {
-		if (props.formData && props.formData.length > 0) {
-			const rows = props.formData.map((item, index) => ({
-				id: index, // Unique id for each row
-				name: item.name,
-				Nz: item.f.Nz,
-				Mx: item.f.Mx,
-				My: item.f.My,
-			}));
+		if (props.formData) {
+			const rows = [{
+				id: 0,
+				name: props.formData.name,
+				Nz: props.formData.f.Nz,
+				Mx: props.formData.f.Mx,
+				My: props.formData.f.My,
+			}];
+			console.log('rows', rows);
 			setRowDatas(rows);
-			props.formData.length < 6
-				? setHeight(heightArr[props.formData.length - 1])
-				: setHeight(253.5);
 		} else {
 			setColumnHeaderDatas([]);
 			setRowDatas([]);
@@ -88,24 +86,18 @@ export default function LcomField(props) {
 					hideFooterPagination={rowDatas.length > 5 ? false : true}
 					hideFooterSelectedRowCount={rowDatas.length > 5 ? false : true}
 					processRowUpdate={(newValue) => {
-						props.onChange(
-							props.formData.map((row, index) => {
-								if (index === newValue.id) {
-									for (const key in newValue) {
-										if (key !== 'id') {
-											if (key === 'name') {
-												row[key] = newValue[key];
-											} else {
-												row.f[key] = Number(newValue[key]);
-											}
-										}
-									}
-									return row;
+						const row = props.formData;
+						console.log('row', row);
+						for (const key in newValue) {
+							if (key !== 'id') {
+								if (key === 'name') {
+									row[key] = newValue[key];
+								} else {
+									row.f[key] = Number(newValue[key]);
 								}
-								return row;
-							}),
-						);
-						console.log('newValue', newValue);
+							}
+						}
+						props.onChange(row);
 						setRowDatas(
 							rowDatas.map((row) =>
 								row.id === newValue.id
