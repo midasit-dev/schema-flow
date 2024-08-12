@@ -108,7 +108,6 @@ export default function PolygonField(props) {
 								return row;
 							}),
 						);
-						console.log('newValue', newValue);
 						setRowDatas(
 							rowDatas.map((row) =>
 								row.id === newValue.id
