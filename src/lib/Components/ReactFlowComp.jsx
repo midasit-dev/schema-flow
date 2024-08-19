@@ -11,31 +11,19 @@ import ReactFlow, {
 	useKeyPress,
 } from 'reactflow';
 
-import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
-import AnnotationNode from './AnnotationNode';
-import ToolbarNode from './ToolbarNode';
-import ResizerNode from './ResizerNode';
-import CircleNode from './CircleNode';
-import TextNode from './TextNode';
-import ButtonEdge from './ButtonEdge';
 import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge/CustomEdge';
 
 import { v4 as uuidv4 } from 'uuid';
 
 import 'reactflow/dist/style.css';
-import './overview.css';
+import './ReactFlowComp.css';
 import { isEmpty, cloneDeep } from 'lodash';
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { SelectedSchema, FunctionListInfo, EgdesInfo } from '../RecoilAtom/recoilState';
 
 const nodeTypes = {
-	annotation: AnnotationNode,
-	tools: ToolbarNode,
-	resizer: ResizerNode,
-	circle: CircleNode,
-	textinput: TextNode,
 	customSchema: CustomNode,
 };
 

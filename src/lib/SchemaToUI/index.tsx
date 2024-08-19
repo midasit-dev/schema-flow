@@ -162,6 +162,7 @@ export default function SchemaToUI(props: {
 	}, [isOpenResultView]);
 
 	const setResponseData = React.useCallback((data: any) => {
+		console.log('data', data);
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
 			if (data.hasOwnProperty('moapy.wgsd.wgsd_flow.Result3DPM')) {

@@ -12,13 +12,15 @@ export default function Lcom_FiexedField(props) {
 
 	React.useEffect(() => {
 		if (props.formData) {
-			const rows = [{
-				id: 0,
-				name: props.formData.name,
-				Nz: props.formData.f.Nz,
-				Mx: props.formData.f.Mx,
-				My: props.formData.f.My,
-			}];
+			const rows = [
+				{
+					id: 0,
+					name: props.formData.name,
+					Nz: props.formData.f.Nz,
+					Mx: props.formData.f.Mx,
+					My: props.formData.f.My,
+				},
+			];
 			console.log('rows', rows);
 			setRowDatas(rows);
 		} else {
