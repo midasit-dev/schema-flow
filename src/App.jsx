@@ -1,5 +1,5 @@
 import React from 'react';
-import SchemaUIBuilder from './lib';
+import SchemaUIBuilder from './lib/SchemaFlow';
 import { RecoilRoot } from 'recoil';
 
 const App = () => {

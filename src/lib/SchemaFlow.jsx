@@ -22,7 +22,7 @@ const getFunctionListFromWGSD = async (URI) => {
 	return data;
 };
 
-function App(props) {
+function SchemaFlow(props) {
 	const [isopenList, setIsopenList] = React.useState(false);
 	const [searchTerm, setSearchTerm] = React.useState('');
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
@@ -350,4 +350,4 @@ function App(props) {
 	);
 }
 
-export default App;
+export default SchemaFlow;

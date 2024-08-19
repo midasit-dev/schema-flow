@@ -13,6 +13,7 @@ import ReactFlow, {
 
 import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge/CustomEdge';
+import DownloadButton from './DownloadButton';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -1033,6 +1034,7 @@ const ReactFlowComp = () => {
 					<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 					<Controls />
 					<Background id='1' gap={25} variant={BackgroundVariant.Lines} />
+					<DownloadButton />
 				</ReactFlow>
 			</div>
 		</div>
