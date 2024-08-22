@@ -8,10 +8,10 @@ import { SvgHome } from '../SVGComps';
 const MIN_WIDTH = 650; // 최소 너비
 
 export default function Home() {
-  const [windowSize, setWindowSize] = React.useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+	const [windowSize, setWindowSize] = React.useState({
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
 
 	React.useEffect(() => {
 		const handleResize = () => {
@@ -26,20 +26,38 @@ export default function Home() {
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
-
-	}, [])
+	}, []);
 
 	return (
-		<div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: windowSize.width < MIN_WIDTH ? 'column' : 'row' }}>
+		<div
+			style={{
+				width: '100vw',
+				height: '100vh',
+				display: 'flex',
+				flexDirection: windowSize.width < MIN_WIDTH ? 'column' : 'row',
+			}}
+		>
 			{windowSize.width < MIN_WIDTH ? (
-				<div style={{width:"100%", height:"40px", padding:"5px", borderBottom:'1px solid #e6e6e6'}}>
-					<div style={{ width: '30px', height: '30px'}}>
+				<div
+					style={{
+						width: '100%',
+						height: '50px',
+						padding: '10px',
+						borderBottom: '1px solid #e6e6e6',
+					}}
+				>
+					<div style={{ width: '30px', height: '30px' }}>
 						<SvgHome />
 					</div>
 				</div>
 			) : (
 				<div
-					style={{ width: '10%', minWidth: '250px', height: '100%', borderRight: '1px solid #e6e6e6' }}
+					style={{
+						width: '10%',
+						minWidth: '250px',
+						height: '100%',
+						borderRight: '1px solid #e6e6e6',
+					}}
 				>
 					<SideBar />
 				</div>
