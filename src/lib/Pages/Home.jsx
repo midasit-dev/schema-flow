@@ -46,7 +46,13 @@ export default function Home() {
 						borderBottom: '1px solid #e6e6e6',
 					}}
 				>
-					<div style={{ width: '30px', height: '30px' }}>
+					<div
+						style={{
+							width: '30px',
+							height: '30px',
+							cursor: 'pointer',
+						}}
+					>
 						<SvgHome />
 					</div>
 				</div>
