@@ -1,5 +1,5 @@
 import React from 'react';
-import { Position } from 'reactflow';
+import { Position } from '@xyflow/react';
 import { isEmpty } from 'lodash';
 
 import SchemaToUI from '../../SchemaToUI';

@@ -1,9 +1,11 @@
 import React from 'react';
-import Form from '@rjsf/core';
+// import Form from '@rjsf/core';
+import Form from '@rjsf/semantic-ui';
+
 import validator from '@rjsf/validator-ajv8';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { EgdesInfo, ExecuteNodeId, ExecuteFlow, ExecuteState } from '../../RecoilAtom/recoilState';
-import { isEmpty, update } from 'lodash';
+import { isEmpty } from 'lodash';
 import './index.css';
 import MuiDataGridWidget from '../../Components/InputComp/Widgets/Datagrid_mui';
 import GradeField from '../../Components/InputComp/Fields/Grade';

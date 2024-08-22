@@ -1,14 +1,14 @@
 import React from 'react';
-import ReactFlowComp from './Components/ReactFlowComp';
-import { Svglist, Svgminimize } from './SVGComps';
+import ReactFlowComp from '../Components/ReactFlowComp';
+import { Svglist, Svgminimize } from '../SVGComps';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { SelectedSchema, FunctionListInfo } from './RecoilAtom/recoilState';
-import { ReactFlowProvider } from 'reactflow';
-import ListComp from './Components/Functionlist/ListComp';
-import SearchBar from './Components/Functionlist/Searchbar';
-import Category from './Components/Functionlist/Category';
-import { Categorylist } from './Common/string';
+import { SelectedSchema, FunctionListInfo } from '../RecoilAtom/recoilState';
+import { ReactFlowProvider } from '@xyflow/react';
+import ListComp from '../Components/Functionlist/ListComp';
+import SearchBar from '../Components/Functionlist/Searchbar';
+import Category from '../Components/Functionlist/Category';
+import { Categorylist } from '../Common/string';
 
 const getFunctionListFromWGSD = async (URI) => {
 	const res = await fetch(`${URI}`, {

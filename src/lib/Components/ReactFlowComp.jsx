@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import ReactFlow, {
+import {
+	ReactFlow,
 	addEdge,
 	MiniMap,
 	Controls,
@@ -9,7 +10,8 @@ import ReactFlow, {
 	useReactFlow,
 	BackgroundVariant,
 	useKeyPress,
-} from 'reactflow';
+	Panel,
+} from '@xyflow/react';
 
 import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge/CustomEdge';
@@ -17,7 +19,9 @@ import DownloadButton from './DownloadButton';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import 'reactflow/dist/style.css';
+// import 'reactflow/dist/style.css';
+
+import '@xyflow/react/dist/style.css';
 import './ReactFlowComp.css';
 import { isEmpty, cloneDeep } from 'lodash';
 // recoil
@@ -38,6 +42,7 @@ const nodesLengthSelector = (state) => Array.from(state.nodeInternals.values()) 
 
 const ReactFlowComp = () => {
 	const connectingNodeId = React.useRef(null);
+	const [colorMode, setColorMode] = React.useState('light');
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const reactFlow = useReactFlow();
@@ -50,6 +55,10 @@ const ReactFlowComp = () => {
 	const onConnectStart = useCallback((_, { nodeId }) => {
 		connectingNodeId.current = nodeId;
 	}, []);
+
+	const onChangeColorMode = (event) => {
+		setColorMode(event.target.value);
+	};
 
 	function onConnectEnd(event) {
 		if (!isEmpty(selectedschema)) {
@@ -1030,11 +1039,19 @@ const ReactFlowComp = () => {
 					edgeTypes={edgeTypes}
 					className={'overview'}
 					onClick={onClickHandler}
+					colorMode={colorMode}
 				>
 					<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 					<Controls />
-					<Background id='1' gap={25} variant={BackgroundVariant.Lines} />
+					<Background id='1' gap={25} variant={BackgroundVariant.Dots} />
 					<DownloadButton />
+					<Panel position='top-center'>
+						<select onChange={onChangeColorMode} data-testid='colormode-select'>
+							<option value='light'>light</option>
+							<option value='dark'>dark</option>
+							<option value='system'>system</option>
+						</select>
+					</Panel>
 				</ReactFlow>
 			</div>
 		</div>

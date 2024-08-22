@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, DropList } from '@midasit-dev/moaui-components-v1';
-import { useViewport } from 'reactflow';
+import { useViewport } from '@xyflow/react';
 
 export default function Grade(props) {
 	// console.log('Grade props', props);
