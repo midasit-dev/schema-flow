@@ -1,0 +1,82 @@
+/* Home.css */
+
+/* 메인 컨테이너 스타일 */
+.homeContainer {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+}
+
+/* 최소 너비 이하일 때 flexDirection 스타일 */
+.columnLayout {
+	flex-direction: column;
+}
+
+/* 최소 너비 이상일 때 flexDirection 스타일 */
+.rowLayout {
+	flex-direction: row;
+}
+
+/* 작은 화면에서 상단 바 스타일 */
+.topBar {
+	width: 100%;
+	height: 50px;
+	padding: 10px;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+/* SvgHome 아이콘 컨테이너 스타일 */
+.homeIconContainer {
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+}
+
+/* 사이드바 스타일 */
+.sideBarContainer {
+	height: 100%;
+	border-right: 1px solid #e6e6e6;
+	min-width: 250px;
+}
+
+/* 메인 콘텐츠 스타일 */
+.mainContent {
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+/* 템플릿과 UserFlow 컨테이너 스타일 */
+.selectedMenu {
+	width: 100%;
+	height: 48px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	max-width: 100%;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin-left: 4px;
+	border-bottom: 1px solid #e6e6e6;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: 'pretendard';
+	line-height: 24px;
+}
+
+.userFlowContainer {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: flex-start;
+	max-width: 100%;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}

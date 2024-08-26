@@ -224,3 +224,75 @@ export const SvgHome = () => (
 		/>
 	</svg>
 );
+
+export const SvgDropdown = () => (
+	<svg
+		width='100%'
+		height='100%'
+		viewBox='0 0 24 24'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+	>
+		<path
+			d='M6 9L12 15L18 9'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const SvgClockRewind = () => (
+	<svg
+		width='100%'
+		height='100%'
+		viewBox='0 0 24 24'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+	>
+		<path
+			d='M22.7 13.5L20.7005 11.5L18.7 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C15.3019 3 18.1885 4.77814 19.7545 7.42909M12 7V12L15 14'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const SvgLogOut = () => (
+	<svg
+		width='100%'
+		height='100%'
+		viewBox='0 0 24 24'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+	>
+		<path
+			d='M16 17L21 12M21 12L16 7M21 12H9M9 3H7.8C6.11984 3 5.27976 3 4.63803 3.32698C4.07354 3.6146 3.6146 4.07354 3.32698 4.63803C3 5.27976 3 6.11984 3 7.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H9'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);
+
+export const Svglayers = () => (
+	<svg
+		width='100%'
+		height='100%'
+		viewBox='0 0 24 24'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+	>
+		<path
+			d='M2 12.0001L11.6422 16.8212C11.7734 16.8868 11.839 16.9196 11.9078 16.9325C11.9687 16.9439 12.0313 16.9439 12.0922 16.9325C12.161 16.9196 12.2266 16.8868 12.3578 16.8212L22 12.0001M2 17.0001L11.6422 21.8212C11.7734 21.8868 11.839 21.9196 11.9078 21.9325C11.9687 21.9439 12.0313 21.9439 12.0922 21.9325C12.161 21.9196 12.2266 21.8868 12.3578 21.8212L22 17.0001M2 7.00006L11.6422 2.17895C11.7734 2.11336 11.839 2.08056 11.9078 2.06766C11.9687 2.05622 12.0313 2.05622 12.0922 2.06766C12.161 2.08056 12.2266 2.11336 12.3578 2.17895L22 7.00006L12.3578 11.8212C12.2266 11.8868 12.161 11.9196 12.0922 11.9325C12.0313 11.9439 11.9687 11.9439 11.9078 11.9325C11.839 11.9196 11.7734 11.8868 11.6422 11.8212L2 7.00006Z'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</svg>
+);

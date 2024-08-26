@@ -1,0 +1,86 @@
+#userDropDownButton {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	border-radius: 4px;
+	height: 32px;
+	overflow: hidden;
+	max-width: 100%;
+	background-color: #fff;
+	border-color: none;
+	box-shadow: none;
+	padding-left: 4px;
+	padding-right: 4px;
+	cursor: pointer;
+}
+
+/* hover */
+#userDropDownButton:hover {
+	background-color: #f5f5f5;
+}
+
+#userDropDownButton > .buttonContent {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+}
+
+#userIcon {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #000;
+	color: #fff;
+	margin-left: 4px;
+}
+
+#userName {
+	font-size: 13px;
+	line-height: 24px;
+	font-weight: 500;
+	max-width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	font-family: 'pretendard semibold';
+}
+
+.userDropdownIconContainer {
+	width: 16px;
+	height: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 1px;
+}
+
+#logOutButtonIcon {
+	width: 32px;
+	height: 32px;
+	margin-right: 4px;
+	padding: 8px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* hover */
+#logOutButtonIcon:hover {
+	background-color: #f5f5f5;
+}
+
+#userInfo {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 4px;
+	padding-right: 4px;
+}

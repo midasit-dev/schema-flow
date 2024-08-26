@@ -5,6 +5,9 @@ import UserFlow from '../Components/UserFlow';
 
 import { SvgHome } from '../SVGComps';
 
+// css
+import './Home.css';
+
 const MIN_WIDTH = 650; // 최소 너비
 
 export default function Home() {
@@ -29,60 +32,31 @@ export default function Home() {
 	}, []);
 
 	return (
-		<div
-			style={{
-				width: '100vw',
-				height: '100vh',
-				display: 'flex',
-				flexDirection: windowSize.width < MIN_WIDTH ? 'column' : 'row',
-			}}
-		>
+		<div className={`homeContainer ${windowSize.width < MIN_WIDTH ? 'columnLayout' : 'rowLayout'}`}>
 			{windowSize.width < MIN_WIDTH ? (
-				<div
-					style={{
-						width: '100%',
-						height: '50px',
-						padding: '10px',
-						borderBottom: '1px solid #e6e6e6',
-					}}
-				>
-					<div
-						style={{
-							width: '30px',
-							height: '30px',
-							cursor: 'pointer',
-						}}
-					>
+				<div className='topBar'>
+					<div className='homeIconContainer'>
 						<SvgHome />
 					</div>
 				</div>
 			) : (
 				<div
+					className='sideBarContainer'
 					style={{
-						width: '10%',
-						minWidth: '250px',
-						height: '100%',
-						borderRight: '1px solid #e6e6e6',
+						width: `${windowSize.width * 0.1}px`,
 					}}
 				>
 					<SideBar />
 				</div>
 			)}
 			<div
+				className='mainContent'
 				style={{
-					width: '90%',
-					height: '100%',
-					backgroundColor: '#FFF',
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					flexDirection: 'column',
+					width: windowSize.width < MIN_WIDTH ? '100%' : `${windowSize.width * 0.9}px`,
 				}}
 			>
-				<div style={{ height: '20%' }}>
-					<Template />
-				</div>
-				<div style={{ height: '80%' }}>
+				<div className='selectedMenu'>Recents</div>
+				<div className='userFlowContainer'>
 					<UserFlow />
 				</div>
 			</div>

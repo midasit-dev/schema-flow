@@ -10,8 +10,8 @@ function FlowRoute() {
 
 	return (
 		<Routes location={location}>
-			<Route path='/*' element={<Home />} />
-			<Route path='/flow' element={<SchemaFlow />} />
+			<Route path='/*' element={<SchemaFlow />} />
+			<Route path='/home' element={<Home />} />
 			<Route path='/intro' element={<Intro />} />
 		</Routes>
 	);
