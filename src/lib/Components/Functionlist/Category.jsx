@@ -20,7 +20,7 @@ const IconBox = ({ children, backgroundColor }) => {
 
 // Component for Title
 const Title = ({ children }) => {
-	return <div className='title'>{children}</div>;
+	return <div className='category-title'>{children}</div>;
 };
 
 // Component for Sub Container
