@@ -166,7 +166,7 @@ function SchemaFlow(props) {
 			setSearchTerm('');
 			setSelectedList(null);
 		} else {
-			if (selectedCategory.subTitle === 'WGSD' || selectedCategory.subTitle === 'PLUGINS') {
+			if (selectedCategory.subTitle === 'WGSD' || selectedCategory.subTitle === 'PLUGINS' || selectedCategory.subTitle === 'DgnEngine') {
 				const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
 				setSelectedList((prev) => {
 					if (!prev) return functionlistInfo[key];
@@ -184,7 +184,7 @@ function SchemaFlow(props) {
 	React.useEffect(() => {
 		if (selectedCategory !== null) {
 			if (searchTerm === '') {
-				if (selectedCategory.subTitle === 'WGSD' || selectedCategory.subTitle === 'PLUGINS') {
+				if (selectedCategory.subTitle === 'WGSD' || selectedCategory.subTitle === 'PLUGINS' || selectedCategory.subTitle === 'DgnEngine') {
 					const key = `${selectedCategory.subTitle}_${selectedCategory.status}`;
 					setSelectedList(functionlistInfo[key]);
 				}
