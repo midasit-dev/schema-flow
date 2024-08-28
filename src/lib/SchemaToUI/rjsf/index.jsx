@@ -4,7 +4,7 @@ import Form from '@rjsf/semantic-ui';
 
 import validator from '@rjsf/validator-ajv8';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { EgdesInfo, ExecuteNodeId, ExecuteFlow, ExecuteState } from '../../RecoilAtom/recoilState';
+import { EgdesInfo, ExecuteNodeId, ExecuteFlow, ExecuteState } from '../../RecoilAtom/recoilReactFlowState';
 import { isEmpty } from 'lodash';
 import './index.css';
 import MuiDataGridWidget from '../../Components/InputComp/Widgets/Datagrid_mui';

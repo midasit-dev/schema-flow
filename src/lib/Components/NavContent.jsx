@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import { navContentList } from '../Common/string';
+// recoil
+import { useRecoilState } from 'recoil';
+import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
 
 // components
 import { SvgClockRewind, Svglayers } from '../SVGComps';
@@ -7,43 +12,49 @@ import { SvgClockRewind, Svglayers } from '../SVGComps';
 import './NavContent.css';
 
 function RecentFlow() {
-	// 클릭 상태를 관리하는 state 추가
-	const [isClicked, setIsClicked] = useState(false);
+	const [isClicked, setIsClicked] = React.useState(false);
+	const [selectedNavContent, setSelectedNavContent] = useRecoilState(SelectedNavContent);
+
+	React.useEffect(() => {
+		if (selectedNavContent === navContentList.recents) {
+			setIsClicked(true);
+		} else setIsClicked(false);
+	}, [selectedNavContent]);
 
 	const handleClick = () => {
-		setIsClicked(!isClicked);
+		setSelectedNavContent(navContentList.recents);
 	};
 
 	return (
-		<div
-			className={`contentContainer ${isClicked ? 'clicked' : ''}`} // 클릭 상태에 따라 클래스 동적 적용
-			onClick={handleClick} // 클릭 이벤트 핸들러 추가
-		>
+		<div className={`contentContainer ${isClicked ? 'clicked' : ''}`} onClick={handleClick}>
 			<div className='iconContainer'>
 				<SvgClockRewind />
 			</div>
-			<div className='contentText'>Recents</div>
+			<div className='contentText'>{navContentList.recents}</div>
 		</div>
 	);
 }
 
 function TemplateFlow() {
-	// 클릭 상태를 관리하는 state 추가
-	const [isClicked, setIsClicked] = useState(false);
+	const [isClicked, setIsClicked] = React.useState(false);
+	const [selectedNavContent, setSelectedNavContent] = useRecoilState(SelectedNavContent);
+
+	React.useEffect(() => {
+		if (selectedNavContent === navContentList.template) {
+			setIsClicked(true);
+		} else setIsClicked(false);
+	}, [selectedNavContent]);
 
 	const handleClick = () => {
-		setIsClicked(!isClicked);
+		setSelectedNavContent(navContentList.template);
 	};
 
 	return (
-		<div
-			className={`contentContainer ${isClicked ? 'clicked' : ''}`} // 클릭 상태에 따라 클래스 동적 적용
-			onClick={handleClick} // 클릭 이벤트 핸들러 추가
-		>
+		<div className={`contentContainer ${isClicked ? 'clicked' : ''}`} onClick={handleClick}>
 			<div className='iconContainer'>
 				<Svglayers />
 			</div>
-			<div className='contentText'>Templates</div>
+			<div className='contentText'>{navContentList.template}</div>
 		</div>
 	);
 }

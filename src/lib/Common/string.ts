@@ -1,4 +1,4 @@
-const Categorylist = [
+const categoryList = [
 	{
 		title: 'Engineering Function by Python',
 		subTitle: 'WGSD',
@@ -36,4 +36,9 @@ const Categorylist = [
 	},
 ];
 
-export { Categorylist };
+const navContentList = {
+	recents : "Recents",
+	template : "Template",
+}
+
+export { categoryList, navContentList };

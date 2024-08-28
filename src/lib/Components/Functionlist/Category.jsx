@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Categorylist } from '../../Common/string';
+import { categoryList } from '../../Common/string';
 // Import the CSS file
 import './Category.css';
 
@@ -170,7 +170,7 @@ export default function Category(props) {
 			)}
 			{selectedCard === null && (
 				<AnimatePresence>
-					{Categorylist.map((category, index) => (
+					{categoryList.map((category, index) => (
 						<motion.div
 							key={`motion_${category.title}_${category.subTitle}_${category.status}`}
 							initial={{ opacity: 0, y: `${-50 - index * 30}%` }} // Adjusted to provide a consistent offset

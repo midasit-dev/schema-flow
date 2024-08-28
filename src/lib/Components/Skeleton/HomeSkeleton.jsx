@@ -1,10 +1,12 @@
 import React from 'react';
 
+import './HomeSkeleton.css';
+
 function SkeletonElement({ type }) {
 	return <div className={`skeleton ${type}`}></div>;
 }
 
-export function UserFlowTemplateSkeleton() {
+export function UserProjectsSkeleton() {
 	return (
 		<div className='skeleton-wrapper'>
 			<div className='skeleton-flow'>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SvgCheckCircle } from '../../SVGComps';
-import { FunctionListInfo } from '../../RecoilAtom/recoilState';
+import { FunctionListInfo } from '../../RecoilAtom/recoilReactFlowState';
 import { useRecoilValue } from 'recoil';
 
 const getSchemaFromST = async (URI) => {

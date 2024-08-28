@@ -1,11 +1,14 @@
 import React from 'react';
-import SideBar from '../Components/SideBar';
-import Template from '../Components/Template';
-import UserFlow from '../Components/UserFlow';
-
-import { SvgHome } from '../SVGComps';
-
 import rss from 'react-secure-storage';
+
+// recoil
+import { useRecoilValue } from 'recoil';
+import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
+
+// Components
+import SideBar from '../Components/SideBar';
+import UserProjects from '../Components/UserProjects';
+import { SvgHome, Svgbell } from '../SVGComps';
 
 // css
 import './Home.css';
@@ -17,10 +20,11 @@ export default function Home() {
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
+	const selectedNavContent = useRecoilValue(SelectedNavContent);
 
 	React.useEffect(() => {
 		const token = rss.getItem('token');
-		console.log("token", token);
+		console.log('token', token);
 
 		const handleResize = () => {
 			setWindowSize({
@@ -34,7 +38,6 @@ export default function Home() {
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
-
 	}, []);
 
 	return (
@@ -43,6 +46,10 @@ export default function Home() {
 				<div className='topBar'>
 					<div className='homeIconContainer'>
 						<SvgHome />
+					</div>
+					<div className='selectedMenuNarrow'>{selectedNavContent}</div>
+					<div className='bellIconContainer'>
+						<Svgbell />
 					</div>
 				</div>
 			) : (
@@ -61,9 +68,18 @@ export default function Home() {
 					width: windowSize.width < MIN_WIDTH ? '100%' : `${windowSize.width * 0.9}px`,
 				}}
 			>
-				<div className='selectedMenu'>Recents</div>
+				{windowSize.width > MIN_WIDTH && (
+					<div className='selectedMenuWide'>
+						<div className='menuName'>
+							{selectedNavContent}
+						</div>
+						<div className='bellIconContainer'>
+							<Svgbell />
+						</div>
+					</div>
+				)}
 				<div className='userFlowContainer'>
-					<UserFlow />
+					<UserProjects navContent={selectedNavContent} windowSize={windowSize} />
 				</div>
 			</div>
 		</div>

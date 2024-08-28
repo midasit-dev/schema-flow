@@ -18,7 +18,7 @@ import MarkdownViewer from '../Components/OutputComp/MarkdownViewer';
 import { useReactFlow } from '@xyflow/react';
 // recoil
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import { FunctionListInfo, ExecuteState } from '../RecoilAtom/recoilState';
+import { FunctionListInfo, ExecuteState } from '../RecoilAtom/recoilReactFlowState';
 
 const maxRJSFWidth = 620;
 const minRJSFWidth = 400;
