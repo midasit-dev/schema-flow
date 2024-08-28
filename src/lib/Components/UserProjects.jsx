@@ -10,10 +10,32 @@ import { UserProjectsSkeleton } from './Skeleton/HomeSkeleton';
 // css
 import './UserProjects.css';
 
-export default function UserProjects({ navContent }) {
+export default function UserProjects({ navContent, windowSize }) {
 	const [isLoading, setIsLoading] = React.useState(true);
+	const [itemWidth, setItemWidth] = React.useState(200);
+	const [itemsPerRow, setItemsPerRow] = React.useState(1);
+	const containerRef = React.useRef(null);
 
-	React.useEffect(() => {});
+	const MAX_ITEMS = 5;
+
+	React.useEffect(() => {
+		const containerWidth = containerRef?.current?.clientWidth || 1;
+		const MAX_ITEM_WIDTH = 400;
+		const MIN_ITEM_WIDTH = 300;
+
+		const calculatedItemWidth = Math.max(
+			MIN_ITEM_WIDTH,
+			Math.min(
+				containerWidth / Math.floor(containerWidth / MAX_ITEM_WIDTH),
+				containerWidth / Math.floor(containerWidth / MIN_ITEM_WIDTH),
+			),
+		);
+
+		const itemsPerRow = Math.floor(containerWidth / calculatedItemWidth);
+
+		setItemWidth(calculatedItemWidth);
+		setItemsPerRow(itemsPerRow);
+	}, [windowSize, MAX_ITEMS]);
 
 	React.useEffect(() => {
 		setIsLoading(true);
@@ -23,9 +45,22 @@ export default function UserProjects({ navContent }) {
 	}, [navContent]);
 
 	return (
-		<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' }}>
+		<div ref={containerRef} style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
 			{isLoading ? (
-				<UserProjectsSkeleton />
+				<div
+					style={{
+						display: 'grid',
+						gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)`,
+						gap: '30px',
+						width: '100%',
+						justifyContent: 'space-between',
+						gridAutoRows: 'max-content',
+					}}
+				>
+					{Array.from({ length: itemsPerRow * 10 }).map((_, index) => (
+						<UserProjectsSkeleton width={itemWidth} key={index} />
+					))}
+				</div>
 			) : (
 				<div>
 					{navContent === navContentList.recents && <Recents />}

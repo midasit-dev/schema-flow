@@ -6,9 +6,11 @@ function SkeletonElement({ type }) {
 	return <div className={`skeleton ${type}`}></div>;
 }
 
-export function UserProjectsSkeleton() {
+export const UserProjectsSkeleton = React.forwardRef((props) => {
+	const { width } = props;
+
 	return (
-		<div className='skeleton-wrapper'>
+		<div className='skeleton-wrapper' style={{ width: `calc(${width}px - 40px)` }}>
 			<div className='skeleton-flow'>
 				<div className='skeleton-left-boxes'>
 					<div className='skeleton-box' />
@@ -25,4 +27,4 @@ export function UserProjectsSkeleton() {
 			<SkeletonElement type='text' />
 		</div>
 	);
-}
+});
