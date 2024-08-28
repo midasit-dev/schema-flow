@@ -5,12 +5,10 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { Switch } from '@midasit-dev/moaui-components-v1';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useNightSight } from '../Components/Login/useThemeSetting';
-import NightSightSwitch from '../Components/Login/NightSightSwitch';
 
 import rss from 'react-secure-storage';
 
@@ -44,7 +42,7 @@ const usePointerGlow = () => {
 	return [status];
 };
 
-function ChatLoginBg() {
+function LoginBg() {
 	return (
 		<svg viewBox='0 0 100 100' preserveAspectRatio='xMidYMid slice'>
 			<defs>
@@ -196,24 +194,12 @@ function QueryClientCleaner() {
 	return null;
 }
 
-export default function ChatLogin({ clearQueryClient = false }) {
-	const [showBackground, setBackgroundStatus] = React.useState(false);
+export default function Login({ clearQueryClient = false }) {
 	const { darkMode } = useNightSight();
 	const [id, setId] = React.useState('');
 	const [pwd, setPwd] = React.useState('');
 	usePointerGlow();
 	const navigate = useNavigate();
-
-	const [dropData] = React.useMemo(() => {
-		const dropData = new Map([
-			['Korean', 1],
-			['American', 2],
-			['Asia', 3],
-			['Midas', 4],
-		]);
-
-		return dropData;
-	}, []);
 
 	return (
 		<div
@@ -241,7 +227,7 @@ export default function ChatLogin({ clearQueryClient = false }) {
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.5, type: 'easeInOut' }}
 					>
-						<ChatLoginBg key='chat-login-background' />
+						<LoginBg key='chat-login-background' />
 					</motion.div>
 				</AnimatePresence>
 				<AnimatePresence mode='popLayout'>
