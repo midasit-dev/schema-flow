@@ -63,7 +63,7 @@ export default function UserProjects({ navContent, windowSize }) {
 				</div>
 			) : (
 				<div>
-					{navContent === navContentList.recents && <Recents />}
+					{navContent === navContentList.recents && <Recents width={itemWidth} />}
 					{navContent === navContentList.template && <Template />}
 				</div>
 			)}

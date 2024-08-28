@@ -8,7 +8,7 @@ import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
 // Components
 import SideBar from '../Components/SideBar';
 import UserProjects from '../Components/UserProjects';
-import { SvgHome, Svgbell } from '../SVGComps';
+import { SvgHome, SvgBell } from '../SVGComps';
 
 // css
 import './Home.css';
@@ -49,7 +49,7 @@ export default function Home() {
 					</div>
 					<div className='selectedMenuNarrow'>{selectedNavContent}</div>
 					<div className='bellIconContainer'>
-						<Svgbell />
+						<SvgBell />
 					</div>
 				</div>
 			) : (
@@ -72,7 +72,7 @@ export default function Home() {
 					<div className='selectedMenuWide'>
 						<div className='menuName'>{selectedNavContent}</div>
 						<div className='bellIconContainer'>
-							<Svgbell />
+							<SvgBell />
 						</div>
 					</div>
 				)}

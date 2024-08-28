@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
 
 // components
-import { SvgClockRewind, Svglayers } from '../SVGComps';
+import { SvgClockRewind, SvgLayers } from '../SVGComps';
 
 // css
 import './NavContent.css';
@@ -52,7 +52,7 @@ function TemplateFlow() {
 	return (
 		<div className={`contentContainer ${isClicked ? 'clicked' : ''}`} onClick={handleClick}>
 			<div className='iconContainer'>
-				<Svglayers />
+				<SvgLayers />
 			</div>
 			<div className='contentText'>{navContentList.template}</div>
 		</div>
