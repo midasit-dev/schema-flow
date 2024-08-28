@@ -70,9 +70,7 @@ export default function Home() {
 			>
 				{windowSize.width > MIN_WIDTH && (
 					<div className='selectedMenuWide'>
-						<div className='menuName'>
-							{selectedNavContent}
-						</div>
+						<div className='menuName'>{selectedNavContent}</div>
 						<div className='bellIconContainer'>
 							<Svgbell />
 						</div>

@@ -3,7 +3,6 @@ import React from 'react';
 // css
 import './Tooltip.css';
 
-
 /**
  * Tooltip component that displays a tooltip when hovering over the children element.
  *
@@ -14,14 +13,13 @@ import './Tooltip.css';
  * @default 'bottom'
  * @returns {JSX.Element} The rendered tooltip component.
  */
-function Tooltip ({ children, content, position = 'bottom' }) {
-
+function Tooltip({ children, content, position = 'bottom' }) {
 	return (
 		<div className='tooltip-container'>
 			{children}
 			<div className={`tooltip tooltip-${position}`}>{content}</div>
 		</div>
 	);
-};
+}
 
 export { Tooltip };

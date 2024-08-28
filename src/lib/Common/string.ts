@@ -37,8 +37,8 @@ const categoryList = [
 ];
 
 const navContentList = {
-	recents : "Recents",
-	template : "Template",
-}
+	recents: 'Recents',
+	template: 'Template',
+};
 
 export { categoryList, navContentList };

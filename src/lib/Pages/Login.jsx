@@ -296,7 +296,12 @@ export default function Login({ clearQueryClient = false }) {
 										gap: '20px',
 									}}
 								>
-									<button className='login-button back' onClick={() => {navigate(-1)}}>
+									<button
+										className='login-button back'
+										onClick={() => {
+											navigate(-1);
+										}}
+									>
 										Back
 									</button>
 									<button
@@ -316,7 +321,6 @@ export default function Login({ clearQueryClient = false }) {
 													navigate('/home');
 												})
 												.catch((e) => console.error(e));
-												
 										}}
 									>
 										Login

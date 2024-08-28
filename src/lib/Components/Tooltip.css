@@ -1,22 +1,21 @@
 .tooltip-container {
-  position: relative;
-  display: inline-block;
+	position: relative;
+	display: inline-block;
 }
-
 
 .tooltip {
 	position: absolute;
-  background-color: #333;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  white-space: nowrap;
-  z-index: 1000;
+	background-color: #333;
+	color: #fff;
+	padding: 5px 10px;
+	border-radius: 5px;
+	white-space: nowrap;
+	z-index: 1000;
 	font-size: 12px;
 	font-family: 'pretendard';
 	font-weight: 400;
-  opacity: 0;
-  transition: opacity 0.5s;
+	opacity: 0;
+	transition: opacity 0.5s;
 }
 
 /* 툴팁을 호버 시 보이게 설정 */
@@ -26,26 +25,25 @@
 
 /* 툴팁 위치 */
 .tooltip.tooltip-top {
-  bottom: 110%; /* 위에 위치 */
-  left: 50%;
-  transform: translateX(-50%);
+	bottom: 110%; /* 위에 위치 */
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .tooltip.tooltip-bottom {
-  top: 110%; /* 아래에 위치 */
-  left: 50%;
-  transform: translateX(-50%);
+	top: 110%; /* 아래에 위치 */
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .tooltip.tooltip-left {
-  right: 110%; /* 왼쪽에 위치 */
-  top: 50%;
-  transform: translateY(-50%);
+	right: 110%; /* 왼쪽에 위치 */
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .tooltip.tooltip-right {
-  left: 110%; /* 오른쪽에 위치 */
-  top: 50%;
-  transform: translateY(-50%);
+	left: 110%; /* 오른쪽에 위치 */
+	top: 50%;
+	transform: translateY(-50%);
 }
-

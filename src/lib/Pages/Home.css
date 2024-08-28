@@ -19,7 +19,7 @@
 
 /* 작은 화면에서 상단 바 스타일 */
 .topBar {
-	display:flex;
+	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-around;
@@ -95,7 +95,7 @@
 	font-weight: 500;
 	font-family: 'pretendard';
 	line-height: 24px;
-	color:#000;
+	color: #000;
 }
 
 .userFlowContainer {

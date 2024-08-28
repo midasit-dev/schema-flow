@@ -13,9 +13,7 @@ import './UserProjects.css';
 export default function UserProjects({ navContent }) {
 	const [isLoading, setIsLoading] = React.useState(true);
 
-	React.useEffect(() => {
-		
-	})
+	React.useEffect(() => {});
 
 	React.useEffect(() => {
 		setIsLoading(true);
