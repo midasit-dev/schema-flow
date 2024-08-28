@@ -3,6 +3,7 @@ import React from 'react';
 
 // components
 import { SvgDropdown, SvgLogOut } from '../SVGComps';
+import { Tooltip } from './Tooltip';
 
 // css
 import './UserInfo.css';
@@ -23,9 +24,11 @@ function DropDownButton() {
 
 function LogOutButton() {
 	return (
-		<div id='logOutButtonIcon'>
-			<SvgLogOut />
-		</div>
+		<Tooltip content="Logout" postion="down">
+			<div id='logOutButtonIcon'>
+				<SvgLogOut />
+			</div>
+		</Tooltip>
 	);
 }
 

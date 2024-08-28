@@ -5,6 +5,8 @@ import UserFlow from '../Components/UserFlow';
 
 import { SvgHome } from '../SVGComps';
 
+import rss from 'react-secure-storage';
+
 // css
 import './Home.css';
 
@@ -17,6 +19,9 @@ export default function Home() {
 	});
 
 	React.useEffect(() => {
+		const token = rss.getItem('token');
+		console.log("token", token);
+
 		const handleResize = () => {
 			setWindowSize({
 				width: document.documentElement.clientWidth,
@@ -29,6 +34,7 @@ export default function Home() {
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
+
 	}, []);
 
 	return (
