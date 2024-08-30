@@ -24,7 +24,7 @@ function FlowRoute() {
 
 	return (
 		<Routes location={location}>
-			<Route path='/*' element={<FlowRoute2 />} />
+			<Route path={`${process.env.REACT_APP_PUBLIC_URL}/*`} element={<FlowRoute2 />} />
 		</Routes>
 	);
 }
