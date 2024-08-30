@@ -11,12 +11,16 @@ import NightSightProvider, { useNightSight } from './lib/Components/Login/useThe
 function FlowRoute() {
 	const location = useLocation();
 
+	React.useEffect(() => {
+		console.log("location", location);	
+	}, [location]);
+
 	return (
 		<Routes location={location}>
-			<Route path='/*' element={<SchemaFlow />} />
 			<Route path='/home' element={<Home />} />
 			<Route path='/intro' element={<Intro />} />
 			<Route path='/login' element={<Login />} />
+			<Route path='/*' element={<SchemaFlow />} />
 		</Routes>
 	);
 }
