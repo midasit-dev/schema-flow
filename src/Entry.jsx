@@ -8,19 +8,23 @@ import Login from './lib/Pages/Login';
 
 import NightSightProvider, { useNightSight } from './lib/Components/Login/useThemeSetting';
 
+function FlowRoute2() {
+	return (
+		<Routes>
+			<Route path='home' element={<Home />} />
+			<Route path='intro' element={<Intro />} />
+			<Route path='login' element={<Login />} />
+			<Route path='*' element={<SchemaFlow />} />
+		</Routes>
+	);
+}
+
 function FlowRoute() {
 	const location = useLocation();
 
-	React.useEffect(() => {
-		console.log("location", location);	
-	}, [location]);
-
 	return (
 		<Routes location={location}>
-			<Route path='/home' element={<Home />} />
-			<Route path='/intro' element={<Intro />} />
-			<Route path='/login' element={<Login />} />
-			<Route path='/*' element={<SchemaFlow />} />
+			<Route path='/*' element={<FlowRoute2 />} />
 		</Routes>
 	);
 }
