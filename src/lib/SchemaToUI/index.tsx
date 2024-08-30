@@ -42,6 +42,7 @@ export default function SchemaToUI(props: {
 	const [isloading, setIsloading] = React.useState(false);
 	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
 	const [isJsonResult, setIsJsonResult] = React.useState(false);
+	const [isTextResult, setIsTextResult] = React.useState(false);
 	const [is3dpm, setIs3dpm] = React.useState(false);
 	const [isMarkdown, setIsMd] = React.useState(false);
 	const [isOpenResultView, setIsResultView] = React.useState(false);
@@ -146,12 +147,12 @@ export default function SchemaToUI(props: {
 	}, [schemaInfo]);
 
 	React.useEffect(() => {
-		if (isJsonResult || is3dpm || isMarkdown) {
+		if (isJsonResult || is3dpm || isMarkdown || isTextResult) {
 			setIsResultView(true);
 		} else {
 			setIsResultView(false);
 		}
-	}, [isJsonResult, is3dpm, isMarkdown]);
+	}, [isJsonResult, is3dpm, isMarkdown, isTextResult]);
 
 	const onClickCloseHandler = React.useCallback(() => {
 		removeCustomNode(nodeId, schemaInfo.id);
@@ -165,24 +166,34 @@ export default function SchemaToUI(props: {
 		console.log('data', data);
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
-			if (data.hasOwnProperty('moapy.wgsd.wgsd_flow.Result3DPM')) {
-				const mesh3dpm = data['moapy.wgsd.wgsd_flow.Result3DPM'].meshes.mesh3dpm;
-				const strength = data['moapy.wgsd.wgsd_flow.Result3DPM'].strength;
-				const lcbs = data['moapy.wgsd.wgsd_flow.Result3DPM'].lcbs;
+			if (data.hasOwnProperty('moapy.data_post.Result3DPM')) {
+				const mesh3dpm = data['moapy.data_post.Result3DPM'].meshes.mesh3dpm;
+				const strength = data['moapy.data_post.Result3DPM'].strength;
+				const lcbs = data['moapy.data_post.Result3DPM'].lcbs;
 				setIs3dpm(true);
 				setIsMd(false);
 				setIsJsonResult(false);
+				setIsTextResult(false);
 				setResponse({ mesh3dpm, strength, lcbs });
-			} else if (data.hasOwnProperty('moapy.wgsd.wgsd_oapi.ResultMD')) {
-				const md = data['moapy.wgsd.wgsd_oapi.ResultMD'].md;
+			} else if (data.hasOwnProperty('moapy.data_post.ResultMD')) {
+				const md = data['moapy.data_post.ResultMD'].md;
 				setIs3dpm(false);
 				setIsMd(true);
 				setIsJsonResult(false);
+				setIsTextResult(false);
+				setResponse(md);
+			} else if (data.hasOwnProperty('moapy.data_post.TextReport')) {
+				const md = data['moapy.data_post.TextReport'].text;
+				setIs3dpm(false);
+				setIsMd(false);
+				setIsJsonResult(false);
+				setIsTextResult(true);
 				setResponse(md);
 			} else {
 				setIs3dpm(false);
 				setIsMd(false);
 				setIsJsonResult(true);
+				setIsTextResult(false);
 				setResponse(data);
 			}
 		}
@@ -336,6 +347,25 @@ export default function SchemaToUI(props: {
 							src={response}
 							style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
 						/>
+					)}
+
+					{isTextResult && isOpenResultView && (
+					<div className="console-viewer" style={{
+						width: '200%', 
+						height: maxHeight,
+						overflow: 'auto',
+						backgroundColor: '#1e1e1e', // 콘솔 배경색 (어두운 회색)
+						color: '#d4d4d4', // 텍스트 색 (밝은 회색)
+						fontFamily: 'Consolas, "Courier New", monospace', // 콘솔 느낌의 폰트
+						padding: '10px',
+						fontSize: '12px',
+						whiteSpace: 'pre-wrap', // 줄바꿈과 공백을 유지하도록 설정
+						wordWrap: 'normal', // 단어가 길 경우 줄바꿈을 하지 않도록 설정
+						wordBreak: 'normal', // 단어 중간에서 줄바꿈을 하지 않도록 설정
+						overflowWrap: 'normal', // 기본적으로 줄바꿈을 하지 않도록 설정
+					}}>
+						{response.toString()}
+					</div>
 					)}
 				</>
 			</div>
