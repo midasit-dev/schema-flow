@@ -73,7 +73,7 @@ function DownloadButton() {
 	return (
 		<Panel position='top-right'>
 			<button className='download-btn' onClick={onClick}>
-				Download and Upload Image
+				Download Image
 			</button>
 		</Panel>
 	);
