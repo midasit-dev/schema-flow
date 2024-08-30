@@ -6,7 +6,7 @@ function SkeletonElement({ type }) {
 	return <div className={`skeleton ${type}`}></div>;
 }
 
-export const UserProjectsSkeleton = React.forwardRef((props) => {
+export const UserProjectsSkeleton = (props) => {
 	const { width } = props;
 
 	return (
@@ -27,4 +27,4 @@ export const UserProjectsSkeleton = React.forwardRef((props) => {
 			<SkeletonElement type='text' />
 		</div>
 	);
-});
+};

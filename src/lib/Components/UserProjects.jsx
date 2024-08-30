@@ -41,7 +41,7 @@ export default function UserProjects({ navContent, windowSize }) {
 		setIsLoading(true);
 		setTimeout(() => {
 			setIsLoading(false);
-		}, 3000);
+		}, 1500);
 	}, [navContent]);
 
 	return (
