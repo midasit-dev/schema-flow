@@ -45,7 +45,7 @@ export default function UserProjects({ navContent, windowSize }) {
 	}, [navContent]);
 
 	return (
-		<div ref={containerRef} style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+		<div ref={containerRef} style={{ display: 'flex', flexDirection: 'row', width: '100%', padding:"10px" }}>
 			{isLoading ? (
 				<div
 					style={{
@@ -58,11 +58,20 @@ export default function UserProjects({ navContent, windowSize }) {
 					}}
 				>
 					{Array.from({ length: itemsPerRow * 10 }).map((_, index) => (
-						<UserProjectsSkeleton width={itemWidth} key={index} />
+						<UserProjectsSkeleton key={index} width={itemWidth} />
 					))}
 				</div>
 			) : (
-				<div>
+				<div
+					style={{
+						display: 'grid',
+						gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)`,
+						gap: '30px',
+						width: '100%',
+						justifyContent: 'space-between',
+						gridAutoRows: 'max-content',
+					}}
+				>
 					{navContent === navContentList.recents && <Recents width={itemWidth} />}
 					{navContent === navContentList.template && <Template />}
 				</div>

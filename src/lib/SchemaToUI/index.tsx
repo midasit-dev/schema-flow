@@ -350,22 +350,25 @@ export default function SchemaToUI(props: {
 					)}
 
 					{isTextResult && isOpenResultView && (
-					<div className="console-viewer" style={{
-						width: '200%', 
-						height: maxHeight,
-						overflow: 'auto',
-						backgroundColor: '#1e1e1e', // 콘솔 배경색 (어두운 회색)
-						color: '#d4d4d4', // 텍스트 색 (밝은 회색)
-						fontFamily: 'Consolas, "Courier New", monospace', // 콘솔 느낌의 폰트
-						padding: '10px',
-						fontSize: '12px',
-						whiteSpace: 'pre-wrap', // 줄바꿈과 공백을 유지하도록 설정
-						wordWrap: 'normal', // 단어가 길 경우 줄바꿈을 하지 않도록 설정
-						wordBreak: 'normal', // 단어 중간에서 줄바꿈을 하지 않도록 설정
-						overflowWrap: 'normal', // 기본적으로 줄바꿈을 하지 않도록 설정
-					}}>
-						{response.toString()}
-					</div>
+						<div
+							className='console-viewer'
+							style={{
+								width: '200%',
+								height: maxHeight,
+								overflow: 'auto',
+								backgroundColor: '#1e1e1e', // 콘솔 배경색 (어두운 회색)
+								color: '#d4d4d4', // 텍스트 색 (밝은 회색)
+								fontFamily: 'Consolas, "Courier New", monospace', // 콘솔 느낌의 폰트
+								padding: '10px',
+								fontSize: '12px',
+								whiteSpace: 'pre-wrap', // 줄바꿈과 공백을 유지하도록 설정
+								wordWrap: 'normal', // 단어가 길 경우 줄바꿈을 하지 않도록 설정
+								wordBreak: 'normal', // 단어 중간에서 줄바꿈을 하지 않도록 설정
+								overflowWrap: 'normal', // 기본적으로 줄바꿈을 하지 않도록 설정
+							}}
+						>
+							{response.toString()}
+						</div>
 					)}
 				</>
 			</div>

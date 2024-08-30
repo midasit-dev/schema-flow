@@ -333,20 +333,27 @@ export const SvgBell = () => (
 	</svg>
 );
 
-export const SvgPlus = () => {
-	<svg
-		width='100%'
-		height='100%'
-		viewBox='0 0 24 24'
-		fill='none'
-		xmlns='http://www.w3.org/2000/svg'
-	>
-		<path
-			d='M12 5V19M5 12H19'
-			stroke='currentColor'
-			strokeWidth='2'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-		/>
-	</svg>;
+export const SvgPlus = ({ isHovered }) => {
+	return (
+		<motion.svg
+			width='100%'
+			height='100%'
+			viewBox='0 0 24 24'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<motion.path
+				initial={{ stroke: 'gray' }}
+				animate={{
+					stroke: isHovered ? '#000' : 'gray',
+				}}
+				transition={{ duration: 0.3 }}
+				d='M12 5V19M5 12H19'
+				// stroke={isHovered ? '#000' : 'gray'}
+				stroke-width='2'
+				stroke-linecap='round'
+				stroke-linejoin='round'
+			/>
+		</motion.svg>
+	);
 };
