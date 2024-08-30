@@ -9,11 +9,12 @@
   justify-content: center;
   border-radius: 10px;
   cursor: pointer;
+	box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
   transition: box-shadow 0.3s ease;
 }
 
 .recents-container:hover {
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.3);
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.4);
 }
 
 .recents-inner {
