@@ -7,6 +7,7 @@ const imageHeight = 768;
 const padding = 20; // 추가적인 여유 공간을 위한 패딩
 
 function saveBlobAsFile(blob, filename) {
+	console.log('blob', blob);
 	// Blob을 URL로 변환합니다.
 	const url = URL.createObjectURL(blob);
 
@@ -46,33 +47,22 @@ function DownloadButton() {
 	const onClick = () => {
 		const nodesBounds = getNodesBounds(getNodes());
 
-		// 노드 경계 크기에 맞추어 뷰포트 크기 및 위치 설정
-		const customWidth = Math.max(imageWidth, nodesBounds.width);
-		const customHeight = Math.max(imageHeight, nodesBounds.height);
-
-		const viewport = {
-			x: nodesBounds.x,
-			y: nodesBounds.y,
-			width: customWidth,
-			height: customHeight,
-		};
+		const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2);
 
 		toBlob(document.querySelector('.react-flow__viewport'), {
 			backgroundColor: '#FFF',
 			width: viewport.width,
 			height: viewport.height,
-			// style: {
-			// 	width: `${viewport.width}px`,
-			// 	height: `${viewport.height}px`,
-			// 	position: 'absolute',
-			// 	left: `${-viewport.x}px`,
-			// 	top: `${-viewport.y}px`,
-			// 	overflow: 'visible',
-			// },
+			style: {
+				width: imageWidth,
+				height: imageHeight,
+				transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
+			},
 			useCors: true,
 		}).then((blob) => {
 			if (blob) {
 				saveBlobAsFile(blob, 'reactflow.png');
+				console.log('blob', blob);
 				// uploadImageToServer(blob);
 			} else {
 				console.error('Blob creation failed');

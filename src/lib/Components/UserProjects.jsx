@@ -10,13 +10,13 @@ import { UserProjectsSkeleton } from './Skeleton/HomeSkeleton';
 // css
 import './UserProjects.css';
 
+const MAX_ITEMS = 5;
+
 export default function UserProjects({ navContent, windowSize }) {
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [itemWidth, setItemWidth] = React.useState(200);
 	const [itemsPerRow, setItemsPerRow] = React.useState(1);
 	const containerRef = React.useRef(null);
-
-	const MAX_ITEMS = 5;
 
 	React.useEffect(() => {
 		const containerWidth = containerRef?.current?.clientWidth || 1;
@@ -45,7 +45,10 @@ export default function UserProjects({ navContent, windowSize }) {
 	}, [navContent]);
 
 	return (
-		<div ref={containerRef} style={{ display: 'flex', flexDirection: 'row', width: '100%', padding:"10px" }}>
+		<div
+			ref={containerRef}
+			style={{ display: 'flex', flexDirection: 'row', width: '100%', padding: '10px' }}
+		>
 			{isLoading ? (
 				<div
 					style={{
@@ -73,7 +76,7 @@ export default function UserProjects({ navContent, windowSize }) {
 					}}
 				>
 					{navContent === navContentList.recents && <Recents width={itemWidth} />}
-					{navContent === navContentList.template && <Template />}
+					{navContent === navContentList.template && <Template width={itemWidth} src={'src'} />}
 				</div>
 			)}
 		</div>
