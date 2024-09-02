@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
 // components
 import { SvgPlus } from '../SVGComps';
@@ -7,9 +6,7 @@ import { SvgPlus } from '../SVGComps';
 // css
 import './Recents.css';
 
-export default function Recents(props) {
-	const { width = '200px' } = props;
-
+function NewFlowProject({ width }) {
 	const [isHovered, setIsHovered] = React.useState(false);
 
 	return (
@@ -25,6 +22,16 @@ export default function Recents(props) {
 				</div>
 				<div className='recents-text'>New Flow Project</div>
 			</div>
+		</div>
+	);
+}
+
+export default function Recents(props) {
+	const { width = '200px' } = props;
+
+	return (
+		<div>
+			<NewFlowProject width={width} />
 		</div>
 	);
 }
