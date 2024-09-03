@@ -6,7 +6,7 @@ import SchemaFlow from './lib/Pages/SchemaFlow';
 import Intro from './lib/Pages/Intro';
 import Login from './lib/Pages/Login';
 
-import NightSightProvider, { useNightSight } from './lib/Components/Login/useThemeSetting';
+import NightSightProvider from './lib/Components/Login/useThemeSetting';
 
 function FlowRoute() {
 	return (
