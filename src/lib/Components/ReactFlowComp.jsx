@@ -17,13 +17,13 @@ import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge/CustomEdge';
 import DownloadButton from './DownloadButton';
 
-import { v4 as uuidv4 } from 'uuid';
-
-// import 'reactflow/dist/style.css';
-
+// css
 import '@xyflow/react/dist/style.css';
 import './ReactFlowComp.css';
+
+import { v4 as uuidv4 } from 'uuid';
 import { isEmpty, cloneDeep } from 'lodash';
+
 // recoil
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { SelectedSchema, FunctionListInfo, EgdesInfo } from '../RecoilAtom/recoilReactFlowState';
