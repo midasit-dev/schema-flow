@@ -98,15 +98,6 @@ export default function RJSFComp(props) {
 	React.useEffect(() => {
 		console.log('uischema', input.UISchema);
 		setExecuteState((prev) => {
-			// prev example
-			// {
-			// 	"nodeId": {
-			// 		'setExecute': setExecute,
-			// 		'setIsResultView': setIsResultView,
-			// 		'setIsSuccess': setIsSuccess,
-			// 		'setIsError': setIsError
-			// 	}
-			// };
 			return { ...prev, [nodeId]: { ...prev[nodeId], setExecute } };
 		});
 	}, []);

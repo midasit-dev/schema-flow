@@ -57,15 +57,6 @@ export default function SchemaToUI(props: {
 
 	React.useEffect(() => {
 		setExecuteState((prev: any) => {
-			// prev example
-			// {
-			// 	"nodeId": {
-			// 		'setExecute': setExecute,
-			// 		'setIsOpenJsonView': setIsOpenJsonView,
-			// 		'setIsSuccess': setIsSuccess,
-			// 		'setIsError': setIsError
-			// 	}
-			// };
 			return {
 				...prev,
 				[nodeId]: {
