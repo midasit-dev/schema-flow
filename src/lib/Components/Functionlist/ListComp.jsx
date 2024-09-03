@@ -4,7 +4,7 @@ import { SvgCheckCircle } from '../SVGComps';
 import { FunctionListInfo } from '../../RecoilAtom/recoilReactFlowState';
 import { useRecoilValue } from 'recoil';
 
-const getSchemaFromST = async (URI) => {
+const getSchemaFromServer = async (URI) => {
 	const res = await fetch(`${URI}`, {
 		method: 'GET',
 		headers: {
@@ -31,7 +31,7 @@ const ListComp = (props) => {
 		}
 		const schemaURI = `${item.baseURL}${item.schemapath}`;
 		const executeURI = `${item.baseURL}${item.executepath}`;
-		const openAPIschema = await getSchemaFromST(schemaURI);
+		const openAPIschema = await getSchemaFromServer(schemaURI);
 		const paths = openAPIschema.paths;
 		let dereferencedFunctionSchema = {};
 		for (const key in paths) {
