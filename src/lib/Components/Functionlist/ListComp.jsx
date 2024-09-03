@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SvgCheckCircle } from '../../SVGComps';
+import { SvgCheckCircle } from '../SVGComps';
 import { FunctionListInfo } from '../../RecoilAtom/recoilReactFlowState';
 import { useRecoilValue } from 'recoil';
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // components
-import { SvgDropdown, SvgLogOut, SvgLogin } from '../SVGComps';
+import { SvgDropdown, SvgLogOut, SvgLogin } from './SVGComps';
 import { Tooltip } from './Tooltip';
 
 // css

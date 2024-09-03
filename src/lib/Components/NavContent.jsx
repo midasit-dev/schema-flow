@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
 
 // components
-import { SvgClockRewind, SvgLayers } from '../SVGComps';
+import { SvgClockRewind, SvgLayers } from './SVGComps';
 
 // css
 import './NavContent.css';

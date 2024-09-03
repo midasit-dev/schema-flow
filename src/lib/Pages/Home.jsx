@@ -8,7 +8,7 @@ import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
 // Components
 import SideBar from '../Components/SideBar';
 import UserProjects from '../Components/UserProjects';
-import { SvgHome, SvgBell } from '../SVGComps';
+import { SvgHome, SvgBell } from '../Components/SVGComps';
 
 // css
 import './Home.css';

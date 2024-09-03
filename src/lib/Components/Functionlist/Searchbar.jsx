@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SvgSearch } from '../../SVGComps';
+import { SvgSearch } from '../SVGComps';
 
 const inputStyle = {
 	border: 'none',

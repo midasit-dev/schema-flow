@@ -14,7 +14,7 @@ import rss from 'react-secure-storage';
 import preval from 'preval.macro';
 
 // components
-import { SvgLoginBackground } from '../SVGComps';
+import { SvgLoginBackground } from '../Components/SVGComps';
 
 // css
 import './Login.css';

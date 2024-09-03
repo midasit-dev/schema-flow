@@ -2,7 +2,7 @@ import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import ToComponent from './moaUI/ToComponent';
 import { Canvas, Canvases, Layer } from '../Common/types';
-import { SvgClose, SvgRightArrow, SvgLeftArrow } from '../SVGComps/index';
+import { SvgClose, SvgRightArrow, SvgLeftArrow } from '../Components/SVGComps/index';
 import RJSFComp from './rjsf';
 import InfiniLoading from '../Components/Loading/InfinitLoading';
 

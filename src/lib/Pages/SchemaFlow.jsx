@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactFlowComp from '../Components/ReactFlowComp';
-import { Svglist, Svgminimize } from '../SVGComps';
+import { Svglist, Svgminimize } from '../Components/SVGComps';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { SelectedSchema, FunctionListInfo } from '../RecoilAtom/recoilReactFlowState';

@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // components
-import { SvgPlus } from '../SVGComps';
+import { SvgPlus } from './SVGComps';
 
 // css
 import './Recents.css';
