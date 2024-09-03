@@ -27,7 +27,7 @@ function saveBlobAsFile(blob, filename) {
 
 function uploadImageToServer(blob) {
 	const formData = new FormData();
-	formData.append('image', blob, 'reactflow.png');
+	formData.append('Thumbnail', blob, 'Thumbnail.png');
 
 	fetch('https://your-server-endpoint/upload', {
 		method: 'POST',

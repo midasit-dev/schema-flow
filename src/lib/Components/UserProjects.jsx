@@ -57,6 +57,7 @@ export default function UserProjects({ navContent, windowSize }) {
 						gap: '30px',
 						width: '100%',
 						justifyContent: 'space-between',
+						justifyItems: 'center',
 						gridAutoRows: 'max-content',
 					}}
 				>

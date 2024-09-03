@@ -2,14 +2,15 @@
 
 /* 메인 컨테이너 스타일 */
 .homeContainer {
-	width: 100vw;
-	height: 100vh;
+	width: 100%;
+	height: 100%;
 	display: flex;
 }
 
 /* 최소 너비 이하일 때 flexDirection 스타일 */
 .columnLayout {
 	flex-direction: column;
+	overflow-y: hidden;
 }
 
 /* 최소 너비 이상일 때 flexDirection 스타일 */
@@ -106,7 +107,16 @@
 	justify-content: flex-start;
 	max-width: 100%;
 	padding-left: 12px;
-	padding-right: 12px;
 	padding-top: 4px;
 	padding-bottom: 4px;
+
+  /* 스크롤바 기본적으로 숨기기 설정 */
+  scrollbar-width: thin; /* Firefox에서는 얇은 스크롤바 사용 */
+  scrollbar-color: transparent transparent; /* 기본적으로 투명하게 설정 */
+  -ms-overflow-style: none;  /* IE 10+ 숨기기 */
+	transition : all 1s;
+}
+
+.userFlowContainer.show-scrollbar {
+  scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* 스크롤 중일 때 색상 설정 */
 }

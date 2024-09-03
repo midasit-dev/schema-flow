@@ -16,6 +16,9 @@ import './Home.css';
 const MIN_WIDTH = 650; // 최소 너비
 
 export default function Home() {
+	const containerRef = React.useRef(null);
+	const isScrollingTimeoutRef = React.useRef(null);
+	const [isScrolling, setIsScrolling] = React.useState(false);
 	const [windowSize, setWindowSize] = React.useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
@@ -37,6 +40,31 @@ export default function Home() {
 
 		return () => {
 			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
+
+	React.useEffect(() => {
+		const container = containerRef.current;
+
+		const handleScroll = () => {
+			setIsScrolling(true);
+
+			// 스크롤 중지 후 1초 뒤에 숨김
+			if (isScrollingTimeoutRef.current) {
+				clearTimeout(isScrollingTimeoutRef.current);
+			}
+			isScrollingTimeoutRef.current = setTimeout(() => {
+				setIsScrolling(false);
+			}, 1000);
+		};
+
+		container.addEventListener('scroll', handleScroll);
+
+		return () => {
+			container.removeEventListener('scroll', handleScroll);
+			if (isScrollingTimeoutRef.current) {
+				clearTimeout(isScrollingTimeoutRef.current);
+			}
 		};
 	}, []);
 
@@ -76,7 +104,10 @@ export default function Home() {
 						</div>
 					</div>
 				)}
-				<div className='userFlowContainer'>
+				<div
+					ref={containerRef}
+					className={`userFlowContainer ${isScrolling ? 'show-scrollbar' : ''}`}
+				>
 					<UserProjects navContent={selectedNavContent} windowSize={windowSize} />
 				</div>
 			</div>
