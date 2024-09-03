@@ -29,7 +29,7 @@ function NewFlowProject({ width }) {
 
 export default function Recents(props) {
 	const { width = '200px' } = props;
-	
+
 	const navigate = useNavigate();
 
 	return (

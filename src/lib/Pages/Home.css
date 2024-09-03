@@ -110,13 +110,13 @@
 	padding-top: 4px;
 	padding-bottom: 4px;
 
-  /* 스크롤바 기본적으로 숨기기 설정 */
-  scrollbar-width: thin; /* Firefox에서는 얇은 스크롤바 사용 */
-  scrollbar-color: transparent transparent; /* 기본적으로 투명하게 설정 */
-  -ms-overflow-style: none;  /* IE 10+ 숨기기 */
-	transition : all 1s;
+	/* 스크롤바 기본적으로 숨기기 설정 */
+	scrollbar-width: thin; /* Firefox에서는 얇은 스크롤바 사용 */
+	scrollbar-color: transparent transparent; /* 기본적으로 투명하게 설정 */
+	-ms-overflow-style: none; /* IE 10+ 숨기기 */
+	transition: all 1s;
 }
 
 .userFlowContainer.show-scrollbar {
-  scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* 스크롤 중일 때 색상 설정 */
+	scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* 스크롤 중일 때 색상 설정 */
 }

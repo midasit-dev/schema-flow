@@ -8,7 +8,7 @@ import Login from './lib/Pages/Login';
 
 import NightSightProvider, { useNightSight } from './lib/Components/Login/useThemeSetting';
 
-function FlowRoute2() {
+function FlowRoute() {
 	return (
 		<Routes>
 			<Route path='home' element={<Home />} />
@@ -19,12 +19,12 @@ function FlowRoute2() {
 	);
 }
 
-function FlowRoute() {
+function FlowRouteWrapper() {
 	const location = useLocation();
 
 	return (
 		<Routes location={location}>
-			<Route path={`${process.env.REACT_APP_PUBLIC_URL}/*`} element={<FlowRoute2 />} />
+			<Route path={`${process.env.REACT_APP_PUBLIC_URL}/*`} element={<FlowRoute />} />
 		</Routes>
 	);
 }
@@ -33,7 +33,7 @@ export default function FlowRoot() {
 	return (
 		<BrowserRouter>
 			<NightSightProvider>
-				<FlowRoute />
+				<FlowRouteWrapper />
 			</NightSightProvider>
 		</BrowserRouter>
 	);

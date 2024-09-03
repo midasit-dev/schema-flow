@@ -26,7 +26,20 @@ export default function Template({ width, src }) {
 
 	return (
 		<>
-			{templateList.map((template) => {
+			{templateList.map((template, index) => {
+				let name = "";
+				if(index === 0) {
+					name = "./김.png";
+				}
+				else if(index === 1) {
+					name= "./정.png";
+				}
+				else if(index === 2) {
+					name = "./빈.png";
+				}
+				else {
+					name= "./reactflow.png";
+				}
 				return (
 					<div
 						key={template.templateId}
@@ -52,7 +65,7 @@ export default function Template({ width, src }) {
 							}}
 						>
 							<img
-								src={'./reactflow.png'}
+								src={name}
 								alt='Thumbnail'
 								style={{ maxWidth: '100%', height: 'auto' }}
 							/>
