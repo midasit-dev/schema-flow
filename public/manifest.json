@@ -1,6 +1,6 @@
 {
-	"short_name": "SchemaUIBuilder",
-	"name": "SchemaUIBuilder",
+	"short_name": "schema-flow",
+	"name": "schema-flow",
 	"icons": [
 		{
 			"src": "icon.png",

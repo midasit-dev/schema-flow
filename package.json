@@ -1,5 +1,5 @@
 {
-	"name": "@midasit-dev/schemauibuilder",
+	"name": "@midasit-dev/schema-flow",
 	"description": "A builder that automatically generates Schema as UI and connects the flow.",
 	"version": "0.1.0",
 	"keywords": [
@@ -13,9 +13,9 @@
 	"author": "APIDEV Team <developer@midasit.com> (https://github.com/midasit-dev)",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/midasit-dev/SchemaUIBuilder.git"
+		"url": "git+https://github.com/midasit-dev/schema-flow.git"
 	},
-	"homepage": "https://midasit-dev.github.io/SchemaUIBuilder/",
+	"homepage": "https://midasit-dev.github.io/schema-flow/",
 	"private": false,
 	"main": "index.js",
 	"contributors": [
@@ -102,7 +102,7 @@
 		]
 	},
 	"bugs": {
-		"url": "https://github.com/midasit-dev/SchemaUIBuilder/issues"
+		"url": "https://github.com/midasit-dev/schema-flow/issues"
 	},
 	"license": "MIT",
 	"devDependencies": {

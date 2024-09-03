@@ -53,9 +53,9 @@ module.exports = {
 				changeOrigin: true,
 				secure: false,
 			},
-			"/SchemaUIBuilder": {
+			"/schema-flow": {
 				target: process.env.REACT_APP_ACTUAL_API_URL,
-				pathRewrite: { "^/SchemaUIBuilder": "" },
+				pathRewrite: { "^/schema-flow": "" },
 				changeOrigin: true,
 				secure: false,
 			},

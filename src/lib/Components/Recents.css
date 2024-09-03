@@ -18,8 +18,8 @@
 }
 
 .recents-inner {
-	width: 200px; /* 기본값을 그대로 유지합니다. */
-	height: 200px; /* 기본값을 그대로 유지합니다. */
+	width: 100%; /* 기본값을 그대로 유지합니다. */
+	height: 100%; /* 기본값을 그대로 유지합니다. */
 	border-radius: 10px;
 	border: 1px solid #e6e6e6;
 	display: flex;
@@ -40,7 +40,7 @@
 }
 
 .recents-text {
-	width: 200px; /* 기본값을 그대로 유지합니다. */
+	width: 100%; /* 기본값을 그대로 유지합니다. */
 	font-size: 16px;
 	font-family: 'Pretendard Medium', sans-serif;
 	margin-top: 20px;

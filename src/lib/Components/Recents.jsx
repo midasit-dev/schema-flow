@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // components
 import { SvgPlus } from '../SVGComps';
@@ -16,7 +17,7 @@ function NewFlowProject({ width }) {
 			onMouseLeave={() => setIsHovered(false)}
 			style={{ width, height: width }}
 		>
-			<div className='recents-inner' style={{ width, height: width }}>
+			<div className='recents-inner'>
 				<div className='recents-icon-container'>
 					<SvgPlus isHovered={isHovered} />
 				</div>
@@ -28,9 +29,11 @@ function NewFlowProject({ width }) {
 
 export default function Recents(props) {
 	const { width = '200px' } = props;
+	
+	const navigate = useNavigate();
 
 	return (
-		<div>
+		<div onClick={() => navigate('../Flow/Untitled')}>
 			<NewFlowProject width={width} />
 		</div>
 	);
