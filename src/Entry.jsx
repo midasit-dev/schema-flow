@@ -32,9 +32,9 @@ function FlowRouteWrapper() {
 export default function FlowRoot() {
 	return (
 		<BrowserRouter>
-			<NightSightProvider>
-				<FlowRouteWrapper />
-			</NightSightProvider>
+			{/* <NightSightProvider> */}
+			<FlowRouteWrapper />
+			{/* </NightSightProvider> */}
 		</BrowserRouter>
 	);
 }

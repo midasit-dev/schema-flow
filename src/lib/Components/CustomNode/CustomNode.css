@@ -1,5 +1,5 @@
 /* Shaking and rotating animation */
-@keyframes shake {
+@keyframes shakeshack {
 	0% {
 		transform: translateX(0) rotate(0deg);
 	}
@@ -18,6 +18,6 @@
 }
 
 /* Applying the shake animation */
-.shake {
-	animation: shake 2s infinite; /* Adjust the duration for a smoother effect */
+.shakeshack {
+	animation: shakeshack 2s infinite; /* Adjust the duration for a smoother effect */
 }

@@ -19,7 +19,7 @@ const CustomNode = React.memo((props) => {
 	return (
 		<>
 			{!isEmpty(data.schemainfo) && (
-				<div className={isShake ? 'shake' : ''} style={{ paddingBottom: 29 }}>
+				<div className={isShake ? 'shakeshack' : ''} style={{ paddingBottom: 29 }}>
 					<CustomHandle id={'top_' + id} type='target' position={Position.Top} />
 					<CustomHandle id={'left_' + id} type='target' position={Position.Left} />
 					<div>

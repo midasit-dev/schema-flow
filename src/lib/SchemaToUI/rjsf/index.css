@@ -16,6 +16,7 @@
 	font-family: pretendard;
 	font-stretch: normal;
 	transition: background-color 0.4s, color 0.4s, border 0.4s;
+	cursor: pointer;
 }
 
 .flowrun-btn:hover {
@@ -42,6 +43,7 @@
 	font-family: pretendard;
 	font-stretch: normal;
 	transition: background-color 0.4s, color 0.4s, border 0.4s;
+	cursor: pointer;
 }
 
 .singlerun-btn:hover {
@@ -68,6 +70,7 @@
 	font-family: pretendard;
 	font-stretch: normal;
 	transition: background-color 0.4s, color 0.4s, border 0.4s;
+	cursor: pointer;
 }
 
 .run-btn:hover {
