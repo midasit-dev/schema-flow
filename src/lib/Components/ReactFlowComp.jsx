@@ -25,8 +25,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { isEmpty, cloneDeep } from 'lodash';
 
 // recoil
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { SelectedSchema, FunctionListInfo, EgdesInfo } from '../RecoilAtom/recoilReactFlowState';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { SelectedSchema, FunctionListInfo, EgdesInfo, FlowID } from '../RecoilAtom/recoilReactFlowState';
 
 const nodeTypes = {
 	customSchema: CustomNode,
@@ -51,6 +51,7 @@ const ReactFlowComp = () => {
 	const [selectedschema, setSelectedschema] = useRecoilState(SelectedSchema);
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setEgdesInfo = useSetRecoilState(EgdesInfo);
+	const flowId = useRecoilValue(FlowID);
 
 	const onConnectStart = useCallback((_, { nodeId }) => {
 		connectingNodeId.current = nodeId;
@@ -72,15 +73,13 @@ const ReactFlowComp = () => {
 
 	React.useEffect(() => {
 		// get nodes, edges and functionlistInfo from localstorage
-		const localStorageFlow = localStorage.getItem('FLOW');
+		const localStorageFlow = localStorage.getItem(flowId);
 		let localfunctionlistInfo = {};
 		if (localStorageFlow) {
 			const localFlowJson = JSON.parse(localStorageFlow);
 			const localNodes = localFlowJson['nodes'];
 			const localEdges = localFlowJson['edges'];
-			if (Array.isArray(localFlowJson.functionlistInfo)) {
-				localStorage.removeItem('FLOW');
-			} else {
+			if (localFlowJson['functionlistInfo']) {
 				localfunctionlistInfo = localFlowJson['functionlistInfo'];
 			}
 			if (localNodes) {
@@ -99,8 +98,8 @@ const ReactFlowComp = () => {
 		// set nodes to localstorage
 
 		if (nodes.length > 0) {
-			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
-			localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, nodes: nodes }));
+			const localFlow = JSON.parse(localStorage.getItem(flowId));
+			localStorage.setItem(flowId, JSON.stringify({ ...localFlow, nodes: nodes }));
 		}
 	}, [nodes]);
 
@@ -115,17 +114,17 @@ const ReactFlowComp = () => {
 			}
 			setEgdesInfo(edgesInfo);
 			// set edges to localstorage
-			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
-			localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, edges: edges }));
+			const localFlow = JSON.parse(localStorage.getItem(flowId));
+			localStorage.setItem(flowId, JSON.stringify({ ...localFlow, edges: edges }));
 		}
 	}, [edges]);
 
 	React.useEffect(() => {
 		// set functionlistInfo to localstorage
 		if (Object.keys(functionlistInfo).length > 0) {
-			const localFlow = JSON.parse(localStorage.getItem('FLOW'));
+			const localFlow = JSON.parse(localStorage.getItem(flowId));
 			localStorage.setItem(
-				'FLOW',
+				flowId,
 				JSON.stringify({ ...localFlow, functionlistInfo: functionlistInfo }),
 			);
 		}
@@ -135,7 +134,7 @@ const ReactFlowComp = () => {
 	React.useEffect(() => {
 		if (CPressed) {
 			// get localstorage FLOW
-			const localStorageFlow = localStorage.getItem('FLOW');
+			const localStorageFlow = localStorage.getItem(flowId);
 			if (localStorageFlow) {
 				const localFlow = JSON.parse(localStorageFlow);
 				if (localFlow['nodes'] || localFlow['edges']) {

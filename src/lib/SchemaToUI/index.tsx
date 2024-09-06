@@ -17,8 +17,8 @@ import ThreeDPM from '../Components/OutputComp/ThreeDPM';
 import MarkdownViewer from '../Components/OutputComp/MarkdownViewer';
 import { useReactFlow } from '@xyflow/react';
 // recoil
-import { useSetRecoilState, useRecoilState } from 'recoil';
-import { FunctionListInfo, ExecuteState } from '../RecoilAtom/recoilReactFlowState';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
+import { FunctionListInfo, ExecuteState, FlowID } from '../RecoilAtom/recoilReactFlowState';
 
 const maxRJSFWidth = 620;
 const minRJSFWidth = 400;
@@ -33,6 +33,7 @@ export default function SchemaToUI(props: {
 	input: any;
 }) {
 	const { nodeId, title, schemaInfo, setIsShake, input } = props;
+	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
 	const [canvas, setCanvas] = React.useState<Canvas>({
 		width: 300,
 		height: 300,
@@ -40,7 +41,6 @@ export default function SchemaToUI(props: {
 	});
 	const [response, setResponse] = React.useState({});
 	const [isloading, setIsloading] = React.useState(false);
-	const uuid = React.useMemo(() => uuidv4().slice(0, 8), []);
 	const [isJsonResult, setIsJsonResult] = React.useState(false);
 	const [isTextResult, setIsTextResult] = React.useState(false);
 	const [is3dpm, setIs3dpm] = React.useState(false);
@@ -49,8 +49,10 @@ export default function SchemaToUI(props: {
 	const [schema, setSchema] = React.useState(schemaInfo.schema);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const [isError, setIsError] = React.useState(false);
+
 	const setFunctionListInfo = useSetRecoilState(FunctionListInfo);
 	const [executeState, setExecuteState] = useRecoilState(ExecuteState);
+	const flowId = useRecoilValue(FlowID);
 
 	const controls = useAnimation();
 	const reactFlow = useReactFlow();
@@ -106,17 +108,16 @@ export default function SchemaToUI(props: {
 
 	const removeCustomNode = React.useCallback(
 		(nodeId: string, functionId: string) => {
-			console.log('removeCustomNode', nodeId, functionId);
 			reactFlow.setNodes((nds) => {
 				const nodes = nds.filter((node) => node.id !== nodeId);
-				const localFlow = JSON.parse(localStorage.getItem('FLOW') || '{}');
-				localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, nodes: nodes }));
+				const localFlow = JSON.parse(localStorage.getItem(flowId) || '{}');
+				localStorage.setItem(flowId, JSON.stringify({ ...localFlow, nodes: nodes }));
 				return nodes;
 			});
 			reactFlow.setEdges((eds) => {
 				const edges = eds.filter((edge) => edge.source !== nodeId && edge.target !== nodeId);
-				const localFlow = JSON.parse(localStorage.getItem('FLOW') || '{}');
-				localStorage.setItem('FLOW', JSON.stringify({ ...localFlow, edges: edges }));
+				const localFlow = JSON.parse(localStorage.getItem(flowId) || '{}');
+				localStorage.setItem(flowId, JSON.stringify({ ...localFlow, edges: edges }));
 				return edges;
 			});
 			setFunctionListInfo((prev: any) => {

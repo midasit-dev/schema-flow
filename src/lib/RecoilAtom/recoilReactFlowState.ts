@@ -72,3 +72,8 @@ export const ExecuteFlow = atom<any>({
 	key: 'ExecuteFlow',
 	default: {},
 });
+
+export const FlowID = atom<string>({
+	key: 'FlowID',
+	default: '',
+});

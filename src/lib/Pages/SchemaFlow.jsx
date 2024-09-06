@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ReactFlowProvider } from '@xyflow/react';
 
 // recoil
-import { useSetRecoilState, useRecoilState } from 'recoil';
-import { SelectedSchema, FunctionListInfo } from '../RecoilAtom/recoilReactFlowState';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
+import { SelectedSchema, FunctionListInfo, FlowID } from '../RecoilAtom/recoilReactFlowState';
 
 // components
 import ReactFlowComp from '../Components/ReactFlowComp';
@@ -30,12 +30,13 @@ const getFunctionListFromWGSD = async (URI) => {
 function SchemaFlow(props) {
 	const [isopenList, setIsopenList] = React.useState(false);
 	const [searchTerm, setSearchTerm] = React.useState('');
-	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const [originalFunctionListInfo, setOriginalFunctionListInfo] = React.useState({});
 	const [selectedCategory, setSelectedCategory] = React.useState(null);
 	const [selectedList, setSelectedList] = React.useState(null);
-
+	
+	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setSchema = useSetRecoilState(SelectedSchema);
+	const FlowId = useRecoilValue(FlowID);
 
 	const toggleOpen = () => setIsopenList(!isopenList);
 
@@ -98,18 +99,16 @@ function SchemaFlow(props) {
 	);
 
 	const loadData = React.useCallback(async () => {
-		const localFlow = localStorage.getItem('FLOW');
+		const localFlow = localStorage.getItem(FlowId);
 		let functionlistInfoLocal = {};
 		// if local storage is not empty and it is an array type, remove local storage FLOW
 		if (localFlow) {
 			const localFlowJson = JSON.parse(localFlow);
-			if (Array.isArray(localFlowJson.functionlistInfo)) {
-				localStorage.removeItem('FLOW');
-			} else if (localFlowJson.functionlistInfo) {
+			if (localFlowJson.functionlistInfo) {
 				functionlistInfoLocal = localFlowJson.functionlistInfo;
 			}
 		}
-
+		
 		categoryList.map(async (category) => {
 			let res = null;
 			let key = '';
@@ -160,7 +159,7 @@ function SchemaFlow(props) {
 					break;
 			}
 		});
-	}, [setFunctionListInfo, fetchFunctionList]);
+	}, [FlowId, fetchFunctionList, setFunctionListInfo]);
 
 	React.useEffect(() => {
 		loadData();

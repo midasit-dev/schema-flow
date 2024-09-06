@@ -1,5 +1,4 @@
 import React from 'react';
-import rss from 'react-secure-storage';
 
 // recoil
 import { useRecoilValue } from 'recoil';
@@ -9,6 +8,9 @@ import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
 import SideBar from '../Components/SideBar';
 import UserProjects from '../Components/UserProjects';
 import { SvgHome, SvgBell } from '../Components/SVGComps';
+
+// Common
+import { GetToken } from '../Common/Login/SessionChecker';
 
 // css
 import './Home.css';
@@ -26,9 +28,6 @@ export default function Home() {
 	const selectedNavContent = useRecoilValue(SelectedNavContent);
 
 	React.useEffect(() => {
-		const token = rss.getItem('token');
-		console.log('token', token);
-
 		const handleResize = () => {
 			setWindowSize({
 				width: document.documentElement.clientWidth,

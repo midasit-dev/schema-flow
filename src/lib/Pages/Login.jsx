@@ -7,9 +7,9 @@ import Typography from '@mui/material/Typography';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useNightSight } from '../Components/Login/useThemeSetting';
-
-import rss from 'react-secure-storage';
+// recoil
+import { useSetRecoilState } from 'recoil';
+import { TokenState, AccState } from '../RecoilAtom/recoilHomeState';
 
 import preval from 'preval.macro';
 
@@ -54,7 +54,7 @@ function QueryClientCleaner() {
 }
 
 export default function Login({ clearQueryClient = false }) {
-	const { darkMode } = useNightSight();
+	// const { darkMode } = useNightSight();
 	const [id, setId] = React.useState('');
 	const [pwd, setPwd] = React.useState('');
 	const [isFetching, setIsFetching] = React.useState(false);
@@ -65,6 +65,8 @@ export default function Login({ clearQueryClient = false }) {
 	const [showProgressMessage, setShowProgressMessage] = React.useState(false);
 	usePointerGlow();
 	const navigate = useNavigate();
+	const setToken = useSetRecoilState(TokenState);
+	const setAcc = useSetRecoilState(AccState);
 
 	// change text like ".", "..", "..."  while fetching
 	React.useEffect(() => {
@@ -115,14 +117,14 @@ export default function Login({ clearQueryClient = false }) {
 		console.log('res: ', res);
 		if (res.ok) {
 			const data = await res.json();
-			rss.setItem('token', data.token);
-			rss.setItem('acc', JSON.stringify({ id, pwd }));
+			setToken(data.token);
+			setAcc(JSON.stringify({ id, pwd }));
 
 			setIsLoginSuccessed(true);
 			setIsLoginFailed(false);
 		} else {
-			rss.setItem('token', '');
-			rss.setItem('acc', '');
+			setToken('');
+			setAcc('');
 
 			setIsLoginSuccessed(false);
 			setIsLoginFailed(true);
@@ -188,8 +190,7 @@ export default function Login({ clearQueryClient = false }) {
 								alignItems: 'center',
 								justifyContent: 'center',
 								backdropFilter: 'blur(20px)',
-								backgroundColor:
-									darkMode.mode === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)',
+								backgroundColor: 'rgba(255, 255, 255, 0.5)',
 								borderRadius: '10px',
 							}}
 							data-glow
