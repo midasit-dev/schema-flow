@@ -1,6 +1,6 @@
 import React from 'react';
-// import Form from '@rjsf/core';
-import Form from '@rjsf/semantic-ui';
+// import Form from '@rjsf/semantic-ui';
+import Form from '@rjsf/core';
 
 import validator from '@rjsf/validator-ajv8';
 import { useRecoilValue, useRecoilState } from 'recoil';
@@ -12,14 +12,13 @@ import {
 } from '../../RecoilAtom/recoilReactFlowState';
 import { isEmpty } from 'lodash';
 import './index.css';
-import MuiDataGridWidget from '../../Components/InputComp/Widgets/Datagrid_mui';
 import GradeField from '../../Components/InputComp/Fields/Grade';
-import DataGridField from '../../Components/InputComp/Fields/Datagrid';
 import Curve_uls_sls_Field from '../../Components/InputComp/Fields/Curve_uls_sls';
 import PolygonField from '../../Components/InputComp/Fields/Polygon';
 import LcomField from '../../Components/InputComp/Fields/Lcom';
 import LcomFixedField from '../../Components/InputComp/Fields/Lcom_Fixed';
 import OptWidget from '../../Components/InputComp/Widgets/Opt';
+import Fields from '../../Components/InputComp/Fields/Fields';
 
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
@@ -405,12 +404,7 @@ export default function RJSFComp(props) {
 						optWidget: OptWidget,
 					}}
 					fields={{
-						matlConcGradeField: GradeField,
-						matlConcCurveULSField: Curve_uls_sls_Field,
-						matlConcCurveSLSField: Curve_uls_sls_Field,
-						polygonField: PolygonField,
-						lcomField: LcomField,
-						lcomFixedField: LcomFixedField,
+						customField: Fields,
 					}}
 					validator={validator}
 					formData={changedData.formData}
