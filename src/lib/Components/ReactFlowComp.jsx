@@ -26,7 +26,13 @@ import { isEmpty, cloneDeep } from 'lodash';
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import { SelectedSchema, FunctionListInfo, EgdesInfo, FlowID } from '../RecoilAtom/recoilReactFlowState';
+import {
+	SelectedSchema,
+	FunctionListInfo,
+	EgdesInfo,
+	FlowID,
+} from '../RecoilAtom/recoilReactFlowState';
+import { UsableFieldKeyMap } from './InputComp/Fields';
 
 const nodeTypes = {
 	customSchema: CustomNode,
@@ -151,7 +157,7 @@ const ReactFlowComp = () => {
 	// temp make ui schema
 	function temp_MakeInputUISchema(id) {
 		return {
-			'ui:field': 'customField',
+			'ui:field': UsableFieldKeyMap.CUSTOM,
 			'ui:options': {
 				label: false,
 				hideDescription: true,
@@ -961,7 +967,7 @@ const ReactFlowComp = () => {
 			};
 		} else if (id.includes('Report steel bc')) {
 			return {
-				'ui:field': 'customField',
+				'ui:field': UsableFieldKeyMap.CUSTOM,
 				'ui:options': {
 					label: false,
 					hideDescription: true,

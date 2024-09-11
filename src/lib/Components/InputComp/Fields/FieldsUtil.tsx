@@ -3,7 +3,7 @@ import PolygonField from './Polygon';
 import Lcom_FiexedField from './Lcom_Fixed';
 import LcomField from './Lcom';
 import { ReactElement } from 'react';
-import { DropList, TextField } from '@midasit-dev/moaui-components-v1';
+import { NumberWidget, OptionWidget, StringWidget } from '../Widgets';
 
 export interface SchemaForm {
 	[key: string]: SchemaForm | string | number;
@@ -15,6 +15,7 @@ export interface SchemaProperty {
 	description?: string;
 	enum?: string[];
 	anyOf?: SchemaProperty[];
+	unit?: string;
 	properties?: SchemaPropertyMap;
 }
 
@@ -80,30 +81,13 @@ export const renderField = (
 ): ReactElement => {
 	return (
 		<div className={'field-content'}>
-			<div className={'field-name'}>
-				{field.title}
-				{/*<div className={'field-description'}>{field.description}</div>*/}
-			</div>
+			<div className={'field-name'}>{field.title}</div>
 			{field.enum ? (
-				<DropList
-					width={'150px'}
-					value={field.enum.findIndex((item) => item === value)}
-					itemList={field.enum.map((enumKey, idx) => [enumKey, idx])}
-					onChange={(event) => {
-						const newValue = field.enum?.find((_, idx) => idx === Number(event.target.value));
-						if (!newValue) return;
-						handleChange(newValue);
-					}}
-				/>
+				<OptionWidget field={field} value={value} handleChange={handleChange} />
+			) : field.type === 'number' ? (
+				<NumberWidget field={field} value={value} handleChange={handleChange} />
 			) : (
-				<TextField
-					value={value}
-					placeholder={field.description}
-					type={field.type === 'number' ? 'number' : 'text'}
-					onChange={(event) => {
-						handleChange(event.target.value);
-					}}
-				/>
+				<StringWidget field={field} value={value} handleChange={handleChange} />
 			)}
 		</div>
 	);

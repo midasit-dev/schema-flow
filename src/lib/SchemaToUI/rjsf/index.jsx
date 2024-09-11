@@ -18,7 +18,16 @@ import PolygonField from '../../Components/InputComp/Fields/Polygon';
 import LcomField from '../../Components/InputComp/Fields/Lcom';
 import LcomFixedField from '../../Components/InputComp/Fields/Lcom_Fixed';
 import OptWidget from '../../Components/InputComp/Widgets/Opt';
-import Fields from '../../Components/InputComp/Fields/Fields';
+import { Fields, UsableFieldKeyMap } from '../../Components/InputComp/Fields';
+import { UsableWidgetKeyMap } from '../../Components/InputComp/Widgets';
+
+export const WidgetMap = {
+	[UsableWidgetKeyMap.OPTION_2]: OptWidget
+}
+
+export const FieldMap = {
+	[UsableFieldKeyMap.CUSTOM]: Fields
+}
 
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
@@ -400,12 +409,8 @@ export default function RJSFComp(props) {
 				<Form
 					schema={formSchema}
 					uiSchema={input.UISchema}
-					widgets={{
-						optWidget: OptWidget,
-					}}
-					fields={{
-						customField: Fields,
-					}}
+					widgets={WidgetMap}
+					fields={FieldMap}
 					validator={validator}
 					formData={changedData.formData}
 					onChange={onChangedData}
