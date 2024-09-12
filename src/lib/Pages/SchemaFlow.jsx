@@ -33,7 +33,7 @@ function SchemaFlow(props) {
 	const [originalFunctionListInfo, setOriginalFunctionListInfo] = React.useState({});
 	const [selectedCategory, setSelectedCategory] = React.useState(null);
 	const [selectedList, setSelectedList] = React.useState(null);
-	
+
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setSchema = useSetRecoilState(SelectedSchema);
 	const FlowId = useRecoilValue(FlowID);
@@ -108,7 +108,7 @@ function SchemaFlow(props) {
 				functionlistInfoLocal = localFlowJson.functionlistInfo;
 			}
 		}
-		
+
 		categoryList.map(async (category) => {
 			let res = null;
 			let key = '';

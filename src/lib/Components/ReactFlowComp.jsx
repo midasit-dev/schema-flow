@@ -26,7 +26,12 @@ import { isEmpty, cloneDeep } from 'lodash';
 
 // recoil
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import { SelectedSchema, FunctionListInfo, EgdesInfo, FlowID } from '../RecoilAtom/recoilReactFlowState';
+import {
+	SelectedSchema,
+	FunctionListInfo,
+	EgdesInfo,
+	FlowID,
+} from '../RecoilAtom/recoilReactFlowState';
 
 const nodeTypes = {
 	customSchema: CustomNode,

@@ -55,18 +55,18 @@ function NewFlowProject({ width }) {
 export default function Recents(props) {
 	const { width = '200px' } = props;
 	const token = useRecoilValue(TokenState);
- 	const setFlowID = useSetRecoilState(FlowID);
-	
+	const setFlowID = useSetRecoilState(FlowID);
+
 	const navigate = useNavigate();
 
 	const onClickNewFlow = async () => {
 		const response = await postNewFlowProject(token);
-		if(response === null) {
+		if (response === null) {
 			console.error('Failed to create new flow project');
 			return;
 		}
 		const flowId = response.fileId;
-		if(flowId){
+		if (flowId) {
 			setFlowID(flowId);
 			navigate(`../Flow/${flowId}`);
 		}
