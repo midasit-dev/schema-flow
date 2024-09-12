@@ -13,10 +13,10 @@ export const IsSessionValid = async (token?: string) => {
 	else return false;
 };
 
-export const GetToken = async (token : any, setToken : any, acc : any, setAcc : any) => {
-	console.log("token: ", token);
-	console.log("acc: ", acc);
-	
+export const GetToken = async (token: any, setToken: any, acc: any, setAcc: any) => {
+	console.log('token: ', token);
+	console.log('acc: ', acc);
+
 	let currentToken = token;
 
 	if (await IsSessionValid(currentToken + '')) return currentToken;
@@ -34,7 +34,7 @@ export const GetToken = async (token : any, setToken : any, acc : any, setAcc : 
 
 	if (response.ok) {
 		const data = await response.json();
-		console.log("new Token: ", data.token);
+		console.log('new Token: ', data.token);
 		setToken(data.token);
 		return data.token;
 	} else {

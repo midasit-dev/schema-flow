@@ -60,9 +60,10 @@ export default function Template({ width, src }) {
 								display: 'flex',
 								justifyContent: 'center',
 								alignItems: 'center',
+								overflow: 'hidden',
 							}}
 						>
-							<img src={name} alt='Thumbnail' style={{ width, height: width }} />
+							<img src={name} alt='Thumbnail' style={{ width: '100%', height: '100%' }} />
 						</div>
 						<h2>{template.title}</h2>
 						<p>{template.updatedAt}</p>
