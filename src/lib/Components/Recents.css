@@ -1,37 +1,31 @@
 /* Recents.css */
 
-.recents-container {
-	width: 200px; /* 기본값을 그대로 유지합니다. */
-	height: 200px; /* 기본값을 그대로 유지합니다. */
-	margin-top: 10px;
+.new-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	border-radius: 10px;
+	margin-top: 10px;
 	cursor: pointer;
-	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 	transition: box-shadow 0.3s ease;
 }
 
-.recents-container:hover {
+.new-inner:hover {
 	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
 }
 
-.recents-inner {
-	width: 100%; /* 기본값을 그대로 유지합니다. */
-	height: 100%; /* 기본값을 그대로 유지합니다. */
-	border-radius: 10px;
-	border: 1px solid #e6e6e6;
+.new-inner {
 	display: flex;
-	justify-content: center;
 	align-items: center;
-	flex-direction: column;
-	font-size: 20px;
-	color: rgb(100, 100, 100);
-	font-family: Pretendard, sans-serif;
+	justify-content: center;
+	min-height: 250px;
+	height: 100%;
+	border: 1px solid #e6e6e6;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
 }
 
-.recents-icon-container {
+.new-icon-container {
 	width: 50px;
 	height: 50px;
 	display: flex;
@@ -39,17 +33,69 @@
 	align-items: center;
 }
 
-.recents-text {
+.new-text {
 	width: 100%; /* 기본값을 그대로 유지합니다. */
+	height: 35px;
 	font-size: 16px;
-	font-family: 'Pretendard Medium', sans-serif;
-	margin-top: 20px;
+	font-family: 'Pretendard', sans-serif;
+	margin-top: 15px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	transition: color 0.3s ease;
 }
 
-.recents-container:hover .recents-text {
+.new-text:hover {
+	width: 100%; /* 기본값을 그대로 유지합니다. */
+	height: 35px;
+	font-size: 16px;
+	font-family: 'Pretendard Medium', sans-serif;
+	margin-top: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: color 0.3s ease;
+}
+
+.new-container:hover .new-text {
 	color: #000;
+}
+
+.recents-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-top: 10px;
+	cursor: pointer;
+}
+
+.recents-thumbnail {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 250px;
+	height: 100%;
+	border: 1px solid #e6e6e6;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.recents-title {
+	width: 230px;
+	height: 20px;
+	margin-top: 15px;
+	margin-bottom: 5px;
+	font-size: 16px;
+	font-family: 'pretendard medium';
+	font-weight: 500;
+}
+
+.recents-text {
+	width: 100%;
+	height: 15px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 14px;
+	font-family: 'pretendard';
+	font-weight: 400;
 }

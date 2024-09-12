@@ -21,8 +21,10 @@ export const GetToken = async (token: any, setToken: any, acc: any, setAcc: any)
 
 	if (await IsSessionValid(currentToken + '')) return currentToken;
 
+
+	if(typeof acc === 'string') acc = JSON.parse(acc);
 	// if token is not valid, try to login
-	if (acc === '' || acc === null || acc === undefined) return '';
+	if (acc === '' || acc === null || acc === undefined) return 'acc is empty';
 
 	const response = await fetch('https://members.midasuser.com/auth/api/v1/login', {
 		method: 'POST',

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
 	ReactFlow,
 	addEdge,
@@ -16,6 +17,9 @@ import {
 import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge/CustomEdge';
 import DownloadButton from './DownloadButton';
+import { GetToken } from '../Common/Login/SessionChecker';
+
+import Navbar from '../Components/Navbar';
 
 // css
 import '@xyflow/react/dist/style.css';
@@ -32,6 +36,7 @@ import {
 	EgdesInfo,
 	FlowID,
 } from '../RecoilAtom/recoilReactFlowState';
+import { TokenState, AccState } from '../RecoilAtom/recoilHomeState';
 
 const nodeTypes = {
 	customSchema: CustomNode,
@@ -43,20 +48,38 @@ const edgeTypes = {
 
 const nodeClassName = (node) => node.type;
 
-const nodesLengthSelector = (state) => Array.from(state.nodeInternals.values()) || 0;
+const getFlowData = async (flowId, token) => {
+	const res = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	if (res.ok) {
+		const data = await res.json();
+		return data;
+	}
+	return null;
+};
+
 
 const ReactFlowComp = () => {
 	const connectingNodeId = React.useRef(null);
 	const [colorMode, setColorMode] = React.useState('light');
+	const [title, setTitle] = React.useState('Untitled');
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const reactFlow = useReactFlow();
 	const CPressed = useKeyPress(['c']);
+	const navigate = useNavigate();
 
 	const [selectedschema, setSelectedschema] = useRecoilState(SelectedSchema);
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setEgdesInfo = useSetRecoilState(EgdesInfo);
 	const flowId = useRecoilValue(FlowID);
+	const [token, setToken] = useRecoilState(TokenState);
+	const [acc, setAcc] = useRecoilState(AccState);
 
 	const onConnectStart = useCallback((_, { nodeId }) => {
 		connectingNodeId.current = nodeId;
@@ -81,6 +104,7 @@ const ReactFlowComp = () => {
 		const localStorageFlow = localStorage.getItem(flowId);
 		let localfunctionlistInfo = {};
 		if (localStorageFlow) {
+			console.log('localstorage flow', localStorageFlow);
 			const localFlowJson = JSON.parse(localStorageFlow);
 			const localNodes = localFlowJson['nodes'];
 			const localEdges = localFlowJson['edges'];
@@ -98,6 +122,20 @@ const ReactFlowComp = () => {
 			}
 		}
 	}, []);
+
+	React.useEffect(() => {
+		async function getFlowDatasbyFlowID() {
+			const result = await GetToken(token, setToken, acc, setAcc);
+			if (result === 'acc is empty') return navigate('../login');
+			const res = await getFlowData(flowId, token);
+			console.log('res', res);
+			setTitle(res.title);
+			if(res.flowData){
+				localStorage.setItem(flowId, JSON.stringify(res.flowData));
+			}
+		}
+		getFlowDatasbyFlowID();
+	}, [flowId]);
 
 	React.useEffect(() => {
 		// set nodes to localstorage
@@ -1045,6 +1083,7 @@ const ReactFlowComp = () => {
 					onClick={onClickHandler}
 					colorMode={colorMode}
 				>
+					<Navbar title={title}/>
 					<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 					<Controls />
 					<Background id='1' gap={25} variant={BackgroundVariant.Dots} />
