@@ -1,5 +1,5 @@
 import React from 'react';
-import { GuideBox, Panel, DataGrid, Button } from '@midasit-dev/moaui-components-v1';
+import { GuideBox, DataGrid, Button } from '@midasit-dev/moaui-components-v1';
 
 export default function Datagrid(props) {
 	console.log('Datagrid props', props);
