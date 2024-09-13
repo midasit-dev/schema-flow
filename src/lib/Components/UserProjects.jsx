@@ -39,17 +39,18 @@ export default function UserProjects({ navContent, windowSize }) {
 
 	React.useEffect(() => {
 		setIsLoading(true);
-		setTimeout(() => {
-			setIsLoading(false);
-		}, 1500);
 	}, [navContent]);
+
+	function handleLoading(isLoading) {
+		setIsLoading(isLoading);
+	}
 
 	return (
 		<div
 			ref={containerRef}
 			style={{ display: 'flex', flexDirection: 'row', width: '100%', padding: '10px' }}
 		>
-			{isLoading ? (
+			{isLoading && (
 				<div
 					style={{
 						display: 'grid',
@@ -65,21 +66,25 @@ export default function UserProjects({ navContent, windowSize }) {
 						<UserProjectsSkeleton key={index} width={itemWidth} />
 					))}
 				</div>
-			) : (
-				<div
-					style={{
-						display: 'grid',
-						gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)`,
-						gap: '30px',
-						width: '100%',
-						justifyContent: 'space-between',
-						gridAutoRows: 'max-content',
-					}}
-				>
-					{navContent === navContentList.recents && <Recents width={itemWidth} />}
-					{navContent === navContentList.template && <Template width={itemWidth} src={'src'} />}
-				</div>
 			)}
+
+			<div
+				style={{
+					display: 'grid',
+					gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)`,
+					gap: '30px',
+					width: '100%',
+					justifyContent: 'space-between',
+					gridAutoRows: 'max-content',
+				}}
+			>
+				{navContent === navContentList.recents && (
+					<Recents width={itemWidth} handleLoading={handleLoading} />
+				)}
+				{navContent === navContentList.template && (
+					<Template width={itemWidth} handleLoading={handleLoading} />
+				)}
+			</div>
 		</div>
 	);
 }

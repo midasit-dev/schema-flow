@@ -91,7 +91,7 @@ export default function Login({ clearQueryClient = false }) {
 				setShowProgressMessage(false);
 				setLoginMessage('Logging in');
 				if (isLoginSuccessed) {
-					navigate('../home');
+					navigate(-1);
 				}
 			}, 2000);
 			return () => clearInterval(interval);

@@ -90,6 +90,7 @@ export default function UserInfo() {
 				setUserInfo(res);
 			}
 		}
+		console.log('token:', token);
 		getUser();
 	}, []);
 

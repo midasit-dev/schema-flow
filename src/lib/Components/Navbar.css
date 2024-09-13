@@ -1,0 +1,26 @@
+.navbar {
+	background: rgba(255, 255, 255, 0.5); /* 반투명 배경 */
+	backdrop-filter: blur(8px); /* 블러 효과 */
+	position: fixed; /* 항상 상단에 고정 */
+	width: 100%; /* 전체 너비 */
+	height: 50px;
+	top: 0; /* 상단에 위치 */
+	left: 0; /* 좌측에 위치 */
+	z-index: 1000; /* 다른 요소 위에 표시 */
+	display: flex; /* 내부 항목을 가로로 배열 */
+	align-items: center; /* 세로 방향 가운데 정렬 */
+	padding: 0.5rem 1rem; /* 상하 패딩 */
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* 하단 경계선 */
+}
+
+.navbar-save-icon {
+	width: 28px;
+	height: 28px;
+	padding: 2px;
+	cursor: pointer;
+	border-radius: 30%;
+}
+
+.navbar-save-icon:hover {
+	background: rgba(164, 184, 240, 0.5);
+}

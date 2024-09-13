@@ -12,6 +12,7 @@ import { Svglist, Svgminimize } from '../Components/SVGComps';
 import ListComp from '../Components/Functionlist/ListComp';
 import SearchBar from '../Components/Functionlist/Searchbar';
 import Category from '../Components/Functionlist/Category';
+import Navbar from '../Components/Navbar';
 
 import { categoryList } from '../Common/string';
 
@@ -155,7 +156,7 @@ function SchemaFlow(props) {
 					});
 					break;
 				default:
-					console.log('No status');
+					console.log('status:', category.status);
 					break;
 			}
 		});
