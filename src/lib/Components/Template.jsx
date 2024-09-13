@@ -1,4 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FlowID } from '../RecoilAtom/recoilReactFlowState';
+
+// recoil
+import { useSetRecoilState } from 'recoil';
 
 async function fetchTemplate() {
 	const response = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/templates`);
@@ -7,12 +12,15 @@ async function fetchTemplate() {
 }
 
 export default function Template({ width, handleLoading }) {
+	const navigate = useNavigate();
 	const [templateList, setTemplateList] = React.useState([]);
+	const setFlowID = useSetRecoilState(FlowID);
 
 	React.useEffect(() => {
 		async function getTemplateList() {
 			const templatelist = await fetchTemplate();
 			if (!ignore) {
+				console.log('Template List: ', templatelist);
 				setTemplateList(templatelist);
 			}
 		}
@@ -25,8 +33,14 @@ export default function Template({ width, handleLoading }) {
 	}, []);
 
 	React.useEffect(() => {
-		if(templateList.length > 0) handleLoading(false);
+		if (templateList.length > 0) handleLoading(false);
 	}, [templateList, handleLoading]);
+
+	function onClickTemplate(templateId) {
+		console.log('Template ID:', templateId);
+		setFlowID(templateId);
+		navigate(`../flow/${templateId}`);
+	}
 
 	return (
 		<>
@@ -47,6 +61,7 @@ export default function Template({ width, handleLoading }) {
 							borderRadius: '10px',
 							cursor: 'pointer',
 						}}
+						onClick={() => onClickTemplate(template.templateId)}
 					>
 						<div
 							style={{

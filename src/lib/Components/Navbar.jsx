@@ -18,21 +18,23 @@ const imageWidth = 1024;
 const imageHeight = 768;
 
 async function putFlowDatas(body, token, flowId) {
-	const res = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`, {
-		method: 'PUT',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
+	const res = await fetch(
+		`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+		{
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify(body),
 		},
-		body: JSON.stringify(body),
-	});
+	);
 	if (res.ok) {
 		const data = await res.json();
 		return data;
 	}
 	return null;
 }
-
 
 function uploadImageToServer(blob, token, flowId) {
 	const formData = new FormData();
@@ -84,20 +86,20 @@ export default function Navbar({ title }) {
 				console.error('Blob creation failed');
 			}
 		});
-	}
+	};
 
 	const onClickSave = async () => {
 		await onSaveThumbnail();
 		const result = await GetToken(token, setToken, acc, setAcc);
-		if(result === 'acc is empty') return;
+		if (result === 'acc is empty') return;
 		const flowDatas = rss.getItem(flowId);
 		const body = {
-			"title": title,
-			"flowData": flowDatas,
-		}
+			title: title,
+			flowData: flowDatas,
+		};
 		const res = await putFlowDatas(body, token, flowId);
 		console.log('res:', res);
-	}
+	};
 
 	return (
 		<div className='navbar'>

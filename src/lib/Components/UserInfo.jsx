@@ -78,8 +78,7 @@ function LogInButton() {
 	);
 }
 
-export default function UserInfo() {
-	const [userInfo, setUserInfo] = React.useState(null);
+export default function UserInfo({ userInfo, setUserInfo }) {
 	const [token, setToken] = useRecoilState(TokenState);
 	const setAcc = useSetRecoilState(AccState);
 

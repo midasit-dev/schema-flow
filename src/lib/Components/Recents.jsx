@@ -70,7 +70,6 @@ function UpdateTime({ updatedAt }) {
 }
 
 function UserSavedFlowProject({ width, recentFlowProjects, onClickSavedFlow }) {
-
 	return (
 		<>
 			{recentFlowProjects.map((flowProject) => {
@@ -166,20 +165,20 @@ export default function Recents(props) {
 		const result = await GetToken(token, setToken, acc, setAcc);
 		if (result === 'acc is empty') navigate('../login');
 		setFlowID(flowId);
-		navigate(`../Flow/${flowId}`);
-	}
+		navigate(`../flow/${flowId}`);
+	};
 
 	React.useEffect(() => {
 		async function getFlowProjectsData() {
-			const result = await GetToken(token, setToken, acc, setAcc);
-			if (result === 'acc is empty') navigate('../login');
+			// const result = await GetToken(token, setToken, acc, setAcc);
+			// if (result === 'acc is empty') navigate('../login');
 			const res = await getFlowProjects(token);
 			if (res === null) {
 				console.error('Failed to get flow projects');
 				return;
 			}
 			handleLoading(false);
-			console.log("res", res);
+			console.log('res', res);
 			setRecentFlowProjects(res);
 		}
 		getFlowProjectsData();
@@ -190,7 +189,11 @@ export default function Recents(props) {
 			{recentFlowProjects.length > 0 && (
 				<NewFlowProject width={width} onClickNewFlow={onClickNewFlow} />
 			)}
-			<UserSavedFlowProject width={width} recentFlowProjects={recentFlowProjects} onClickSavedFlow={onClickSavedFlow}/>
+			<UserSavedFlowProject
+				width={width}
+				recentFlowProjects={recentFlowProjects}
+				onClickSavedFlow={onClickSavedFlow}
+			/>
 		</>
 	);
 }

@@ -49,20 +49,22 @@ const edgeTypes = {
 const nodeClassName = (node) => node.type;
 
 const getFlowData = async (flowId, token) => {
-	const res = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
+	const res = await fetch(
+		`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+		{
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
 		},
-	});
+	);
 	if (res.ok) {
 		const data = await res.json();
 		return data;
 	}
 	return null;
 };
-
 
 const ReactFlowComp = () => {
 	const connectingNodeId = React.useRef(null);
@@ -129,9 +131,9 @@ const ReactFlowComp = () => {
 			if (result === 'acc is empty') return navigate('../login');
 			const res = await getFlowData(flowId, token);
 			console.log('res', res);
-			setTitle(res.title);
-			if(res.flowData){
-				localStorage.setItem(flowId, JSON.stringify(res.flowData));
+			if (res !== null) {
+				if (res.title) setTitle(res.title);
+				if (res.flowData) localStorage.setItem(flowId, JSON.stringify(res.flowData));
 			}
 		}
 		getFlowDatasbyFlowID();
@@ -1083,11 +1085,10 @@ const ReactFlowComp = () => {
 					onClick={onClickHandler}
 					colorMode={colorMode}
 				>
-					<Navbar title={title}/>
+					<Navbar title={title} />
 					<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 					<Controls />
 					<Background id='1' gap={25} variant={BackgroundVariant.Dots} />
-					<DownloadButton />
 					<Panel position='top-center'>
 						<select onChange={onChangeColorMode} data-testid='colormode-select'>
 							<option value='light'>light</option>

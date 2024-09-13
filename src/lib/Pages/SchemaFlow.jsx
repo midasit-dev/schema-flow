@@ -254,7 +254,7 @@ function SchemaFlow(props) {
 			<div>
 				<motion.div
 					initial={{ width: '24px', height: '24px' }}
-					animate={{ width: isopenList ? '14px' : '24px', height: isopenList ? '14px' : '24px' }}
+					animate={{ width: isopenList ? '14px' : '18px', height: isopenList ? '14px' : '18px' }}
 					exit={{ width: '24px', height: '24px' }}
 					transition={{ duration: 0.2 }}
 					style={{

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { navContentList } from '../Common/string';
 // recoil
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
 
 // components
@@ -59,10 +59,18 @@ function TemplateFlow() {
 	);
 }
 
-export default function NavContent() {
+export default function NavContent({ userInfo }) {
+	const setSelectedNavContent = useSetRecoilState(SelectedNavContent);
+
+	React.useEffect(() => {
+		if (userInfo === null) {
+			setSelectedNavContent(navContentList.template);
+		}
+	}, [userInfo]);
+
 	return (
 		<div className='navContent'>
-			<RecentFlow />
+			{userInfo !== null && <RecentFlow />}
 			<TemplateFlow />
 		</div>
 	);
