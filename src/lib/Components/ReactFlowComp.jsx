@@ -37,6 +37,7 @@ import {
 	FlowID,
 } from '../RecoilAtom/recoilReactFlowState';
 import { TokenState, AccState } from '../RecoilAtom/recoilHomeState';
+import { UsableFieldKeyMap } from './InputComp/Fields';
 
 const nodeTypes = {
 	customSchema: CustomNode,
@@ -195,6 +196,14 @@ const ReactFlowComp = () => {
 
 	// temp make ui schema
 	function temp_MakeInputUISchema(id) {
+		return {
+			'ui:field': UsableFieldKeyMap.CUSTOM,
+			'ui:options': {
+				label: false,
+				hideDescription: true,
+			},
+		};
+
 		if (id.includes('Concrete geometry')) {
 			return {
 				Polygon: {
@@ -996,7 +1005,16 @@ const ReactFlowComp = () => {
 					},
 				},
 			};
-		} else return {};
+		} else if (id.includes('Report steel bc')) {
+			return {
+				'ui:field': UsableFieldKeyMap.CUSTOM,
+				'ui:options': {
+					label: false,
+					hideDescription: true,
+				},
+			};
+		} else {
+		}
 	}
 
 	function addCustomNode(event) {

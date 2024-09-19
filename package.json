@@ -34,7 +34,7 @@
 		"@react-three/fiber": "8.16.8",
 		"@rjsf/core": "5.20.0",
 		"@rjsf/semantic-ui": "6.0.0-alpha.0",
-		"@rjsf/utils": "5.18.4",
+		"@rjsf/utils": "5.20.1",
 		"@rjsf/validator-ajv8": "5.18.4",
 		"@tanstack/react-query": "5.52.1",
 		"@testing-library/jest-dom": "5.17.0",
