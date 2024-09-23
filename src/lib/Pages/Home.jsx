@@ -9,9 +9,6 @@ import SideBar from '../Components/SideBar';
 import UserProjects from '../Components/UserProjects';
 import { SvgHome, SvgBell } from '../Components/SVGComps';
 
-// Common
-import { GetToken } from '../Common/Login/SessionChecker';
-
 // css
 import './Home.css';
 

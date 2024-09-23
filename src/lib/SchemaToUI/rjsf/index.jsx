@@ -22,12 +22,12 @@ import { Fields, UsableFieldKeyMap } from '../../Components/InputComp/Fields';
 import { UsableWidgetKeyMap } from '../../Components/InputComp/Widgets';
 
 export const WidgetMap = {
-	[UsableWidgetKeyMap.OPTION_2]: OptWidget
-}
+	[UsableWidgetKeyMap.OPTION_2]: OptWidget,
+};
 
 export const FieldMap = {
-	[UsableFieldKeyMap.CUSTOM]: Fields
-}
+	[UsableFieldKeyMap.CUSTOM]: Fields,
+};
 
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
 	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
