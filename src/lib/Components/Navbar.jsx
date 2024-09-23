@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/react';
 import { toBlob } from 'html-to-image';
 import rss from 'react-secure-storage';
-import { SvgSave, SvgHome } from './SVGComps';
+import { SvgSave, SvgHome, SvgEdit } from './SVGComps';
 
 // recoil
 import { useRecoilValue, useRecoilState } from 'recoil';
@@ -36,17 +36,20 @@ async function putFlowDatas(body, token, flowId) {
 	return null;
 }
 
-function uploadImageToServer(blob, token, flowId) {
+async function uploadImageToServer(blob, token, flowId) {
 	const formData = new FormData();
 	formData.append('file', blob, 'Thumbnail.png');
 
-	fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/thumbnail/${flowId}`, {
-		method: 'POST',
-		headers: {
-			Authorization: `Bearer ${token}`,
+	await fetch(
+		`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/thumbnail/${flowId}`,
+		{
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			body: formData,
 		},
-		body: formData,
-	})
+	)
 		.then((response) => response.json())
 		.then((data) => {
 			console.log('Server response:', data);
@@ -57,6 +60,8 @@ function uploadImageToServer(blob, token, flowId) {
 }
 
 export default function Navbar({ title }) {
+	const [isMouseHoverEdit, setIsMouseHoverEdit] = React.useState(false);
+
 	const { getNodes } = useReactFlow();
 	const [token, setToken] = useRecoilState(TokenState);
 	const [acc, setAcc] = useRecoilState(AccState);
@@ -78,20 +83,20 @@ export default function Navbar({ title }) {
 				transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
 			},
 			useCors: true,
-		}).then((blob) => {
+		}).then(async (blob) => {
 			if (blob) {
 				console.log('blob', blob);
-				uploadImageToServer(blob, token, flowId);
+				await uploadImageToServer(blob, token, flowId);
 			} else {
 				console.error('Blob creation failed');
 			}
 		});
 	};
 
-	const onClickSave = async () => {
-		await onSaveThumbnail();
+	const saveAllData = async () => {
 		const result = await GetToken(token, setToken, acc, setAcc);
 		if (result === 'acc is empty') return;
+		await onSaveThumbnail();
 		const flowDatas = rss.getItem(flowId);
 		const body = {
 			title: title,
@@ -101,11 +106,22 @@ export default function Navbar({ title }) {
 		console.log('res:', res);
 	};
 
+	const onClickSave = async () => {
+		await saveAllData();
+	};
+
+	const onClickHome = async () => {
+		await saveAllData();
+		navigate('../home');
+	};
+
 	return (
 		<div className='navbar'>
-			<div
-				style={{ width: '20%', display: 'flex', justifyContent: 'left', alignItems: 'center' }}
-			></div>
+			<div style={{ width: '20%', display: 'flex', justifyContent: 'left', alignItems: 'center' }}>
+				<div className='navbar-side-icon' onClick={onClickHome}>
+					<SvgHome />
+				</div>
+			</div>
 			<div
 				style={{
 					width: '60%',
@@ -116,14 +132,18 @@ export default function Navbar({ title }) {
 					fontFamily: 'pretendard medium',
 				}}
 			>
-				{title}
+				<div style={{ marginRight: '5px' }}>{title}</div>
+				<div
+					className='navbar-title-edit-icon'
+					onMouseEnter={() => setIsMouseHoverEdit(true)}
+					onMouseLeave={() => setIsMouseHoverEdit(false)}
+				>
+					<SvgEdit isHovered={isMouseHoverEdit} />
+				</div>
 			</div>
 			<div style={{ width: '20%', display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-				<div className='navbar-save-icon' onClick={onClickSave}>
+				<div className='navbar-side-icon' onClick={onClickSave}>
 					<SvgSave />
-				</div>
-				<div className='navbar-save-icon' onClick={() => navigate('../home')}>
-					<SvgHome />
 				</div>
 			</div>
 		</div>

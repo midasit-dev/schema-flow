@@ -13,14 +13,26 @@
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* 하단 경계선 */
 }
 
-.navbar-save-icon {
-	width: 28px;
-	height: 28px;
-	padding: 2px;
+.navbar-side-icon {
+	width: 35px;
+	height: 35px;
+	padding: 5px;
 	cursor: pointer;
-	border-radius: 30%;
+	border-radius: 20%;
 }
 
-.navbar-save-icon:hover {
-	background: rgba(164, 184, 240, 0.5);
+.navbar-side-icon:hover {
+	background: rgba(174, 196, 248, 0.781);
+}
+
+.navbar-title-edit-icon {
+	width: 30px;
+	height: 30px;
+	padding: 4px;
+	cursor: pointer;
+	border-radius: 20%;
+}
+
+.navbar-title-edit-icon:hover {
+	background: rgba(239, 231, 255, 0.664);
 }
