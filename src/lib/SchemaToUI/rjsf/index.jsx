@@ -318,12 +318,10 @@ export default function RJSFComp(props) {
 				changedData.formData,
 				isSuccessFunctionExecute,
 			);
+			setResponseData(responseData);
 		} catch {
-			setIsloading(false);
 			isSuccessFunctionExecute(false);
-			return;
 		}
-		setResponseData(responseData);
 		setExecuteFlow((prev) => {
 			return { ...prev, [nodeId]: { isExecuted: true, output: responseData } };
 		});
