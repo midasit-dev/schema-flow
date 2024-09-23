@@ -80,7 +80,7 @@ const ReactFlowComp = () => {
 	const [selectedschema, setSelectedschema] = useRecoilState(SelectedSchema);
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setEgdesInfo = useSetRecoilState(EgdesInfo);
-	const flowId = useRecoilValue(FlowID);
+	const [flowId, setFlowId] = useRecoilState(FlowID);
 	const [token, setToken] = useRecoilState(TokenState);
 	const [acc, setAcc] = useRecoilState(AccState);
 
@@ -127,17 +127,28 @@ const ReactFlowComp = () => {
 	}, []);
 
 	React.useEffect(() => {
-		async function getFlowDatasbyFlowID() {
+		async function getFlowDatasbyFlowID(flowId) {
 			const result = await GetToken(token, setToken, acc, setAcc);
 			if (result === 'acc is empty') return navigate('../login');
 			const res = await getFlowData(flowId, token);
 			console.log('res', res);
 			if (res !== null) {
+				console.log('flowId', flowId);
 				if (res.title) setTitle(res.title);
-				if (res.flowData) localStorage.setItem(flowId, JSON.stringify(res.flowData));
+				if (res.flowData && flowId !== '') {
+					console.log('flowData', res.flowData);
+					localStorage.setItem(flowId, JSON.stringify(res.flowData));
+				} else {
+					// localStorage
+				}
 			}
 		}
-		getFlowDatasbyFlowID();
+		if (flowId === null || flowId === undefined || flowId === '') {
+			if (window.location.pathname.includes('/Flow/')) {
+				setFlowId(window.location.pathname.split('/')[2]);
+			}
+		}
+		getFlowDatasbyFlowID(flowId);
 	}, [flowId]);
 
 	React.useEffect(() => {
