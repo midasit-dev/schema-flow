@@ -34,6 +34,7 @@ function SchemaFlow(props) {
 	const [originalFunctionListInfo, setOriginalFunctionListInfo] = React.useState({});
 	const [selectedCategory, setSelectedCategory] = React.useState(null);
 	const [selectedList, setSelectedList] = React.useState(null);
+	const [isHoveredListIcon, setIsHoveredListIcon] = React.useState(false);
 
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setSchema = useSetRecoilState(SelectedSchema);
@@ -60,40 +61,48 @@ function SchemaFlow(props) {
 			const functionlist = await getFunctionListFromWGSD(URI);
 			if (functionlist.length === 0) return [];
 			const filterLowerCase = filter.toLowerCase();
+
 			const newFunctionListInfo = functionlist
 				// 필터링: 함수 이름에서 filter 값과 같은 것이 포함된 경우만 선택
 				.filter((path) => {
 					const pathLowerCase = path.toLowerCase();
 					return pathLowerCase.includes(filterLowerCase);
 				})
-				.reduce((acc, path, i) => {
-					let name = path.split('/').pop();
-					const encodedPath = encodeURIComponent(path);
-					name = formatFunctionName(name);
-					const existingInfo =
-						functionlistInfoLocal &&
-						functionlistInfoLocal[key] &&
-						functionlistInfoLocal[key].find((info) => info.name === name);
-					const functionInfo = existingInfo
-						? { ...existingInfo, id: `${key}_${i}_${name}`, param: encodedPath }
-						: {
-								id: `${key}_${i}_${name}`,
-								name,
-								category: key, // WGSD_DV, WGSD_ST
-								schema: {},
-								isSelected: false,
-								isRendered: false,
-								viewCount: 0,
-								param: encodedPath,
-								executepath: executeServerPath ? `${executeServerPath}${encodedPath}` : null,
-								schemapath: schemapath ? `${schemapath}${encodedPath}` : null,
-								baseURL: baseURL,
-						  };
+				.reduce(
+					(
+						acc /** typeof Array / acc */,
+						path /** typeof Array / currentValue */,
+						i /** currentIndex */,
+					) => {
+						let name = path.split('/').pop(); // path는 host/path/to/content/name --> name
+						const queryParam = `?functionId=${path}`;
+						name = formatFunctionName(name);
+						const existingInfo =
+							functionlistInfoLocal &&
+							functionlistInfoLocal[key] &&
+							functionlistInfoLocal[key].find((info) => info.name === name);
+						const functionInfo = existingInfo
+							? { ...existingInfo, id: `${key}_${i}_${name}`, param: queryParam }
+							: {
+									id: `${key}_${i}_${name}`,
+									name,
+									category: key, // WGSD_DV, WGSD_ST
+									schema: {},
+									isSelected: false,
+									isRendered: false,
+									viewCount: 0,
+									param: queryParam,
+									executepath: executeServerPath ? `${executeServerPath}${queryParam}` : null,
+									schemapath: schemapath ? `${schemapath}${queryParam}` : null,
+									baseURL: baseURL,
+							  };
 
-					acc.push(functionInfo);
-					return acc;
-				}, []);
-
+						acc.push(functionInfo);
+						return acc;
+					},
+					[],
+				);
+			console.log('newFunctionListInfo', newFunctionListInfo);
 			return newFunctionListInfo;
 		},
 		[formatFunctionName],
@@ -122,7 +131,7 @@ function SchemaFlow(props) {
 						process.env.REACT_APP_ACTUAL_DV_API_URL,
 						'backend/wgsd/functions',
 						'backend/wgsd/function-schemas/',
-						'backend/function-executor/python-execute/',
+						'backend/python-executor/execute',
 						key,
 						category.subTitle,
 					);
@@ -142,7 +151,7 @@ function SchemaFlow(props) {
 						process.env.REACT_APP_ACTUAL_ST_API_URL,
 						'backend/wgsd/functions',
 						'backend/wgsd/function-schemas/',
-						'backend/function-executor/python-execute/',
+						'backend/python-executor/execute',
 						key,
 						category.subTitle,
 					);
@@ -257,16 +266,19 @@ function SchemaFlow(props) {
 					animate={{ width: isopenList ? '14px' : '18px', height: isopenList ? '14px' : '18px' }}
 					exit={{ width: '24px', height: '24px' }}
 					transition={{ duration: 0.2 }}
+					onMouseEnter={() => setIsHoveredListIcon(true)}
+					onMouseLeave={() => setIsHoveredListIcon(false)}
 					style={{
 						backgroundColor: 'white',
 						cursor: 'pointer',
 						position: 'fixed',
-						top: '5px',
-						left: '5px',
+						top: '60px',
+						left: '10px',
 						zIndex: '2000',
 						padding: '10px',
-						borderRadius: '50%',
-						border: '1px solid #c1c1c3',
+						borderRadius: '20%',
+						border: isopenList ? '1px solid #c1c1c3' : '1px solid #e6e6e6',
+						boxShadow: isHoveredListIcon ? '0 0 5px 0 rgba(0, 0, 0, 0.2)' : 'none',
 						display: 'flex',
 						alignItems: 'center',
 						justifyContent: 'center',
@@ -294,7 +306,7 @@ function SchemaFlow(props) {
 									backgroundColor: 'rgba(241, 243, 245, 0.8)',
 									cursor: 'pointer',
 									position: 'absolute',
-									top: '24px',
+									top: '78px',
 									left: '24px',
 									zIndex: '1000',
 									padding: '10px',
@@ -313,7 +325,7 @@ function SchemaFlow(props) {
 												return (
 													<motion.div
 														key={'motiondiv_listcomp_' + index}
-														initial={{ opacity: 0, scale: 0.6, x: '-20%' }}
+														initial={{ opacity: 0, scale: 1, x: '-20%' }}
 														animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
 														exit={{ opacity: 0, scale: 1, x: '20%' }}
 														transition={{ duration: 0.2 }}
