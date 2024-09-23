@@ -16,11 +16,11 @@ const getSchemaFromServer = async (URI) => {
 		console.log('data', data);
 		return data;
 	}
+	return null;
 };
 
 const ListComp = (props) => {
 	const { index, item, onChangeSchema, onSetFunctionListInfo } = props;
-	const functionListInfo = useRecoilValue(FunctionListInfo);
 
 	async function onClickPyHandler(e) {
 		// if function is already selected, then unselect it.
@@ -32,27 +32,29 @@ const ListComp = (props) => {
 		const schemaURI = `${item.baseURL}${item.schemapath}`;
 		const executeURI = `${item.baseURL}${item.executepath}`;
 		const openAPIschema = await getSchemaFromServer(schemaURI);
-		const paths = openAPIschema.paths;
-		let dereferencedFunctionSchema = {};
-		for (const key in paths) {
-			// ex) key is '/moapy/project/wgsd/wgsd_flow/calc_3dpm'
-			if (paths[key]['post']['requestBody']['content']['application/json']['schema'])
-				dereferencedFunctionSchema =
-					paths[key]['post']['requestBody']['content']['application/json']['schema'];
-			else alert('No schema found in the selected function');
-		}
-		console.log('dereferencedFunctionSchema', dereferencedFunctionSchema);
-		dereferencedFunctionSchema.title = '';
-		// if function is not selected, then select it.
-		onSetFunctionListInfo(index, true, item.category, dereferencedFunctionSchema);
-		onChangeSchema({
-			id: `${item.id}`,
-			title: `${item.name} (${item.category})`,
-			schema: dereferencedFunctionSchema,
-			path: item.param,
-			category: item.category,
-			executeURI: executeURI,
-		});
+		if (openAPIschema !== null) {
+			const paths = openAPIschema.paths;
+			let dereferencedFunctionSchema = {};
+			for (const key in paths) {
+				// ex) key is '/moapy/project/wgsd/wgsd_flow/calc_3dpm'
+				if (paths[key]['post']['requestBody']['content']['application/json']['schema'])
+					dereferencedFunctionSchema =
+						paths[key]['post']['requestBody']['content']['application/json']['schema'];
+				else alert('No schema found in the selected function');
+			}
+			console.log('dereferencedFunctionSchema', dereferencedFunctionSchema);
+			dereferencedFunctionSchema.title = '';
+			// if function is not selected, then select it.
+			onSetFunctionListInfo(index, true, item.category, dereferencedFunctionSchema);
+			onChangeSchema({
+				id: `${item.id}`,
+				title: `${item.name} (${item.category})`,
+				schema: dereferencedFunctionSchema,
+				path: item.param,
+				category: item.category,
+				executeURI: executeURI,
+			});
+		} else console.error('Failed to get schema from server');
 	}
 
 	const ty = React.useMemo(() => 46, []);
