@@ -1,6 +1,6 @@
-import MatlConc_curve_uls from './Curve_uls_sls';
+import MatlConcCurveUls from './Curve_uls_sls';
 import PolygonField from './Polygon';
-import Lcom_FiexedField from './Lcom_Fixed';
+import LcomFixedField from './Lcom_Fixed';
 import LcomField from './Lcom';
 import { ReactElement } from 'react';
 import { NumberWidget, OptionWidget, StringWidget } from '../Widgets';
@@ -58,15 +58,15 @@ export const getUpdatedForm = (form: SchemaForm, keyList: string[], value: strin
 export const getCustomField = (fieldKey: string, customProps: CustomFieldProps) => {
 	switch (fieldKey) {
 		case 'curve_uls':
-			return <MatlConc_curve_uls {...customProps} />;
+			return <MatlConcCurveUls {...customProps} />;
 		case 'curve_sls':
-			return <MatlConc_curve_uls {...customProps} />;
+			return <MatlConcCurveUls {...customProps} />;
 		case 'points':
 		case 'innerPolygon':
 		case 'outerPolygon':
 			return <PolygonField {...customProps} />;
 		case 'lcom':
-			return <Lcom_FiexedField {...customProps} />;
+			return <LcomFixedField {...customProps} />;
 		case 'lcoms':
 			return <LcomField {...customProps} />;
 		default:
