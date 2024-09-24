@@ -376,7 +376,6 @@ export const SvgSave = () => (
 );
 
 export const SvgEdit = ({ isHovered }) => {
-	console.log(isHovered);
 	return (
 		<svg
 			width='100%'

@@ -4,7 +4,6 @@ import { GuideBox, DataGrid, Button, Typography } from '@midasit-dev/moaui-compo
 const heightArr = [72.5, 105, 137, 169, 201];
 
 export default function LcomField(props) {
-	// console.log('LcomField props', props);
 	const [rowDatas, setRowDatas] = React.useState([]);
 	const [columnHeaderDatas, setColumnHeaderDatas] = React.useState(['name', 'Nz', 'Mx', 'My']);
 	const [columns, setColumns] = React.useState([{}]);
@@ -113,7 +112,6 @@ export default function LcomField(props) {
 								return row;
 							}),
 						);
-						console.log('newValue', newValue);
 						setRowDatas(
 							rowDatas.map((row) =>
 								row.id === newValue.id
@@ -130,7 +128,7 @@ export default function LcomField(props) {
 						return newValue;
 					}}
 					onProcessRowUpdateError={(error) => {
-						console.log('error', error);
+						console.error('error', error);
 					}}
 					cellFontSize='10px'
 					columnFontSize='12px'

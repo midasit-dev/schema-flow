@@ -4,7 +4,6 @@ import { GuideBox, DataGrid, Button, Typography } from '@midasit-dev/moaui-compo
 const heightArr = [72.5, 105, 137, 169, 201];
 
 export default function PolygonField(props) {
-	// console.log('PolygonField props', props);
 	const [rowDatas, setRowDatas] = React.useState([]);
 	const [columnHeaderDatas, setColumnHeaderDatas] = React.useState(['x', 'y']);
 	const [columns, setColumns] = React.useState([{}]);
@@ -122,7 +121,7 @@ export default function PolygonField(props) {
 						return newValue;
 					}}
 					onProcessRowUpdateError={(error) => {
-						console.log('error', error);
+						console.error('error', error);
 					}}
 					cellFontSize='10px'
 					columnFontSize='12px'

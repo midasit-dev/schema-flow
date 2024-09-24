@@ -3,7 +3,6 @@ import { Typography, DropList } from '@midasit-dev/moaui-components-v1';
 import { useViewport } from '@xyflow/react';
 
 export default function Optwidget(props) {
-	// console.log('Opt props', props);
 	const { schema, formData, onChange } = props;
 	const { zoom } = useViewport();
 	const [value, setValue] = React.useState(schema.default);

@@ -24,7 +24,6 @@ const getFunctionListFromWGSD = async (URI) => {
 		},
 	});
 	const data = await res.json();
-	console.log(`${URI}`, data);
 	return data;
 };
 
@@ -102,7 +101,6 @@ function SchemaFlow(props) {
 					},
 					[],
 				);
-			console.log('newFunctionListInfo', newFunctionListInfo);
 			return newFunctionListInfo;
 		},
 		[formatFunctionName],
@@ -165,7 +163,7 @@ function SchemaFlow(props) {
 					});
 					break;
 				default:
-					console.log('status:', category.status);
+					console.warn('status:', category.status);
 					break;
 			}
 		});

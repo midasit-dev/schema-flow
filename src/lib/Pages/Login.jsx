@@ -114,7 +114,6 @@ export default function Login({ clearQueryClient = false }) {
 			},
 			body: JSON.stringify({ email: id, password: pwd }),
 		});
-		console.log('res: ', res);
 		if (res.ok) {
 			const data = await res.json();
 			setToken(data.token);

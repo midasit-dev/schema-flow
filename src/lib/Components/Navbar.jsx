@@ -102,7 +102,7 @@ export default function Navbar({ title }) {
 			flowData: flowDatas,
 		};
 		const res = await putFlowDatas(body, token, flowId);
-		console.log('res:', res);
+		console.log('data save result:', res);
 	};
 
 	const onClickSave = async () => {

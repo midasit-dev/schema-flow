@@ -4,7 +4,6 @@ import { GuideBox, DataGrid, Button, Typography } from '@midasit-dev/moaui-compo
 const heightArr = [72.5, 105, 137, 169, 201];
 
 export default function Lcom_FiexedField(props) {
-	console.log('LcomField props', props);
 	const [rowDatas, setRowDatas] = React.useState([]);
 	const [columnHeaderDatas, setColumnHeaderDatas] = React.useState(['name', 'Nz', 'Mx', 'My']);
 	const [columns, setColumns] = React.useState([{}]);
@@ -21,7 +20,6 @@ export default function Lcom_FiexedField(props) {
 					My: props.formData.f.My,
 				},
 			];
-			console.log('rows', rows);
 			setRowDatas(rows);
 		} else {
 			setColumnHeaderDatas([]);
@@ -89,7 +87,6 @@ export default function Lcom_FiexedField(props) {
 					hideFooterSelectedRowCount={rowDatas.length > 5 ? false : true}
 					processRowUpdate={(newValue) => {
 						const row = props.formData;
-						console.log('row', row);
 						for (const key in newValue) {
 							if (key !== 'id') {
 								if (key === 'name') {
@@ -116,7 +113,7 @@ export default function Lcom_FiexedField(props) {
 						return newValue;
 					}}
 					onProcessRowUpdateError={(error) => {
-						console.log('error', error);
+						console.error('error', error);
 					}}
 					cellFontSize='10px'
 					columnFontSize='12px'

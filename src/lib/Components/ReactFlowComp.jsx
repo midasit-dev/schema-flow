@@ -104,7 +104,7 @@ const ReactFlowComp = () => {
 
 	React.useEffect(() => {
 		// get nodes, edges and functionlistInfo from localstorage
-		if(!flowId || flowId === '') return;
+		if (!flowId || flowId === '') return;
 		const localStorageFlow = localStorage.getItem(flowId);
 		let localfunctionlistInfo = {};
 		if (localStorageFlow) {

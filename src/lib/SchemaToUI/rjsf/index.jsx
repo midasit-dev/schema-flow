@@ -98,8 +98,7 @@ export default function RJSFComp(props) {
 	const [execute, setExecute] = React.useState(false);
 	const [allConnectedNodes, setAllConnectedNodes] = React.useState([]);
 
-	React.useEffect(() => {
-	}, [changedData]);
+	React.useEffect(() => {}, [changedData]);
 
 	React.useEffect(() => {
 		setExecuteState((prev) => {
