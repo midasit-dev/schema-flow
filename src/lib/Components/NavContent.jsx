@@ -64,7 +64,6 @@ export default function NavContent({ userInfo }) {
 
 	React.useEffect(() => {
 		if (userInfo !== null) {
-			console.log('userInfo', userInfo);
 			if (userInfo.id === null) setSelectedNavContent(navContentList.template);
 			else setSelectedNavContent(navContentList.recents);
 		}
