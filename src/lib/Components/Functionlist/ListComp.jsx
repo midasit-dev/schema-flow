@@ -13,7 +13,6 @@ const getSchemaFromServer = async (URI) => {
 	});
 	if (res.ok) {
 		const data = await res.json();
-		console.log('data', data);
 		return data;
 	}
 	return null;

@@ -123,7 +123,7 @@ function App() {
 				default: {
 					// Handle the default case here
 					// For example, you can log an error message or perform some other action
-					console.log('Invalid key pressed');
+					console.error('Invalid key pressed');
 					break;
 				}
 			}

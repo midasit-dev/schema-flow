@@ -4,7 +4,6 @@ import { GuideBox, DataGrid, Button, Typography } from '@midasit-dev/moaui-compo
 const heightArr = [72.5, 105, 137, 169, 201];
 
 export default function MatlConc_curve_uls(props) {
-	// console.log('Datagrid props', props);
 	const [rowDatas, setRowDatas] = React.useState([
 		{
 			id: 0,
@@ -122,7 +121,6 @@ export default function MatlConc_curve_uls(props) {
 								return row;
 							}),
 						);
-						console.log('newValue', newValue);
 						setRowDatas(
 							rowDatas.map((row) =>
 								row.id === newValue.id
@@ -137,7 +135,7 @@ export default function MatlConc_curve_uls(props) {
 						return newValue;
 					}}
 					onProcessRowUpdateError={(error) => {
-						console.log('error', error);
+						console.error('error', error);
 					}}
 					cellFontSize='10px'
 					columnFontSize='12px'

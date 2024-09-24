@@ -178,7 +178,6 @@ export default function Recents(props) {
 				return;
 			}
 			handleLoading(false);
-			console.log('res', res);
 			setRecentFlowProjects(res);
 		}
 		getFlowProjectsData();

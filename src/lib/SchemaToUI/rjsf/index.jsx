@@ -41,7 +41,6 @@ async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecut
 	if (res.ok) {
 		isSuccessFunctionExecute(true);
 		const data = await res.json();
-		// console.log('data', data);
 		return data;
 	} else {
 		isSuccessFunctionExecute(false);
@@ -100,11 +99,9 @@ export default function RJSFComp(props) {
 	const [allConnectedNodes, setAllConnectedNodes] = React.useState([]);
 
 	React.useEffect(() => {
-		console.log('changedData', changedData);
 	}, [changedData]);
 
 	React.useEffect(() => {
-		console.log('uischema', input.UISchema);
 		setExecuteState((prev) => {
 			return { ...prev, [nodeId]: { ...prev[nodeId], setExecute } };
 		});
@@ -193,7 +190,7 @@ export default function RJSFComp(props) {
 							}
 						}
 					} else {
-						console.log('output is empty');
+						console.error('output is empty');
 					}
 				}
 			}
@@ -398,7 +395,7 @@ export default function RJSFComp(props) {
 	}
 
 	function onErrored(event) {
-		console.log('error', event);
+		console.error('error', event);
 	}
 
 	return (

@@ -104,10 +104,10 @@ const ReactFlowComp = () => {
 
 	React.useEffect(() => {
 		// get nodes, edges and functionlistInfo from localstorage
+		if(!flowId || flowId === '') return;
 		const localStorageFlow = localStorage.getItem(flowId);
 		let localfunctionlistInfo = {};
 		if (localStorageFlow) {
-			console.log('localstorage flow', localStorageFlow);
 			const localFlowJson = JSON.parse(localStorageFlow);
 			const localNodes = localFlowJson['nodes'];
 			const localEdges = localFlowJson['edges'];
@@ -124,19 +124,16 @@ const ReactFlowComp = () => {
 				setFunctionListInfo(localfunctionlistInfo);
 			}
 		}
-	}, []);
+	}, [flowId]);
 
 	React.useEffect(() => {
 		async function getFlowDatasbyFlowID(flowId) {
 			const result = await GetToken(token, setToken, acc, setAcc);
 			if (result === 'acc is empty') return navigate('../login');
 			const res = await getFlowData(flowId, token);
-			console.log('res', res);
 			if (res !== null) {
-				console.log('flowId', flowId);
 				if (res.title) setTitle(res.title);
 				if (res.flowData && flowId !== '') {
-					console.log('flowData', res.flowData);
 					localStorage.setItem(flowId, JSON.stringify(res.flowData));
 				} else {
 					// localStorage
@@ -1030,10 +1027,7 @@ const ReactFlowComp = () => {
 
 	function addCustomNode(event) {
 		const schemadata = cloneDeep(selectedschema);
-		console.log('schemadata', schemadata);
-
 		const inputUISchema = temp_MakeInputUISchema(schemadata.id);
-		console.log('uiSchema', inputUISchema);
 		const id = schemadata.id.toString() + '_' + uuidv4().slice(0, 8);
 		const newNode = [
 			{

@@ -7,7 +7,6 @@ const imageHeight = 768;
 const padding = 20; // 추가적인 여유 공간을 위한 패딩
 
 function saveBlobAsFile(blob, filename) {
-	console.log('blob', blob);
 	// Blob을 URL로 변환합니다.
 	const url = URL.createObjectURL(blob);
 
@@ -62,7 +61,6 @@ function DownloadButton() {
 		}).then((blob) => {
 			if (blob) {
 				saveBlobAsFile(blob, 'reactflow.png');
-				console.log('blob', blob);
 				// uploadImageToServer(blob);
 			} else {
 				console.error('Blob creation failed');

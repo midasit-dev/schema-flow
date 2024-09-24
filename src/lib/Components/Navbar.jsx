@@ -85,7 +85,6 @@ export default function Navbar({ title }) {
 			useCors: true,
 		}).then(async (blob) => {
 			if (blob) {
-				console.log('blob', blob);
 				await uploadImageToServer(blob, token, flowId);
 			} else {
 				console.error('Blob creation failed');

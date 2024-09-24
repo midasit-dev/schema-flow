@@ -20,7 +20,6 @@ export default function Template({ width, handleLoading }) {
 		async function getTemplateList() {
 			const templatelist = await fetchTemplate();
 			if (!ignore) {
-				console.log('Template List: ', templatelist);
 				setTemplateList(templatelist);
 			}
 		}
@@ -37,7 +36,6 @@ export default function Template({ width, handleLoading }) {
 	}, [templateList, handleLoading]);
 
 	function onClickTemplate(templateId) {
-		console.log('Template ID:', templateId);
 		setFlowID(templateId);
 		navigate(`../flow/${templateId}`);
 	}

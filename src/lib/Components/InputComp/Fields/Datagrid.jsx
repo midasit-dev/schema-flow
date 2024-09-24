@@ -2,7 +2,6 @@ import React from 'react';
 import { GuideBox, Panel, DataGrid, Button } from '@midasit-dev/moaui-components-v1';
 
 export default function Datagrid(props) {
-	console.log('Datagrid props', props);
 	const [rowDatas, setRowDatas] = React.useState([
 		{ id: 1, stress: 1, strain: 2 },
 		{ id: 2, stress: 3, strain: 4 },
@@ -18,7 +17,6 @@ export default function Datagrid(props) {
 				id: index, // Unique id for each row
 				...point,
 			}));
-			console.log('rows', rows);
 			setRowDatas(rows);
 			props.formData.length > 2
 				? setHeight(props.formData.length * 42.2)
@@ -87,7 +85,6 @@ export default function Datagrid(props) {
 				hideFooterPagination
 				hideFooterSelectedRowCount
 				processRowUpdate={(newValue) => {
-					console.log('newValue', newValue);
 					props.onChange(
 						props.formData.map((row, index) =>
 							index === newValue.id
@@ -112,7 +109,7 @@ export default function Datagrid(props) {
 					return newValue;
 				}}
 				onProcessRowUpdateError={(error) => {
-					console.log('error', error);
+					console.error('error', error);
 				}}
 				cellFontSize='10px'
 				columnFontSize='12px'
