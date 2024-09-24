@@ -135,6 +135,29 @@ export default function Login({ clearQueryClient = false }) {
 		return () => clearInterval(interval);
 	}, [id, pwd]);
 
+	function onChangeId(e) {
+		if (e.nativeEvent.inputType === 'deleteContentBackward') {
+			setId(e.target.value);
+			return;
+		}
+		if (e.target.value.lastIndexOf('@') === e.target.value.length - 1 && e.target.value.split('@').length === 2) {
+			if (!e.target.value) {
+				setId('');
+				return;
+			} else {
+				const id = e.target.value;
+				const email = id + 'midasit.com';
+				setId(email);
+				return;
+			}
+		}
+		setId(e.target.value);
+	}
+
+	React.useEffect(() => {
+		console.log('id:', id);
+	}, [id]);
+
 	return (
 		<div
 			style={{
@@ -212,17 +235,17 @@ export default function Login({ clearQueryClient = false }) {
 									{/* <SsoValidator buttonProps={{ fullWidth: true }} /> */}
 									<input
 										className='login-input'
-										type='email'
+										type='text'
 										value={id}
-										onChange={(e) => setId(e.target.value)}
-										placeholder='ID'
+										onChange={onChangeId}
+										placeholder='user@midasit.com'
 									/>
 									<input
 										className='login-input'
 										type='password'
 										value={pwd}
 										onChange={(e) => setPwd(e.target.value)}
-										placeholder='PASSWORD'
+										placeholder='password'
 									/>
 								</motion.div>
 								<motion.div
