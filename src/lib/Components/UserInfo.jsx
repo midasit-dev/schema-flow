@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // recoil
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { TokenState, AccState } from '../RecoilAtom/recoilHomeState';
 
 // components
@@ -12,22 +12,6 @@ import { Tooltip } from './Tooltip';
 
 // css
 import './UserInfo.css';
-
-async function getUserInfo(token) {
-	const res = await fetch(`https://members.midasuser.com/member/api/v1`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-AUTH-TOKEN': `Bearer ${token}`,
-		},
-	});
-
-	if (res.ok) {
-		const data = await res.json();
-		return data;
-	}
-	return null;
-}
 
 function DropDownButton({ name = 'ANONYMOUS' }) {
 	return (
@@ -78,20 +62,9 @@ function LogInButton() {
 	);
 }
 
-export default function UserInfo({ userInfo, setUserInfo }) {
-	const [token, setToken] = useRecoilState(TokenState);
+export default function UserInfo({ userInfo }) {
+	const setToken = useSetRecoilState(TokenState);
 	const setAcc = useSetRecoilState(AccState);
-
-	React.useEffect(() => {
-		async function getUser() {
-			if (token) {
-				const res = await getUserInfo(token);
-				setUserInfo(res);
-			}
-		}
-		console.log('token:', token);
-		getUser();
-	}, []);
 
 	return (
 		<div id='userInfo'>

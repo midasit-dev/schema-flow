@@ -14,9 +14,6 @@ export const IsSessionValid = async (token?: string) => {
 };
 
 export const GetToken = async (token: any, setToken: any, acc: any, setAcc: any) => {
-	console.log('token: ', token);
-	console.log('acc: ', acc);
-
 	let currentToken = token;
 
 	if (await IsSessionValid(currentToken + '')) return currentToken;

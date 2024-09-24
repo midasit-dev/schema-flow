@@ -1,8 +1,8 @@
 import React from 'react';
 
 // recoil
-import { useRecoilValue } from 'recoil';
-import { SelectedNavContent } from '../RecoilAtom/recoilHomeState';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { SelectedNavContent, TokenState } from '../RecoilAtom/recoilHomeState';
 
 // Components
 import SideBar from '../Components/SideBar';
@@ -14,6 +14,48 @@ import './Home.css';
 
 const MIN_WIDTH = 650; // 최소 너비
 
+async function getUserInfo(token) {
+	const res = await fetch(`https://members.midasuser.com/member/api/v1`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-AUTH-TOKEN': `Bearer ${token}`,
+		},
+	});
+
+	if (res.ok) {
+		const data = await res.json();
+		return data;
+	}
+	return {
+		id: null,
+		email: '',
+		subEmail: null,
+		phone: '',
+		name: '',
+		lastName: null,
+		profileName: '',
+		midasUserId: '',
+		companyName: null,
+		country: '',
+		languageType: '',
+		lastPasswordUpdateDateTime: '2',
+		emailAgreeType: '',
+		emailAgreementUpdateDateTime: null,
+		emailDisagreementUpdateDateTime: '',
+		smsAgreeType: '',
+		smsAgreementUpdateDateTime: null,
+		smsDisagreementUpdateDateTime: '',
+		telAgreeType: '',
+		telAgreementUpdateDateTime: null,
+		telDisagreementUpdateDateTime: '',
+		isPhoneCertification: false,
+		isPhoneCertificationSms: null,
+		authorities: [],
+		grade: '',
+	};
+}
+
 export default function Home() {
 	const containerRef = React.useRef(null);
 	const isScrollingTimeoutRef = React.useRef(null);
@@ -22,9 +64,19 @@ export default function Home() {
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
+	const [userInfo, setUserInfo] = React.useState(null);
 	const selectedNavContent = useRecoilValue(SelectedNavContent);
+	const token = useRecoilValue(TokenState);
+
+	const getUser = React.useCallback(async () => {
+		if (token) {
+			const res = await getUserInfo(token);
+			setUserInfo(res);
+		}
+	}, [token]);
 
 	React.useEffect(() => {
+		getUser();
 		const handleResize = () => {
 			setWindowSize({
 				width: document.documentElement.clientWidth,
@@ -83,7 +135,7 @@ export default function Home() {
 						width: `${windowSize.width * 0.1}px`,
 					}}
 				>
-					<SideBar />
+					<SideBar userInfo={userInfo} />
 				</div>
 			)}
 			<div

@@ -63,15 +63,21 @@ export default function NavContent({ userInfo }) {
 	const setSelectedNavContent = useSetRecoilState(SelectedNavContent);
 
 	React.useEffect(() => {
-		if (userInfo === null) {
-			setSelectedNavContent(navContentList.template);
+		if (userInfo !== null) {
+			console.log('userInfo', userInfo);
+			if (userInfo.id === null) setSelectedNavContent(navContentList.template);
+			else setSelectedNavContent(navContentList.recents);
 		}
 	}, [userInfo]);
 
 	return (
-		<div className='navContent'>
-			{userInfo !== null && <RecentFlow />}
-			<TemplateFlow />
-		</div>
+		<>
+			{userInfo && (
+				<div className='navContent'>
+					{userInfo.id !== null && <RecentFlow />}
+					<TemplateFlow />
+				</div>
+			)}
+		</>
 	);
 }
