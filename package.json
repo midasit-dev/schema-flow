@@ -28,6 +28,8 @@
 	],
 	"dependencies": {
 		"@craco/craco": "7.1.0",
+		"@grapecity/spread-sheets": "^17.1.6",
+		"@grapecity/spread-sheets-react": "^17.1.6",
 		"@midasit-dev/moaui-components-v1": "0.1.147",
 		"@react-three/drei": "9.107.0",
 		"@react-three/fiber": "8.16.8",

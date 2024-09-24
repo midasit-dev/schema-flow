@@ -15,6 +15,7 @@ import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 
 import ThreeDPM from '../Components/OutputComp/ThreeDPM';
 import MarkdownViewer from '../Components/OutputComp/MarkdownViewer';
+import SpreadJS from '../Components/OutputComp/SpreadJS';
 import { useReactFlow } from '@xyflow/react';
 // recoil
 import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
