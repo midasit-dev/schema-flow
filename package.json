@@ -28,6 +28,7 @@
 	],
 	"dependencies": {
 		"@craco/craco": "7.1.0",
+		"@grapecity/spread-excelio": "^17.1.6",
 		"@grapecity/spread-sheets": "^17.1.6",
 		"@grapecity/spread-sheets-react": "^17.1.6",
 		"@midasit-dev/moaui-components-v1": "0.1.147",

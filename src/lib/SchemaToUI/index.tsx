@@ -50,6 +50,7 @@ export default function SchemaToUI(props: {
 	const [schema, setSchema] = React.useState(schemaInfo.schema);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const [isError, setIsError] = React.useState(false);
+	const [isSpreadJS, setIsSpreadJS] = React.useState(false);
 
 	const setFunctionListInfo = useSetRecoilState(FunctionListInfo);
 	const [executeState, setExecuteState] = useRecoilState(ExecuteState);
@@ -156,6 +157,7 @@ export default function SchemaToUI(props: {
 	}, [isOpenResultView]);
 
 	const setResponseData = React.useCallback((data: any) => {
+		console.log('setResponseData', data);
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
 			if (data.hasOwnProperty('moapy.data_post.Result3DPM')) {
@@ -181,6 +183,10 @@ export default function SchemaToUI(props: {
 				setIsJsonResult(false);
 				setIsTextResult(true);
 				setResponse(md);
+			} else if (data.hasOwnProperty('moapy.data_post.ResultBytes')) {
+				const base64 = data['moapy.data_post.ResultBytes'].result;
+				setIsSpreadJS(true);
+				setResponse(base64);
 			} else {
 				setIs3dpm(false);
 				setIsMd(false);
@@ -254,7 +260,7 @@ export default function SchemaToUI(props: {
 
 			{isloading && <InfiniLoading />}
 			<div
-				style={{ display: 'flex', flexDirection: 'row', maxWidth: maxWidth }}
+				style={{ display: 'flex', flexDirection: 'row', maxWidth: maxWidth}}
 				className='nodrag nowheel'
 			>
 				<div
@@ -339,6 +345,10 @@ export default function SchemaToUI(props: {
 							src={response}
 							style={{ width: '100%', height: maxHeight, overflow: 'auto', paddingRight: '30px' }}
 						/>
+					)}
+
+					{isSpreadJS && isOpenResultView && (
+						<SpreadJS data={response} />
 					)}
 
 					{isTextResult && isOpenResultView && (
