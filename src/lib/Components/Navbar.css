@@ -36,3 +36,21 @@
 .navbar-title-edit-icon:hover {
 	background: rgba(239, 231, 255, 0.664);
 }
+
+.navbar-title-edit-input {
+	width: auto;
+	height: 30px;
+	border-radius: 5px;
+	border: 1px solid #e6e6e6;
+	padding-left: 10px;
+	font-family: 'pretendard';
+	font-size: 14px;
+	line-height: 24px;
+	outline: none;
+	transition: all 0.3s;
+}
+
+.navbar-title-edit-input:focus-visible {
+	border: 1px solid #3d3d3d;
+	font-size: 15px;
+}

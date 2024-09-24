@@ -55,8 +55,10 @@ function UpdateTime({ updatedAt }) {
 				setTimeAgo(`${diffInDays}일 전`);
 			} else if (diffInHours >= 1) {
 				setTimeAgo(`${diffInHours}시간 전`);
-			} else {
+			} else if (diffInMinutes >= 1) {
 				setTimeAgo(`${diffInMinutes}분 전`);
+			} else {
+				setTimeAgo('방금 전');
 			}
 		};
 

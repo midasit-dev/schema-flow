@@ -70,7 +70,7 @@ const getFlowData = async (flowId, token) => {
 const ReactFlowComp = () => {
 	const connectingNodeId = React.useRef(null);
 	const [colorMode, setColorMode] = React.useState('light');
-	const [title, setTitle] = React.useState('Untitled');
+	const [title, setTitle] = React.useState('');
 	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const reactFlow = useReactFlow();
@@ -1108,7 +1108,7 @@ const ReactFlowComp = () => {
 					onClick={onClickHandler}
 					colorMode={colorMode}
 				>
-					<Navbar title={title} />
+					<Navbar title={title} setTitle={setTitle}/>
 					<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 					<Controls />
 					<Background id='1' gap={25} variant={BackgroundVariant.Dots} />

@@ -4,6 +4,7 @@ import { useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/reac
 import { toBlob } from 'html-to-image';
 import rss from 'react-secure-storage';
 import { SvgSave, SvgHome, SvgEdit } from './SVGComps';
+import { motion } from 'framer-motion';
 
 // recoil
 import { useRecoilValue, useRecoilState } from 'recoil';
@@ -59,8 +60,9 @@ async function uploadImageToServer(blob, token, flowId) {
 		});
 }
 
-export default function Navbar({ title }) {
+export default function Navbar({ title, setTitle }) {
 	const [isMouseHoverEdit, setIsMouseHoverEdit] = React.useState(false);
+	const [istitleEditMode, setIsTitleEditMode] = React.useState(false);
 
 	const { getNodes } = useReactFlow();
 	const [token, setToken] = useRecoilState(TokenState);
@@ -92,6 +94,14 @@ export default function Navbar({ title }) {
 		});
 	};
 
+	const saveChangedTitle = async () => {
+		const body = {
+			title: title,
+		};
+		const res = await putFlowDatas(body, token, flowId);
+		console.log('title save result:', res);
+	};
+
 	const saveAllData = async () => {
 		const result = await GetToken(token, setToken, acc, setAcc);
 		if (result === 'acc is empty') return;
@@ -102,7 +112,7 @@ export default function Navbar({ title }) {
 			flowData: flowDatas,
 		};
 		const res = await putFlowDatas(body, token, flowId);
-		console.log('data save result:', res);
+		console.log('All data save result:', res);
 	};
 
 	const onClickSave = async () => {
@@ -112,6 +122,16 @@ export default function Navbar({ title }) {
 	const onClickHome = async () => {
 		await saveAllData();
 		navigate('../home');
+	};
+
+	const onClickEdit = () => {
+		setIsTitleEditMode(true);
+		setIsMouseHoverEdit(false);
+	};
+
+	const onBlurTitleEdit = (e) => {
+		saveChangedTitle(e.target.value);
+		setIsTitleEditMode(false);
 	};
 
 	return (
@@ -131,14 +151,45 @@ export default function Navbar({ title }) {
 					fontFamily: 'pretendard medium',
 				}}
 			>
-				<div style={{ marginRight: '5px' }}>{title}</div>
-				<div
-					className='navbar-title-edit-icon'
-					onMouseEnter={() => setIsMouseHoverEdit(true)}
-					onMouseLeave={() => setIsMouseHoverEdit(false)}
-				>
-					<SvgEdit isHovered={isMouseHoverEdit} />
-				</div>
+				{istitleEditMode ? (
+					<input
+						className='navbar-title-edit-input'
+						type='text'
+						value={title}
+						onChange={(e) => setTitle(e.target.value)}
+						onBlur={onBlurTitleEdit}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') {
+								setIsTitleEditMode(false);
+								saveChangedTitle(e.target.value);
+							}
+						}}
+						autoFocus
+					/>
+				) : (
+					<>
+						{title !== '' && (
+							<>
+								<motion.div
+									initial={{ opacity: 0, y: '-50%' }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.4 }}
+									style={{ marginRight: '5px' }}
+								>
+									{title}
+								</motion.div>
+								<div
+									className='navbar-title-edit-icon'
+									onMouseEnter={() => setIsMouseHoverEdit(true)}
+									onMouseLeave={() => setIsMouseHoverEdit(false)}
+									onClick={onClickEdit}
+								>
+									<SvgEdit isHovered={isMouseHoverEdit} />
+								</div>
+							</>
+						)}
+					</>
+				)}
 			</div>
 			<div style={{ width: '20%', display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
 				<div className='navbar-side-icon' onClick={onClickSave}>
