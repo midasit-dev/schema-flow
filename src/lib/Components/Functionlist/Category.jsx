@@ -68,11 +68,13 @@ const Card = ({ title, subTitle, status, onClick }) => {
 				<Title>{title}</Title>
 			</div>
 			<div className='card-footer'>
-				<SubContainer>
-					<SubIconBox backgroundColor='#4eadf8'>Sub</SubIconBox>
-					<SubTitle>{subTitle}</SubTitle>
-				</SubContainer>
-				<Status>{status}</Status>
+				{subTitle && subTitle !== '' && (
+					<SubContainer>
+						<SubIconBox backgroundColor='#4eadf8'>Sub</SubIconBox>
+						<SubTitle>{subTitle}</SubTitle>
+					</SubContainer>
+				)}
+				{status && status !== '' && <Status>{status}</Status>}
 			</div>
 		</div>
 	);

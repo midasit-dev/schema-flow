@@ -29,7 +29,7 @@ async function getFlowProjects(token) {
 	return null;
 }
 
-function UpdateTime({ updatedAt }) {
+export function UpdateTime({ updatedAt }) {
 	const [timeAgo, setTimeAgo] = React.useState('');
 
 	React.useEffect(() => {

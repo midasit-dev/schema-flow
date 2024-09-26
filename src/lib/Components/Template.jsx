@@ -1,6 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FlowID } from '../RecoilAtom/recoilReactFlowState';
+import { UpdateTime } from './Recents';
+
+// css
+import './Recents.css';
 
 // recoil
 import { useSetRecoilState } from 'recoil';
@@ -8,6 +12,7 @@ import { useSetRecoilState } from 'recoil';
 async function fetchTemplate() {
 	const response = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/templates`);
 	const data = await response.json();
+	console.log('Template:', data);
 	return data;
 }
 
@@ -51,7 +56,7 @@ export default function Template({ width, handleLoading }) {
 					<div
 						key={template.templateId}
 						style={{
-							width,
+							width: `calc(${width}px - 40px)`,
 							height: width,
 							display: 'flex',
 							justifyContent: 'cetner',
@@ -62,21 +67,12 @@ export default function Template({ width, handleLoading }) {
 						onClick={() => onClickTemplate(template.templateId)}
 					>
 						<div
-							style={{
-								width,
-								height: width,
-								borderRadius: '10px',
-								border: '1px solid #e6e6e6',
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-								overflow: 'hidden',
-							}}
+							className='recents-thumbnail'
 						>
 							<img src={url} alt='Thumbnail' style={{ width: '100%', height: '100%' }} />
 						</div>
-						<h2>{template.title}</h2>
-						<p>{template.updatedAt}</p>
+						<div className='recents-title'>{template.title}</div>
+						<UpdateTime>{template.updatedAt}</UpdateTime>
 					</div>
 				);
 			})}

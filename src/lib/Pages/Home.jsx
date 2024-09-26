@@ -74,8 +74,7 @@ export default function Home() {
 		if (token) {
 			const res = await getUserInfo(token);
 			setUserInfo(res);
-		}
-		else {
+		} else {
 			setUserInfo(initUserInfo);
 		}
 	}, [token]);
