@@ -260,7 +260,7 @@ export default function SchemaToUI(props: {
 
 			{isloading && <InfiniLoading />}
 			<div
-				style={{ display: 'flex', flexDirection: 'row', maxWidth: maxWidth}}
+				style={{ display: 'flex', flexDirection: 'row', maxWidth: maxWidth }}
 				className='nodrag nowheel'
 			>
 				<div
@@ -347,9 +347,7 @@ export default function SchemaToUI(props: {
 						/>
 					)}
 
-					{isSpreadJS && isOpenResultView && (
-						<SpreadJS data={response} />
-					)}
+					{isSpreadJS && isOpenResultView && <SpreadJS data={response} />}
 
 					{isTextResult && isOpenResultView && (
 						<div

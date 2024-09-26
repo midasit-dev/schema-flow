@@ -39,18 +39,14 @@ export default function SpreadJS({ data }) {
 						const spread = spreadInstance.current;
 						spread.fromJSON(workbook); // SpreadSheets에 데이터 반영
 
-						console.log("1");
-						
 						for (let i = 0; i < spread.sheets.length; i++) {
 							const sheet = spread.sheets[i];
-							console.log("2", workbook.sheets[sheet.name()]);
-							const pictures = workbook.sheets[sheet.name()].shapes || [];  // 시트의 이미지 정보
-							console.log("pictures", pictures);
+							const pictures = workbook.sheets[sheet.name()].shapes || []; // 시트의 이미지 정보 가져오기
 
 							pictures.forEach((picture) => {
-									const { name, x, y, width, height } = picture;
-									const data = picture.shapeData.pic.blipFill.blip.blipBlob.blob;
-									sheet.pictures.add(name, data, x, y, width, height);
+								const { name, x, y, width, height } = picture;
+								const data = picture.shapeData.pic.blipFill.blip.blipBlob.blob;
+								sheet.pictures.add(name, data, x, y, width, height);
 							});
 						}
 					},

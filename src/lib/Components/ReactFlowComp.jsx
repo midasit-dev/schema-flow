@@ -1108,7 +1108,7 @@ const ReactFlowComp = () => {
 					onClick={onClickHandler}
 					colorMode={colorMode}
 				>
-					<Navbar title={title} setTitle={setTitle}/>
+					<Navbar title={title} setTitle={setTitle} />
 					<MiniMap zoomable pannable nodeClassName={nodeClassName} />
 					<Controls />
 					<Background id='1' gap={25} variant={BackgroundVariant.Dots} />

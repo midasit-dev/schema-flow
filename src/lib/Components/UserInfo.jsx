@@ -69,11 +69,7 @@ export default function UserInfo({ userInfo }) {
 	return (
 		<div id='userInfo'>
 			<DropDownButton name={userInfo?.id ? userInfo.email : 'ANONYMOUS'} />
-			{!userInfo?.id ? (
-				<LogInButton />
-			) : (
-				<LogOutButton setToken={setToken} setAcc={setAcc} />
-			)}
+			{!userInfo?.id ? <LogInButton /> : <LogOutButton setToken={setToken} setAcc={setAcc} />}
 		</div>
 	);
 }

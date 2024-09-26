@@ -140,7 +140,10 @@ export default function Login({ clearQueryClient = false }) {
 			setId(e.target.value);
 			return;
 		}
-		if (e.target.value.lastIndexOf('@') === e.target.value.length - 1 && e.target.value.split('@').length === 2) {
+		if (
+			e.target.value.lastIndexOf('@') === e.target.value.length - 1 &&
+			e.target.value.split('@').length === 2
+		) {
 			if (!e.target.value) {
 				setId('');
 				return;
