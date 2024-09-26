@@ -34,6 +34,11 @@ const categoryList = [
 		subTitle: 'GPT',
 		status: 'PR',
 	},
+	{
+		title: 'Desingers Guide',
+		subTitle: '',
+		status: '',
+	}
 ];
 
 const navContentList = {
