@@ -11,9 +11,12 @@ import { useSetRecoilState } from 'recoil';
 
 async function fetchTemplate() {
 	const response = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/templates`);
-	const data = await response.json();
-	console.log('Template:', data);
-	return data;
+	if (response.ok) {
+		const data = await response.json();
+		console.log('Template:', data);
+		return data;
+	}
+	return [];
 }
 
 export default function Template({ width, handleLoading }) {
@@ -47,35 +50,35 @@ export default function Template({ width, handleLoading }) {
 
 	return (
 		<>
-			{templateList.map((template, index) => {
-				let url = 'https://moa.rpm.kr-dv-midasit.com/rpm-wgsd-thumbnail/image.png';
-				if (template.thumbnailFileUrl) {
-					url = template.thumbnailFileUrl;
-				}
-				return (
-					<div
-						key={template.templateId}
-						style={{
-							width: `calc(${width}px - 40px)`,
-							height: width,
-							display: 'flex',
-							justifyContent: 'cetner',
-							flexDirection: 'column',
-							borderRadius: '10px',
-							cursor: 'pointer',
-						}}
-						onClick={() => onClickTemplate(template.templateId)}
-					>
+			{templateList &&
+				templateList.length !== 0 &&
+				templateList.map((template) => {
+					let url = 'https://moa.rpm.kr-dv-midasit.com/rpm-wgsd-thumbnail/image.png';
+					if (template.thumbnailFileUrl) {
+						url = template.thumbnailFileUrl;
+					}
+					return (
 						<div
-							className='recents-thumbnail'
+							key={template.templateId}
+							style={{
+								width: `calc(${width}px - 40px)`,
+								height: width,
+								display: 'flex',
+								justifyContent: 'cetner',
+								flexDirection: 'column',
+								borderRadius: '10px',
+								cursor: 'pointer',
+							}}
+							onClick={() => onClickTemplate(template.templateId)}
 						>
-							<img src={url} alt='Thumbnail' style={{ width: '100%', height: '100%' }} />
+							<div className='recents-thumbnail'>
+								<img src={url} alt='Thumbnail' style={{ width: '100%', height: '100%' }} />
+							</div>
+							<div className='recents-title'>{template.title}</div>
+							<UpdateTime>{template.updatedAt}</UpdateTime>
 						</div>
-						<div className='recents-title'>{template.title}</div>
-						<UpdateTime>{template.updatedAt}</UpdateTime>
-					</div>
-				);
-			})}
+					);
+				})}
 		</>
 	);
 }

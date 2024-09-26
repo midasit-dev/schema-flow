@@ -10,8 +10,8 @@ export const UserProjectsSkeleton = (props) => {
 	const { width } = props;
 
 	return (
-		<div className='skeleton-wrapper' style={{ width: `calc(${width}px - 40px)` }}>
-			<div className='skeleton-flow'>
+		<div className='skeleton-wrapper' style={{ width: `calc(${width}px - 40px)`, height: width }}>
+			<div className='skeleton-thumbnail'>
 				<div className='skeleton-left-boxes'>
 					<div className='skeleton-box' />
 					<div className='skeleton-box' />
