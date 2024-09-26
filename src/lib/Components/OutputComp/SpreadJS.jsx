@@ -6,7 +6,7 @@ import '@grapecity/spread-sheets/styles/gc.spread.sheets.excel2013white.css';
 import * as ExcelIO from '@grapecity/spread-excelio';
 
 const hostStyle = {
-	width: '50rem',
+	width: '55rem',
 	height: '100%',
 	border: '1px solid darkgray',
 };
