@@ -21,7 +21,7 @@ function FlowRoute() {
 			<Route path='login' element={<Login />} />
 			<Route path='flow/*' element={<SchemaFlow />} />
 
-			<Route path='*' element={<Navigate to='/home' />} />
+			<Route path='*' element={<Navigate to='./home' />} />
 		</Routes>
 	);
 }
