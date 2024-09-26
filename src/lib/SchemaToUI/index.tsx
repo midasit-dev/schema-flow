@@ -141,12 +141,12 @@ export default function SchemaToUI(props: {
 	}, [schemaInfo]);
 
 	React.useEffect(() => {
-		if (isJsonResult || is3dpm || isMarkdown || isTextResult) {
+		if (isJsonResult || is3dpm || isMarkdown || isTextResult || isSpreadJS) {
 			setIsResultView(true);
 		} else {
 			setIsResultView(false);
 		}
-	}, [isJsonResult, is3dpm, isMarkdown, isTextResult]);
+	}, [isJsonResult, is3dpm, isMarkdown, isTextResult, isSpreadJS]);
 
 	const onClickCloseHandler = React.useCallback(() => {
 		removeCustomNode(nodeId, schemaInfo.id);
