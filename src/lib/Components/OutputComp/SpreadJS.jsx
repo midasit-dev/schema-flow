@@ -11,13 +11,13 @@ const hostStyle = {
 	border: '1px solid darkgray',
 };
 
-export default function SpreadJS({ data }) {
+export default function SpreadJS({ base64Data }) {
 	const spreadInstance = useRef(null); // SpreadSheets 인스턴스 저장
 
 	React.useEffect(() => {
-		if (data && spreadInstance.current) {
+		if (base64Data && spreadInstance.current) {
 			// base64 데이터를 binary로 변환
-			const binary = atob(data);
+			const binary = atob(base64Data);
 			const len = binary.length;
 			const buffer = new ArrayBuffer(len);
 			const view = new Uint8Array(buffer);
@@ -57,7 +57,7 @@ export default function SpreadJS({ data }) {
 			};
 			reader.readAsArrayBuffer(blob);
 		}
-	}, [data]);
+	}, [base64Data]);
 
 	return (
 		<div>

@@ -347,7 +347,7 @@ export default function SchemaToUI(props: {
 						/>
 					)}
 
-					{isSpreadJS && isOpenResultView && <SpreadJS data={response} />}
+					{isSpreadJS && isOpenResultView && <SpreadJS base64Data={response} />}
 
 					{isTextResult && isOpenResultView && (
 						<div

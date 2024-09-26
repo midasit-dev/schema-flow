@@ -38,7 +38,7 @@ const categoryList = [
 		title: 'Desingers Guide',
 		subTitle: '',
 		status: '',
-	}
+	},
 ];
 
 const navContentList = {
