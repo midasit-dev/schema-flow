@@ -187,9 +187,9 @@ export default function Recents(props) {
 
 	return (
 		<>
-			{recentFlowProjects.length > 0 && (
-				<NewFlowProject width={width} onClickNewFlow={onClickNewFlow} />
-			)}
+			{/* {recentFlowProjects.length > 0 && ( */}
+			<NewFlowProject width={width} onClickNewFlow={onClickNewFlow} />
+			{/* )} */}
 			<UserSavedFlowProject
 				width={width}
 				recentFlowProjects={recentFlowProjects}
