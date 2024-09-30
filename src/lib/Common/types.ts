@@ -152,6 +152,14 @@ interface UndoRedoLayers {
 	redo: Redo[];
 }
 
+interface fetchProps {
+	baseUrl: string;
+	token?: string;
+	tokenHeaderKey?: "X-AUTH-TOKEN" | "Authorization";
+	method?: "GET" | "POST" | "PUT" | "DELETE";
+	body?: any;
+}
+
 export type {
 	LayoutSchema,
 	LayoutSchemas,
@@ -174,4 +182,5 @@ export type {
 	UndoRedoLayers,
 	Undo,
 	Redo,
+	fetchProps,
 };
