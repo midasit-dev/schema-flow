@@ -21,6 +21,10 @@ export function UpdateTime({ updatedAt }) {
 		const calculateTimeAgo = () => {
 			const now = new Date();
 			const updatedTime = new Date(updatedAt);
+			if (isNaN(updatedTime.getTime())) {
+				setTimeAgo('');
+				return;
+			}
 			const diffInMs = now - updatedTime; // 시간 차이 (밀리초)
 
 			const diffInMinutes = Math.floor(diffInMs / (1000 * 60)); // 분
