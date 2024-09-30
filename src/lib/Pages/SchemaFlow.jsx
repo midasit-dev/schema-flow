@@ -30,7 +30,6 @@ const getFunctionListFromWGSD = async (URI) => {
 function SchemaFlow(props) {
 	const [isopenList, setIsopenList] = React.useState(false);
 	const [searchTerm, setSearchTerm] = React.useState('');
-	const [originalFunctionListInfo, setOriginalFunctionListInfo] = React.useState({});
 	const [selectedCategory, setSelectedCategory] = React.useState(null);
 	const [selectedList, setSelectedList] = React.useState(null);
 	const [isHoveredListIcon, setIsHoveredListIcon] = React.useState(false);
@@ -134,9 +133,6 @@ function SchemaFlow(props) {
 						category.subTitle,
 					);
 					newFunctionList = { [key]: res };
-					setOriginalFunctionListInfo((prev) => {
-						return { ...prev, ...newFunctionList };
-					});
 					setFunctionListInfo((prev) => {
 						const newdata = { ...prev, ...newFunctionList };
 						return newdata;
@@ -154,9 +150,6 @@ function SchemaFlow(props) {
 						category.subTitle,
 					);
 					newFunctionList = { [key]: res };
-					setOriginalFunctionListInfo((prev) => {
-						return { ...prev, ...newFunctionList };
-					});
 					setFunctionListInfo((prev) => {
 						const newdata = { ...prev, ...newFunctionList };
 						return newdata;
