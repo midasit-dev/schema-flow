@@ -155,8 +155,8 @@ interface UndoRedoLayers {
 interface fetchProps {
 	baseUrl: string;
 	token?: string;
-	tokenHeaderKey?: "X-AUTH-TOKEN" | "Authorization";
-	method?: "GET" | "POST" | "PUT" | "DELETE";
+	tokenHeaderKey?: 'X-AUTH-TOKEN' | 'Authorization';
+	method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
 	body?: any;
 }
 
