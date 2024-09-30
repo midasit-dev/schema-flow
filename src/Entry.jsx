@@ -32,14 +32,9 @@ function FlowRouteWrapper() {
 	const [acc, setAcc] = useRecoilState(AccState);
 
 	React.useEffect(() => {
-		function removeBeforeFlowData() {
-			localStorage.removeItem('FLOW');
-		}
-
 		async function checkValidation() {
 			await GetToken(token, setToken, acc, setAcc);
 		}
-		removeBeforeFlowData();
 		checkValidation();
 	}, []);
 
