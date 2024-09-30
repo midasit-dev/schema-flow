@@ -9,39 +9,9 @@ import './Recents.css';
 // recoil
 import { useSetRecoilState } from 'recoil';
 
-async function fetchTemplate() {
-	const response = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/templates`);
-	if (response.ok) {
-		const data = await response.json();
-		console.log('Template:', data);
-		return data;
-	}
-	return [];
-}
-
-export default function Template({ width, handleLoading }) {
+export default function Template({ width, templateList }) {
 	const navigate = useNavigate();
-	const [templateList, setTemplateList] = React.useState([]);
 	const setFlowID = useSetRecoilState(FlowID);
-
-	React.useEffect(() => {
-		async function getTemplateList() {
-			const templatelist = await fetchTemplate();
-			if (!ignore) {
-				setTemplateList(templatelist);
-			}
-		}
-
-		let ignore = false;
-		getTemplateList();
-		return () => {
-			ignore = true;
-		};
-	}, []);
-
-	React.useEffect(() => {
-		if (templateList.length > 0) handleLoading(false);
-	}, [templateList, handleLoading]);
 
 	function onClickTemplate(templateId) {
 		setFlowID(templateId);

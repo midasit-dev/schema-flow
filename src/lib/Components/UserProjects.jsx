@@ -1,6 +1,10 @@
 import React from 'react';
 
 import { navContentList } from '../Common/string';
+import { fetchFunction } from '../Common/fetch';
+// recoil
+import { useRecoilState } from 'recoil';
+import { TokenState } from '../RecoilAtom/recoilHomeState';
 
 // components
 import Template from './Template';
@@ -12,11 +16,42 @@ import './UserProjects.css';
 
 const MAX_ITEMS = 5;
 
+async function getFlowProjects(token) {
+	const res = await fetchFunction({
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas`,
+		tokenHeaderKey: 'Authorization',
+		token: token,
+	});
+
+	if (res.ok) {
+		const data = await res.json();
+		return data;
+	}
+	return null;
+}
+
+async function getFlowTemplates() {
+	const res = await fetchFunction({
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/templates`,
+	});
+	if (res.ok) {
+		const data = await res.json();
+		console.log('Template:', data);
+		return data;
+	}
+	return [];
+}
+
 export default function UserProjects({ navContent, windowSize }) {
+	const containerRef = React.useRef(null);
+
 	const [isLoading, setIsLoading] = React.useState(true);
 	const [itemWidth, setItemWidth] = React.useState(200);
 	const [itemsPerRow, setItemsPerRow] = React.useState(1);
-	const containerRef = React.useRef(null);
+	const [recentFlowProjects, setRecentFlowProjects] = React.useState([]);
+	const [templateList, setTemplateList] = React.useState([]);
+
+	const [token, setToken] = useRecoilState(TokenState);
 
 	React.useEffect(() => {
 		const containerWidth = containerRef?.current?.clientWidth || 1;
@@ -39,7 +74,37 @@ export default function UserProjects({ navContent, windowSize }) {
 
 	React.useEffect(() => {
 		setIsLoading(true);
-	}, [navContent]);
+		let ignore = false;
+
+		async function getFlowProjectsData() {
+			// const result = await GetToken(token, setToken, acc, setAcc);
+			// if (result === 'acc is empty') navigate('../login');
+			const projectlist = await getFlowProjects(token);
+			if (projectlist === null) {
+				console.error('Failed to get flow projects');
+				return;
+			}
+
+			if (!ignore) setRecentFlowProjects(projectlist);
+			handleLoading(false);
+		}
+
+		async function getFlowTemplatesData() {
+			const templatelist = await getFlowTemplates();
+			if (!ignore) setTemplateList(templatelist);
+			handleLoading(false);
+		}
+
+		if (navContent === navContentList.recents) {
+			getFlowProjectsData();
+		} else if (navContent === navContentList.template) {
+			getFlowTemplatesData();
+		}
+
+		return () => {
+			ignore = true;
+		};
+	}, [navContent, token]);
 
 	function handleLoading(isLoading) {
 		setIsLoading(isLoading);
@@ -50,7 +115,7 @@ export default function UserProjects({ navContent, windowSize }) {
 			ref={containerRef}
 			style={{ display: 'flex', flexDirection: 'row', width: '100%', padding: '10px' }}
 		>
-			{isLoading && (
+			{isLoading ? (
 				<div
 					style={{
 						display: 'grid',
@@ -66,25 +131,25 @@ export default function UserProjects({ navContent, windowSize }) {
 						<UserProjectsSkeleton key={index} width={itemWidth} />
 					))}
 				</div>
+			) : (
+				<div
+					style={{
+						display: 'grid',
+						gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)`,
+						gap: '30px',
+						width: '100%',
+						justifyContent: 'space-between',
+						gridAutoRows: 'max-content',
+					}}
+				>
+					{navContent === navContentList.recents && (
+						<Recents width={itemWidth} flowProjectList={recentFlowProjects} />
+					)}
+					{navContent === navContentList.template && (
+						<Template width={itemWidth} templateList={templateList} />
+					)}
+				</div>
 			)}
-
-			<div
-				style={{
-					display: 'grid',
-					gridTemplateColumns: `repeat(${itemsPerRow}, 1fr)`,
-					gap: '30px',
-					width: '100%',
-					justifyContent: 'space-between',
-					gridAutoRows: 'max-content',
-				}}
-			>
-				{navContent === navContentList.recents && (
-					<Recents width={itemWidth} handleLoading={handleLoading} />
-				)}
-				{navContent === navContentList.template && (
-					<Template width={itemWidth} handleLoading={handleLoading} />
-				)}
-			</div>
 		</div>
 	);
 }

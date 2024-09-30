@@ -1,16 +1,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { SvgCheckCircle } from '../SVGComps';
-import { FunctionListInfo } from '../../RecoilAtom/recoilReactFlowState';
-import { useRecoilValue } from 'recoil';
+import { fetchFunction } from '../../Common/fetch';
 
 const getSchemaFromServer = async (URI) => {
-	const res = await fetch(`${URI}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+	const res = await fetchFunction({ baseUrl: URI });
 	if (res.ok) {
 		const data = await res.json();
 		return data;

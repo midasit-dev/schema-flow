@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useReactFlow, getNodesBounds, getViewportForBounds } from '@xyflow/react';
 import { toBlob } from 'html-to-image';
-import rss from 'react-secure-storage';
 import { SvgSave, SvgHome, SvgEdit } from './SVGComps';
 import { motion } from 'framer-motion';
 
@@ -13,51 +12,34 @@ import { TokenState, AccState } from '../RecoilAtom/recoilHomeState';
 
 // css
 import './Navbar.css';
+
+// common
 import { GetToken } from '../Common/Login/SessionChecker';
+import { fetchFunction } from '../Common/fetch';
 
 const imageWidth = 1024;
 const imageHeight = 768;
 
-async function putFlowDatas(body, token, flowId) {
-	const res = await fetch(
-		`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
-		{
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify(body),
-		},
-	);
-	if (res.ok) {
-		const data = await res.json();
-		return data;
-	}
-	return null;
-}
-
 async function uploadImageToServer(blob, token, flowId) {
+	console.log('blob:', blob);
 	const formData = new FormData();
 	formData.append('file', blob, 'Thumbnail.png');
+	console.log('formData:', formData);
+	console.log('formData type', typeof formData);
+	const res = await fetchFunction({
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/thumbnail/${flowId}`,
+		method: 'POST',
+		body: formData,
+		tokenHeaderKey: 'Authorization',
+		token: token,
+	});
 
-	await fetch(
-		`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/thumbnail/${flowId}`,
-		{
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-			body: formData,
-		},
-	)
-		.then((response) => response.json())
-		.then((data) => {
-			console.log('Server response:', data);
-		})
-		.catch((error) => {
-			console.error('Error uploading image:', error);
-		});
+	if (res.ok) {
+		const data = await res.json();
+		console.log('Thumbnail Save Successed:', data);
+	} else {
+		console.error('Thumbnail Save Failed:', res);
+	}
 }
 
 export default function Navbar({ title, setTitle }) {
@@ -75,7 +57,7 @@ export default function Navbar({ title, setTitle }) {
 
 		const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2);
 
-		toBlob(document.querySelector('.react-flow__viewport'), {
+		const blob = await toBlob(document.querySelector('.react-flow__viewport'), {
 			backgroundColor: '#FFF',
 			width: viewport.width,
 			height: viewport.height,
@@ -85,34 +67,51 @@ export default function Navbar({ title, setTitle }) {
 				transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
 			},
 			useCors: true,
-		}).then(async (blob) => {
-			if (blob) {
-				await uploadImageToServer(blob, token, flowId);
-			} else {
-				console.error('Blob creation failed');
-			}
 		});
+		if (blob) {
+			await uploadImageToServer(blob, token, flowId);
+		} else {
+			console.error('Blob creation failed');
+		}
 	};
 
 	const saveChangedTitle = async () => {
 		const body = {
 			title: title,
 		};
-		const res = await putFlowDatas(body, token, flowId);
-		console.log('title save result:', res);
+		const res = await fetchFunction({
+			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+			method: 'PUT',
+			body: body,
+			tokenHeaderKey: 'Authorization',
+			token: token,
+		});
+		if (res.ok) console.log('title save successed:', res);
+		else console.error('title save failed:', res);
 	};
 
 	const saveAllData = async () => {
 		const result = await GetToken(token, setToken, acc, setAcc);
 		if (result === 'acc is empty') return;
 		await onSaveThumbnail();
-		const flowDatas = rss.getItem(flowId);
+		let flowDatas = localStorage.getItem(flowId);
+		if (typeof flowDatas === 'string') {
+			flowDatas = JSON.parse(flowDatas);
+		}
 		const body = {
 			title: title,
 			flowData: flowDatas,
 		};
-		const res = await putFlowDatas(body, token, flowId);
-		console.log('All data save result:', res);
+		console.log('body:', body);
+		const res = await fetchFunction({
+			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+			method: 'PUT',
+			body: body,
+			tokenHeaderKey: 'Authorization',
+			token: token,
+		});
+		if (res.ok) console.log('All data save successed:', res);
+		else console.error('All data save failed:', res);
 	};
 
 	const onClickSave = async () => {

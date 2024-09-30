@@ -16,9 +16,8 @@ import {
 
 import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge/CustomEdge';
-import DownloadButton from './DownloadButton';
 import { GetToken } from '../Common/Login/SessionChecker';
-
+import { fetchFunction } from '../Common/fetch';
 import Navbar from '../Components/Navbar';
 
 // css
@@ -29,7 +28,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { isEmpty, cloneDeep } from 'lodash';
 
 // recoil
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
 	SelectedSchema,
 	FunctionListInfo,
@@ -50,16 +49,11 @@ const edgeTypes = {
 const nodeClassName = (node) => node.type;
 
 const getFlowData = async (flowId, token) => {
-	const res = await fetch(
-		`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
-		{
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-		},
-	);
+	const res = await fetchFunction({
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+		tokenHeaderKey: 'Authorization',
+		token,
+	});
 	if (res.ok) {
 		const data = await res.json();
 		return data;
@@ -152,7 +146,10 @@ const ReactFlowComp = () => {
 		// set nodes to localstorage
 
 		if (nodes.length > 0) {
-			const localFlow = JSON.parse(localStorage.getItem(flowId));
+			let localFlow = JSON.parse(localStorage.getItem(flowId));
+			if (typeof localFlow === 'string') {
+				localFlow = JSON.parse(localFlow);
+			}
 			localStorage.setItem(flowId, JSON.stringify({ ...localFlow, nodes: nodes }));
 		}
 	}, [nodes]);
@@ -168,7 +165,10 @@ const ReactFlowComp = () => {
 			}
 			setEgdesInfo(edgesInfo);
 			// set edges to localstorage
-			const localFlow = JSON.parse(localStorage.getItem(flowId));
+			let localFlow = JSON.parse(localStorage.getItem(flowId));
+			if (typeof localFlow === 'string') {
+				localFlow = JSON.parse(localFlow);
+			}
 			localStorage.setItem(flowId, JSON.stringify({ ...localFlow, edges: edges }));
 		}
 	}, [edges]);
@@ -176,7 +176,10 @@ const ReactFlowComp = () => {
 	React.useEffect(() => {
 		// set functionlistInfo to localstorage
 		if (Object.keys(functionlistInfo).length > 0) {
-			const localFlow = JSON.parse(localStorage.getItem(flowId));
+			let localFlow = JSON.parse(localStorage.getItem(flowId));
+			if (typeof localFlow === 'string') {
+				localFlow = JSON.parse(localFlow);
+			}
 			localStorage.setItem(
 				flowId,
 				JSON.stringify({ ...localFlow, functionlistInfo: functionlistInfo }),
@@ -185,22 +188,22 @@ const ReactFlowComp = () => {
 	}, [functionlistInfo]);
 
 	// C key pressed
-	React.useEffect(() => {
-		if (CPressed) {
-			// get localstorage FLOW
-			const localStorageFlow = localStorage.getItem(flowId);
-			if (localStorageFlow) {
-				const localFlow = JSON.parse(localStorageFlow);
-				if (localFlow['nodes'] || localFlow['edges']) {
-					navigator.clipboard.writeText(localStorageFlow);
-				} else {
-					alert('No data about node, edge');
-				}
-			} else {
-				alert('No Flow data in localstorage');
-			}
-		}
-	}, [CPressed]);
+	// React.useEffect(() => {
+	// 	if (CPressed) {
+	// 		// get localstorage FLOW
+	// 		let localFlow = localStorage.getItem(flowId);
+	// 		if( typeof localFlow === 'string') {
+	// 			localFlow = JSON.parse(localFlow);
+	// 		}
+	// 			if (localFlow['nodes'] || localFlow['edges']) {
+	// 				navigator.clipboard.writeText(localStorageFlow);
+	// 			} else {
+	// 				alert('No data about node, edge');
+	// 			}
+	// 		} else {
+	// 			alert('No Flow data in localstorage');
+	// 		}
+	// }, [CPressed]);
 
 	// temp make ui schema
 	function temp_MakeInputUISchema(id) {

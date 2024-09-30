@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GetToken } from '../Common/Login/SessionChecker';
+import { fetchFunction } from '../Common/fetch';
 
 // recoil
-import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import { TokenState, AccState } from '../RecoilAtom/recoilHomeState';
 import { FlowID } from '../RecoilAtom/recoilReactFlowState';
 
@@ -12,22 +13,6 @@ import { SvgPlus } from './SVGComps';
 
 // css
 import './Recents.css';
-
-async function getFlowProjects(token) {
-	const res = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
-		},
-	});
-
-	if (res.ok) {
-		const data = await res.json();
-		return data;
-	}
-	return null;
-}
 
 export function UpdateTime({ updatedAt }) {
 	const [timeAgo, setTimeAgo] = React.useState('');
@@ -99,15 +84,12 @@ function UserSavedFlowProject({ width, recentFlowProjects, onClickSavedFlow }) {
 }
 
 async function postNewFlowProject(token) {
-	const res = await fetch(`${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas`, {
+	const res = await fetchFunction({
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas`,
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
-		},
-		body: JSON.stringify({
-			title: 'Untitled',
-		}),
+		tokenHeaderKey: 'Authorization',
+		token: token,
+		body: JSON.stringify({ title: 'Untitled' }),
 	});
 
 	if (res.ok) {
@@ -139,8 +121,7 @@ function NewFlowProject({ width, onClickNewFlow }) {
 }
 
 export default function Recents(props) {
-	const { width = '200px', handleLoading } = props;
-	const [recentFlowProjects, setRecentFlowProjects] = React.useState([]);
+	const { width = '200px', flowProjectList } = props;
 
 	const setFlowID = useSetRecoilState(FlowID);
 	const [token, setToken] = useRecoilState(TokenState);
@@ -170,31 +151,16 @@ export default function Recents(props) {
 		navigate(`../flow/${flowId}`);
 	};
 
-	React.useEffect(() => {
-		async function getFlowProjectsData() {
-			// const result = await GetToken(token, setToken, acc, setAcc);
-			// if (result === 'acc is empty') navigate('../login');
-			const res = await getFlowProjects(token);
-			if (res === null) {
-				console.error('Failed to get flow projects');
-				return;
-			}
-			handleLoading(false);
-			setRecentFlowProjects(res);
-		}
-		getFlowProjectsData();
-	}, [token]);
-
 	return (
 		<>
-			{/* {recentFlowProjects.length > 0 && ( */}
 			<NewFlowProject width={width} onClickNewFlow={onClickNewFlow} />
-			{/* )} */}
-			<UserSavedFlowProject
-				width={width}
-				recentFlowProjects={recentFlowProjects}
-				onClickSavedFlow={onClickSavedFlow}
-			/>
+			{flowProjectList && flowProjectList.length !== 0 && (
+				<UserSavedFlowProject
+					width={width}
+					recentFlowProjects={flowProjectList}
+					onClickSavedFlow={onClickSavedFlow}
+				/>
+			)}
 		</>
 	);
 }

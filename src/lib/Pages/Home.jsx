@@ -1,13 +1,14 @@
 import React from 'react';
 
 // recoil
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { SelectedNavContent, TokenState } from '../RecoilAtom/recoilHomeState';
 
 // Components
 import SideBar from '../Components/SideBar';
 import UserProjects from '../Components/UserProjects';
 import { SvgHome, SvgBell } from '../Components/SVGComps';
+import { fetchFunction } from '../Common/fetch';
 
 // css
 import './Home.css';
@@ -43,12 +44,9 @@ const initUserInfo = {
 };
 
 async function getUserInfo(token) {
-	const res = await fetch(`https://members.midasuser.com/member/api/v1`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-AUTH-TOKEN': `Bearer ${token}`,
-		},
+	const res = await fetchFunction({
+		baseUrl: `https://members.midasuser.com/member/api/v1`,
+		token: token,
 	});
 
 	if (res.ok) {

@@ -1,15 +1,13 @@
+import { fetchFunction } from '../fetch';
+
 export const IsSessionValid = async (token?: string) => {
 	if (token === '' || token === null || token === undefined) return false;
 
-	const response = await fetch('https://members.midasuser.com/auth/api/v1/session-validate', {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-AUTH-TOKEN': `Bearer ${token}`,
-		},
+	const res = await fetchFunction({
+		baseUrl: 'https://members.midasuser.com/auth/api/v1/session-validate',
+		token: token,
 	});
-
-	if (response.ok) return true;
+	if (res.ok) return true;
 	else return false;
 };
 
@@ -22,16 +20,15 @@ export const GetToken = async (token: any, setToken: any, acc: any, setAcc: any)
 	if (acc === '' || acc === null || acc === undefined) return 'acc is empty';
 
 	if (typeof acc === 'string') acc = JSON.parse(acc);
-	const response = await fetch('https://members.midasuser.com/auth/api/v1/login', {
+
+	const res = await fetchFunction({
+		baseUrl: 'https://members.midasuser.com/auth/api/v1/login',
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({ email: acc.id, password: acc.pwd }),
+		body: { email: acc.id, password: acc.pwd },
 	});
 
-	if (response.ok) {
-		const data = await response.json();
+	if (res.ok) {
+		const data = await res.json();
 		console.log('new Token: ', data.token);
 		setToken(data.token);
 		return data.token;

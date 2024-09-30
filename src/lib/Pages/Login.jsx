@@ -15,7 +15,7 @@ import preval from 'preval.macro';
 
 // components
 import { SvgLoginBackground } from '../Components/SVGComps';
-
+import { fetchFunction } from '../Common/fetch';
 // css
 import './Login.css';
 
@@ -107,12 +107,10 @@ export default function Login({ clearQueryClient = false }) {
 	const onClickLogin = React.useCallback(async () => {
 		setIsFetching(true);
 		setShowProgressMessage(true);
-		const res = await fetch('https://members.midasuser.com/auth/api/v1/login', {
+		const res = await fetchFunction({
+			baseUrl: 'https://members.midasuser.com/auth/api/v1/login',
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ email: id, password: pwd }),
+			body: { email: id, password: pwd },
 		});
 		if (res.ok) {
 			const data = await res.json();
@@ -156,10 +154,6 @@ export default function Login({ clearQueryClient = false }) {
 		}
 		setId(e.target.value);
 	}
-
-	React.useEffect(() => {
-		console.log('id:', id);
-	}, [id]);
 
 	return (
 		<div

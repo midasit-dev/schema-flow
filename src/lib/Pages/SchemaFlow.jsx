@@ -12,19 +12,17 @@ import { Svglist, Svgminimize } from '../Components/SVGComps';
 import ListComp from '../Components/Functionlist/ListComp';
 import SearchBar from '../Components/Functionlist/Searchbar';
 import Category from '../Components/Functionlist/Category';
-import Navbar from '../Components/Navbar';
 
 import { categoryList } from '../Common/string';
+import { fetchFunction } from '../Common/fetch';
 
 const getFunctionListFromWGSD = async (URI) => {
-	const res = await fetch(`${URI}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
-	const data = await res.json();
-	return data;
+	const res = await fetchFunction({ baseUrl: URI });
+	if (res.ok) {
+		const data = await res.json();
+		return data;
+	}
+	return [];
 };
 
 function SchemaFlow(props) {

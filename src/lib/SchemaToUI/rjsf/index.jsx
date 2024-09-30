@@ -20,6 +20,7 @@ import LcomFixedField from '../../Components/InputComp/Fields/Lcom_Fixed';
 import OptWidget from '../../Components/InputComp/Widgets/Opt';
 import { Fields, UsableFieldKeyMap } from '../../Components/InputComp/Fields';
 import { UsableWidgetKeyMap } from '../../Components/InputComp/Widgets';
+import { fetchFunction } from '../../Common/fetch';
 
 export const WidgetMap = {
 	[UsableWidgetKeyMap.OPTION_2]: OptWidget,
@@ -30,14 +31,8 @@ export const FieldMap = {
 };
 
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
-	// https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
-	const res = await fetch(`${executeURI}`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(body),
-	});
+	// executeURI = https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
+	const res = await fetchFunction({ baseUrl: executeURI, method: 'POST', body: body });
 	if (res.ok) {
 		isSuccessFunctionExecute(true);
 		const data = await res.json();
