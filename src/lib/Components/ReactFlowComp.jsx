@@ -129,17 +129,14 @@ const ReactFlowComp = () => {
 				if (res.title) setTitle(res.title);
 				if (res.flowData && flowId !== '') {
 					localStorage.setItem(flowId, JSON.stringify(res.flowData));
-				} else {
-					// localStorage
 				}
 			}
 		}
 		if (flowId === null || flowId === undefined || flowId === '') {
-			if (window.location.pathname.includes('/Flow/')) {
+			if (window.location.pathname.includes('/flow/')) {
 				setFlowId(window.location.pathname.split('/')[2]);
 			}
-		}
-		getFlowDatasbyFlowID(flowId);
+		} else getFlowDatasbyFlowID(flowId);
 	}, [flowId]);
 
 	React.useEffect(() => {
@@ -180,10 +177,21 @@ const ReactFlowComp = () => {
 			if (typeof localFlow === 'string') {
 				localFlow = JSON.parse(localFlow);
 			}
-			localStorage.setItem(
-				flowId,
-				JSON.stringify({ ...localFlow, functionlistInfo: functionlistInfo }),
-			);
+			if (flowId === null || flowId === undefined || flowId === '') {
+				if (window.location.pathname.includes('/flow/')) {
+					const id = window.location.pathname.split('/')[2];
+					setFlowId(id);
+					localStorage.setItem(
+						id,
+						JSON.stringify({ ...localFlow, functionlistInfo: functionlistInfo }),
+					);
+				}
+			} else {
+				localStorage.setItem(
+					flowId,
+					JSON.stringify({ ...localFlow, functionlistInfo: functionlistInfo }),
+				);
+			}
 		}
 	}, [functionlistInfo]);
 
