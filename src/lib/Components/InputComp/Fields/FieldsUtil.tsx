@@ -6,7 +6,7 @@ import { ReactElement } from 'react';
 import { NumberWidget, OptionWidget, StringWidget } from '../Widgets';
 
 export interface SchemaForm {
-	[key: string]: SchemaForm | string | number;
+	[key: string]: SchemaForm | string | number | { value: number };
 }
 
 export interface SchemaProperty {

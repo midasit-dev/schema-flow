@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import './Fields.css';
 import {
 	FieldsProps,
@@ -46,9 +46,20 @@ export default function Fields(props: FieldsProps) {
 				);
 			};
 
-			const childProperties = properties[fieldKey].properties;
+			const childProperties = field.properties;
 			if (childProperties) {
-				return renderChildFields(childProperties);
+				// TODO(yhs1026) 다른 컨디션으로 변경 필요
+				const unitProperty = childProperties['unit'];
+				if (!unitProperty) {
+					return renderChildFields(childProperties);
+				}
+
+				const valueProperty = childProperties['value'];
+				const value = (currentForm as { value: number })['value']?.toString() ?? '';
+				const unit = unitProperty.enum?.[0] as string;
+				return renderField({ ...valueProperty, unit }, value, (value: string) => {
+					handleChange([...currentKeyList, 'value'], value);
+				});
 			}
 
 			if (field.anyOf) {
