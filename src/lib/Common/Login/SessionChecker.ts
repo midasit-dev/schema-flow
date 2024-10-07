@@ -1,41 +1,37 @@
-import { fetchFunction } from '../fetch';
+export const IsSessionValid = async (token: string) => {
+	if (token === '' || token === null || token === undefined) return 'token is empty';
 
-export const IsSessionValid = async (token?: string) => {
-	if (token === '' || token === null || token === undefined) return false;
-
-	const res = await fetchFunction({
-		baseUrl: 'https://members.midasuser.com/auth/api/v1/session-validate',
-		token: token,
+	const response = await fetch('https://members.midasuser.com/auth/api/v1/session-validate', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-AUTH-TOKEN': `Bearer ${token}`,
+		},
 	});
-	if (res.ok) return true;
+
+	if (response.ok) return true;
 	else return false;
 };
 
-export const GetToken = async (token: any, setToken: any, acc: any, setAcc: any) => {
-	let currentToken = token;
-
-	if (await IsSessionValid(currentToken + '')) return currentToken;
-
+export const GetToken = async (acc: any) => {
 	// if token is not valid, try to login
 	if (acc === '' || acc === null || acc === undefined) return 'acc is empty';
 
 	if (typeof acc === 'string') acc = JSON.parse(acc);
-
-	const res = await fetchFunction({
-		baseUrl: 'https://members.midasuser.com/auth/api/v1/login',
+	const response = await fetch('https://members.midasuser.com/auth/api/v1/login', {
 		method: 'POST',
-		body: { email: acc.id, password: acc.pwd },
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ email: acc.id, password: acc.pwd }),
 	});
 
-	if (res.ok) {
-		const data = await res.json();
-		console.log('new Token: ', data.token);
-		setToken(data.token);
+	if (response.ok) {
+		const data = await response.json();
+		console.log('%cnew Token: %c' + data.token, 'color: black; font-weight: bold; padding: 2px;', 'color: red; font-weight: bold;');
 		return data.token;
 	} else {
-		setToken('');
-		setAcc('');
-		return '';
+		return 'token issuance failed';
 	}
 };
 

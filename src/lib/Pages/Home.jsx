@@ -44,6 +44,8 @@ const initUserInfo = {
 };
 
 async function getUserInfo(token) {
+	if (token === '' || token === null || token === undefined) return initUserInfo;
+
 	const res = await fetchFunction({
 		baseUrl: `https://members.midasuser.com/member/api/v1`,
 		token: token,

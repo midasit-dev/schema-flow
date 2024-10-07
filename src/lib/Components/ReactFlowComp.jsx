@@ -16,7 +16,7 @@ import {
 
 import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge/CustomEdge';
-import { GetToken } from '../Common/Login/SessionChecker';
+import { IsSessionValid, GetToken } from '../Common/Login/SessionChecker';
 import { fetchFunction } from '../Common/fetch';
 import Navbar from '../Components/Navbar';
 
@@ -54,7 +54,7 @@ const getFlowData = async (flowId, token) => {
 		tokenHeaderKey: 'Authorization',
 		token,
 	});
-	if (res.ok) {
+	if (res && res.ok) {
 		const data = await res.json();
 		return data;
 	}
@@ -122,9 +122,22 @@ const ReactFlowComp = () => {
 
 	React.useEffect(() => {
 		async function getFlowDatasbyFlowID(flowId) {
-			const result = await GetToken(token, setToken, acc, setAcc);
-			if (result === 'acc is empty') return navigate('../login');
-			const res = await getFlowData(flowId, token);
+			let newToken = '';
+			const isVaiid = await IsSessionValid(token);
+			if(!isVaiid || isVaiid === 'token is empty') {
+				console.log('token is invalid');
+				const newTokenResult = await GetToken(acc);
+				if (newTokenResult === 'acc is empty' || newTokenResult === 'token issuance failed') {
+					console.error(newTokenResult);
+					return navigate('../login');
+				}
+				else {
+					setToken(newTokenResult);
+					newToken = newTokenResult;
+				}
+			} else newToken = token;
+
+			const res = await getFlowData(flowId, newToken);
 			if (res !== null) {
 				if (res.title) setTitle(res.title);
 				if (res.flowData && flowId !== '') {
