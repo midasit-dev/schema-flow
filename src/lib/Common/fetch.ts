@@ -24,10 +24,9 @@ export async function fetchFunction(props: fetchProps) {
 			}
 			Object.assign(options, { body: body });
 		} else {
-			Object.assign(options, { body: JSON.stringify(body) });
+			Object.assign(options, { body: typeof body === "string" ? body : JSON.stringify(body) });
 		}
 	}
-
 	const res = await fetch(baseUrl, options);
 	return res;
 }
