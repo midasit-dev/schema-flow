@@ -48,13 +48,14 @@ export default function Fields(props: FieldsProps) {
 
 			const childProperties = field.properties;
 			if (childProperties) {
-				// TODO(yhs1026) 다른 컨디션으로 변경 필요
+				const valueProperty = childProperties['value'];
 				const unitProperty = childProperties['unit'];
-				if (!unitProperty) {
+
+				const isUnitValue = valueProperty !== undefined && unitProperty !== undefined;
+				if (!isUnitValue) {
 					return renderChildFields(childProperties);
 				}
 
-				const valueProperty = childProperties['value'];
 				const value = (currentForm as { value: number })['value']?.toString() ?? '';
 				const unit = unitProperty.enum?.[0] as string;
 				return renderField({ ...valueProperty, unit }, value, (value: string) => {
