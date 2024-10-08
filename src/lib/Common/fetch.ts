@@ -26,8 +26,7 @@ export async function fetchFunction(props: fetchProps) {
 			} else {
 				newToken = newTokenResult;
 			}
-		}
-		else {
+		} else {
 			newToken = token;
 		}
 

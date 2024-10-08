@@ -28,7 +28,7 @@ export const TokenState = atom<string>({
 
 export const AccState = atom<string>({
 	key: 'acc',
-	default: JSON.parse(rss.getItem('acc') as string) || {"id": "", "pwd": ""},
+	default: JSON.parse(rss.getItem('acc') as string) || { id: '', pwd: '' },
 
 	// when local storage acc value is changed, update the acc state
 	effects_UNSTABLE: [

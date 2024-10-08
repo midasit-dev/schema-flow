@@ -50,7 +50,7 @@ const nodeClassName = (node) => node.type;
 
 const getFlowData = async (flowId, token) => {
 	const res = await fetchFunction({
-		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}`,
 		tokenHeaderKey: 'Authorization',
 		token,
 	});
@@ -124,14 +124,13 @@ const ReactFlowComp = () => {
 		async function getFlowDatasbyFlowID(flowId) {
 			let newToken = '';
 			const isVaiid = await IsSessionValid(token);
-			if(!isVaiid || isVaiid === 'token is empty') {
+			if (!isVaiid || isVaiid === 'token is empty') {
 				console.log('token is invalid');
 				const newTokenResult = await GetToken(acc);
 				if (newTokenResult === 'acc is empty' || newTokenResult === 'token issuance failed') {
 					console.error(newTokenResult);
 					return navigate('../login');
-				}
-				else {
+				} else {
 					setToken(newTokenResult);
 					newToken = newTokenResult;
 				}
@@ -140,8 +139,8 @@ const ReactFlowComp = () => {
 			const res = await getFlowData(flowId, newToken);
 			if (res !== null) {
 				if (res.title) setTitle(res.title);
-				if (res.flowData && flowId !== '') {
-					localStorage.setItem(flowId, JSON.stringify(res.flowData));
+				if (res.flowProject && flowId !== '') {
+					localStorage.setItem(flowId, JSON.stringify(res.flowProject));
 				}
 			}
 		}

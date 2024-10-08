@@ -28,7 +28,11 @@ export const GetToken = async (acc: any) => {
 
 	if (response.ok) {
 		const data = await response.json();
-		console.log('%cnew Token: %c' + data.token, 'color: black; font-weight: bold; padding: 2px;', 'color: red; font-weight: bold;');
+		console.log(
+			'%cnew Token: %c' + data.token,
+			'color: black; font-weight: bold; padding: 2px;',
+			'color: red; font-weight: bold;',
+		);
 		return data.token;
 	} else {
 		return 'token issuance failed';

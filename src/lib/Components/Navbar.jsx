@@ -24,8 +24,8 @@ async function uploadImageToServer(blob, token, flowId) {
 	const formData = new FormData();
 	formData.append('file', blob, 'Thumbnail.png');
 	const res = await fetchFunction({
-		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/thumbnail/${flowId}`,
-		method: 'POST',
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}/thumbnail`,
+		method: 'PUT',
 		body: formData,
 		tokenHeaderKey: 'Authorization',
 		token: token,
@@ -80,7 +80,7 @@ export default function Navbar({ title, setTitle }) {
 			title: title,
 		};
 		const res = await fetchFunction({
-			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}`,
 			method: 'PUT',
 			body: body,
 			tokenHeaderKey: 'Authorization',
@@ -116,7 +116,7 @@ export default function Navbar({ title, setTitle }) {
 			flowData: flowDatas,
 		};
 		const res = await fetchFunction({
-			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}`,
 			method: 'PUT',
 			body: body,
 			tokenHeaderKey: 'Authorization',

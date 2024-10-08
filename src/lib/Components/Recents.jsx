@@ -66,10 +66,10 @@ function UserSavedFlowProject({ width, recentFlowProjects, onClickSavedFlow }) {
 			{recentFlowProjects.map((flowProject) => {
 				return (
 					<div
-						key={flowProject.fileId}
+						key={flowProject.flowProjectId}
 						className='recents-wrapper'
 						style={{ width: `calc(${width}px - 40px)`, height: width }}
-						onClick={() => onClickSavedFlow(flowProject.fileId)}
+						onClick={() => onClickSavedFlow(flowProject.flowProjectId)}
 					>
 						<div className='recents-thumbnail'>
 							<img
@@ -89,7 +89,7 @@ function UserSavedFlowProject({ width, recentFlowProjects, onClickSavedFlow }) {
 
 async function postNewFlowProject(token) {
 	const res = await fetchFunction({
-		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas`,
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects`,
 		method: 'POST',
 		tokenHeaderKey: 'Authorization',
 		token: token,
@@ -149,8 +149,8 @@ export default function Recents(props) {
 		} else newToken = token;
 
 		const response = await postNewFlowProject(newToken);
-		if(response && response.fileId) {
-			const flowId = response.fileId;
+		if (response && response.flowProjectId) {
+			const flowId = response.flowProjectId;
 			if (flowId && flowId !== '') {
 				setFlowID(flowId);
 				navigate(`../Flow/${flowId}`);
