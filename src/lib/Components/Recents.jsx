@@ -79,7 +79,7 @@ function UserSavedFlowProject({ width, recentFlowProjects, onClickSavedFlow }) {
 							/>
 						</div>
 						<div className='recents-title'>{flowProject.title}</div>
-						<UpdateTime updatedAt={flowProject.UpdatedAt} />
+						<UpdateTime updatedAt={flowProject.updatedAt} />
 					</div>
 				);
 			})}
