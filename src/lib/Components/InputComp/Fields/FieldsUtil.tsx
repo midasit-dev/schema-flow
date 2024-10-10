@@ -13,6 +13,7 @@ export interface SchemaProperty {
 	title: string;
 	type: 'string' | 'number' | 'object';
 	description?: string;
+	default: string | number | { value: number; unit: string };
 	enum?: string[];
 	anyOf?: SchemaProperty[];
 	unit?: string;

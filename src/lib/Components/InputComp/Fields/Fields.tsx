@@ -56,11 +56,19 @@ export default function Fields(props: FieldsProps) {
 					return renderChildFields(childProperties);
 				}
 
-				const value = (currentForm as { value: number })['value']?.toString() ?? '';
-				const unit = unitProperty.enum?.[0] as string;
-				return renderField({ ...valueProperty, unit }, value, (value: string) => {
-					handleChange([...currentKeyList, 'value'], value);
-				});
+				const { title, description } = field;
+				const defaultData = field.default as { value: number; unit: string };
+
+				const value = (defaultData?.value.toString() || (valueProperty.default as string)) ?? '';
+				const unit = defaultData?.unit || (unitProperty.enum?.[0] as string);
+
+				return renderField(
+					{ ...valueProperty, title, description, unit },
+					value,
+					(value: string) => {
+						handleChange([...currentKeyList, 'value'], value);
+					},
+				);
 			}
 
 			if (field.anyOf) {
