@@ -14,31 +14,28 @@ import { TokenState, AccState } from '../RecoilAtom/recoilHomeState';
 import './Navbar.css';
 
 // common
-import { GetToken } from '../Common/Login/SessionChecker';
+import { IsSessionValid, GetToken } from '../Common/Login/SessionChecker';
 import { fetchFunction } from '../Common/fetch';
 
 const imageWidth = 1024;
 const imageHeight = 768;
 
 async function uploadImageToServer(blob, token, flowId) {
-	console.log('blob:', blob);
 	const formData = new FormData();
 	formData.append('file', blob, 'Thumbnail.png');
-	console.log('formData:', formData);
-	console.log('formData type', typeof formData);
 	const res = await fetchFunction({
-		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/thumbnail/${flowId}`,
-		method: 'POST',
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}/thumbnail`,
+		method: 'PUT',
 		body: formData,
 		tokenHeaderKey: 'Authorization',
 		token: token,
 	});
 
-	if (res.ok) {
+	if (res && res.ok) {
 		const data = await res.json();
-		console.log('Thumbnail Save Successed:', data);
+		console.log('Thumbnail Save %cSuccessed%c:', 'color: green; font-weight: bold;', '', data);
 	} else {
-		console.error('Thumbnail Save Failed:', res);
+		console.error('Thumbnail Save %cFailed%c:', 'color: red; font-weight: bold;', '', res);
 	}
 }
 
@@ -52,7 +49,8 @@ export default function Navbar({ title, setTitle }) {
 	const flowId = useRecoilValue(FlowID);
 	const navigate = useNavigate();
 
-	const onSaveThumbnail = async () => {
+	const onSaveThumbnail = async (token) => {
+		const startTime = performance.now();
 		const nodesBounds = getNodesBounds(getNodes());
 
 		const viewport = getViewportForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2);
@@ -68,6 +66,8 @@ export default function Navbar({ title, setTitle }) {
 			},
 			useCors: true,
 		});
+		const endTime = performance.now();
+		console.log(`Blob creation took ${endTime - startTime} milliseconds`);
 		if (blob) {
 			await uploadImageToServer(blob, token, flowId);
 		} else {
@@ -80,38 +80,51 @@ export default function Navbar({ title, setTitle }) {
 			title: title,
 		};
 		const res = await fetchFunction({
-			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}`,
 			method: 'PUT',
 			body: body,
 			tokenHeaderKey: 'Authorization',
 			token: token,
 		});
-		if (res.ok) console.log('title save successed:', res);
+		if (res && res.ok) console.log('title save successed:', res);
 		else console.error('title save failed:', res);
 	};
 
 	const saveAllData = async () => {
-		const result = await GetToken(token, setToken, acc, setAcc);
-		if (result === 'acc is empty') return;
-		await onSaveThumbnail();
+		let newToken = '';
+		const isValid = await IsSessionValid(token);
+		if (!isValid || isValid === 'token is empty') {
+			console.log('token is invalid');
+			const newTokenResult = await GetToken(acc);
+			if (newTokenResult === 'acc is empty' || newTokenResult === 'token issuance failed') {
+				console.error(newTokenResult);
+				return null;
+			} else {
+				setToken(newTokenResult);
+				newToken = newTokenResult;
+			}
+		} else newToken = token;
+
+		await onSaveThumbnail(newToken);
+
 		let flowDatas = localStorage.getItem(flowId);
 		if (typeof flowDatas === 'string') {
 			flowDatas = JSON.parse(flowDatas);
 		}
 		const body = {
 			title: title,
-			flowData: flowDatas,
+			flowProject: flowDatas,
 		};
-		console.log('body:', body);
 		const res = await fetchFunction({
-			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}`,
 			method: 'PUT',
 			body: body,
 			tokenHeaderKey: 'Authorization',
-			token: token,
+			token: newToken,
 		});
-		if (res.ok) console.log('All data save successed:', res);
-		else console.error('All data save failed:', res);
+		if (res && res.ok)
+			console.log('All data save %csuccessed%c:', 'color: green; font-weight: bold;', '', res);
+		else console.error('All data save %cfailed%c:', 'color: red; font-weight: bold;', '', res);
 	};
 
 	const onClickSave = async () => {

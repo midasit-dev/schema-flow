@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GetToken } from '../Common/Login/SessionChecker';
+import { IsSessionValid, GetToken } from '../Common/Login/SessionChecker';
 import { fetchFunction } from '../Common/fetch';
 
 // recoil
@@ -66,10 +66,10 @@ function UserSavedFlowProject({ width, recentFlowProjects, onClickSavedFlow }) {
 			{recentFlowProjects.map((flowProject) => {
 				return (
 					<div
-						key={flowProject.fileId}
+						key={flowProject.flowProjectId}
 						className='recents-wrapper'
 						style={{ width: `calc(${width}px - 40px)`, height: width }}
-						onClick={() => onClickSavedFlow(flowProject.fileId)}
+						onClick={() => onClickSavedFlow(flowProject.flowProjectId)}
 					>
 						<div className='recents-thumbnail'>
 							<img
@@ -79,7 +79,7 @@ function UserSavedFlowProject({ width, recentFlowProjects, onClickSavedFlow }) {
 							/>
 						</div>
 						<div className='recents-title'>{flowProject.title}</div>
-						<UpdateTime updatedAt={flowProject.UpdatedAt} />
+						<UpdateTime updatedAt={flowProject.updatedAt} />
 					</div>
 				);
 			})}
@@ -89,14 +89,14 @@ function UserSavedFlowProject({ width, recentFlowProjects, onClickSavedFlow }) {
 
 async function postNewFlowProject(token) {
 	const res = await fetchFunction({
-		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas`,
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects`,
 		method: 'POST',
 		tokenHeaderKey: 'Authorization',
 		token: token,
 		body: JSON.stringify({ title: 'Untitled' }),
 	});
 
-	if (res.ok) {
+	if (res && res.ok) {
 		const data = await res.json();
 		return data;
 	}
@@ -134,23 +134,34 @@ export default function Recents(props) {
 	const navigate = useNavigate();
 
 	const onClickNewFlow = async () => {
-		const result = await GetToken(token, setToken, acc, setAcc);
-		if (result === 'acc is empty') navigate('../login');
-		const response = await postNewFlowProject(token);
-		if (response === null) {
+		let newToken = '';
+		const isValid = await IsSessionValid(token);
+		if (!isValid || isValid === 'token is empty') {
+			console.log('token is invalid');
+			const newTokenResult = await GetToken(acc);
+			if (newTokenResult === 'acc is empty' || newTokenResult === 'token issuance failed') {
+				console.error(newTokenResult);
+				navigate('../login');
+			} else {
+				setToken(newTokenResult);
+				newToken = newTokenResult;
+			}
+		} else newToken = token;
+
+		const response = await postNewFlowProject(newToken);
+		if (response && response.flowProjectId) {
+			const flowId = response.flowProjectId;
+			if (flowId && flowId !== '') {
+				setFlowID(flowId);
+				navigate(`../Flow/${flowId}`);
+			}
+		} else {
 			console.error('Failed to create new flow project');
 			return;
-		}
-		const flowId = response.fileId;
-		if (flowId) {
-			setFlowID(flowId);
-			navigate(`../Flow/${flowId}`);
 		}
 	};
 
 	const onClickSavedFlow = async (flowId) => {
-		const result = await GetToken(token, setToken, acc, setAcc);
-		if (result === 'acc is empty') navigate('../login');
 		setFlowID(flowId);
 		navigate(`../flow/${flowId}`);
 	};

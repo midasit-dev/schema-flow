@@ -16,7 +16,7 @@ import {
 
 import CustomNode from './CustomNode/CustomNode';
 import CustomEdge from './CustomEdge/CustomEdge';
-import { GetToken } from '../Common/Login/SessionChecker';
+import { IsSessionValid, GetToken } from '../Common/Login/SessionChecker';
 import { fetchFunction } from '../Common/fetch';
 import Navbar from '../Components/Navbar';
 
@@ -50,11 +50,11 @@ const nodeClassName = (node) => node.type;
 
 const getFlowData = async (flowId, token) => {
 	const res = await fetchFunction({
-		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas/${flowId}`,
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}`,
 		tokenHeaderKey: 'Authorization',
 		token,
 	});
-	if (res.ok) {
+	if (res && res.ok) {
 		const data = await res.json();
 		return data;
 	}
@@ -122,26 +122,37 @@ const ReactFlowComp = () => {
 
 	React.useEffect(() => {
 		async function getFlowDatasbyFlowID(flowId) {
-			const result = await GetToken(token, setToken, acc, setAcc);
-			if (result === 'acc is empty') return navigate('../login');
-			const res = await getFlowData(flowId, token);
+			let newToken = '';
+			const isVaiid = await IsSessionValid(token);
+			if (!isVaiid || isVaiid === 'token is empty') {
+				console.log('token is invalid');
+				const newTokenResult = await GetToken(acc);
+				if (newTokenResult === 'acc is empty' || newTokenResult === 'token issuance failed') {
+					console.error(newTokenResult);
+					return navigate('../login');
+				} else {
+					setToken(newTokenResult);
+					newToken = newTokenResult;
+				}
+			} else newToken = token;
+
+			const res = await getFlowData(flowId, newToken);
 			if (res !== null) {
 				if (res.title) setTitle(res.title);
-				if (res.flowData && flowId !== '') {
-					localStorage.setItem(flowId, JSON.stringify(res.flowData));
+				if (res.flowProject && flowId !== '') {
+					localStorage.setItem(flowId, JSON.stringify(res.flowProject));
 				}
 			}
 		}
 		if (flowId === null || flowId === undefined || flowId === '') {
 			if (window.location.pathname.includes('/flow/')) {
-				setFlowId(window.location.pathname.split('/')[2]);
+				setFlowId(window.location.pathname.split('/')[-1]);
 			}
 		} else getFlowDatasbyFlowID(flowId);
 	}, [flowId]);
 
 	React.useEffect(() => {
 		// set nodes to localstorage
-
 		if (nodes.length > 0) {
 			let localFlow = JSON.parse(localStorage.getItem(flowId));
 			if (typeof localFlow === 'string') {
@@ -179,7 +190,7 @@ const ReactFlowComp = () => {
 			}
 			if (flowId === null || flowId === undefined || flowId === '') {
 				if (window.location.pathname.includes('/flow/')) {
-					const id = window.location.pathname.split('/')[2];
+					const id = window.location.pathname.split('/')[-1];
 					setFlowId(id);
 					localStorage.setItem(
 						id,

@@ -6,9 +6,9 @@ import { fetchFunction } from '../../Common/fetch';
 
 const getSchemaFromServer = async (URI) => {
 	const res = await fetchFunction({ baseUrl: URI });
-	if (res.ok) {
+	if (res && res.ok) {
 		const data = await res.json();
-		return data;
+		return data.functionSchema;
 	}
 	return null;
 };

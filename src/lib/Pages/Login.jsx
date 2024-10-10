@@ -112,7 +112,7 @@ export default function Login({ clearQueryClient = false }) {
 			method: 'POST',
 			body: { email: id, password: pwd },
 		});
-		if (res.ok) {
+		if (res && res.ok) {
 			const data = await res.json();
 			setToken(data.token);
 			setAcc(JSON.stringify({ id, pwd }));

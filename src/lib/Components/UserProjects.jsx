@@ -18,12 +18,12 @@ const MAX_ITEMS = 5;
 
 async function getFlowProjects(token) {
 	const res = await fetchFunction({
-		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-datas`,
+		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects`,
 		tokenHeaderKey: 'Authorization',
 		token: token,
 	});
 
-	if (res.ok) {
+	if (res && res.ok) {
 		const data = await res.json();
 		return data;
 	}
@@ -34,7 +34,7 @@ async function getFlowTemplates() {
 	const res = await fetchFunction({
 		baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/templates`,
 	});
-	if (res.ok) {
+	if (res && res.ok) {
 		const data = await res.json();
 		console.log('Template:', data);
 		return data;

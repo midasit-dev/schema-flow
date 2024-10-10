@@ -1,4 +1,6 @@
 import { fetchProps } from './types';
+import { IsSessionValid, GetToken } from './Login/SessionChecker';
+import rss from 'react-secure-storage';
 
 export async function fetchFunction(props: fetchProps) {
 	const { baseUrl, tokenHeaderKey = 'X-AUTH-TOKEN', token, method = 'GET', body } = props;
@@ -11,8 +13,24 @@ export async function fetchFunction(props: fetchProps) {
 	};
 
 	// 토큰 설정
-	if (token !== undefined) {
-		Object.assign(options.headers || {}, { [`${tokenHeaderKey}`]: `Bearer ${token}` });
+	if (token !== undefined && token !== '' && token !== null) {
+		let newToken = '';
+		const acc = rss.getItem('acc') as string;
+		const isValid = await IsSessionValid(token);
+		if (!isValid) {
+			console.log('token is invalid');
+			const newTokenResult = await GetToken(acc);
+			if (newTokenResult === 'acc is empty' || newTokenResult === 'token issuance failed') {
+				console.error(newTokenResult);
+				return null;
+			} else {
+				newToken = newTokenResult;
+			}
+		} else {
+			newToken = token;
+		}
+
+		Object.assign(options.headers || {}, { [`${tokenHeaderKey}`]: `Bearer ${newToken}` });
 	}
 
 	// GET 이외의 요청일 때, body가 FormData면 그대로, 그 외는 JSON.stringify로 변환
@@ -24,10 +42,9 @@ export async function fetchFunction(props: fetchProps) {
 			}
 			Object.assign(options, { body: body });
 		} else {
-			Object.assign(options, { body: JSON.stringify(body) });
+			Object.assign(options, { body: typeof body === 'string' ? body : JSON.stringify(body) });
 		}
 	}
-
 	const res = await fetch(baseUrl, options);
 	return res;
 }
