@@ -146,7 +146,8 @@ const ReactFlowComp = () => {
 		}
 		if (flowId === null || flowId === undefined || flowId === '') {
 			if (window.location.pathname.includes('/flow/')) {
-				setFlowId(window.location.pathname.split('/')[-1]);
+				const pathArr = window.location.pathname.split('/');
+				setFlowId(pathArr[pathArr.length - 1]);
 			}
 		} else getFlowDatasbyFlowID(flowId);
 	}, [flowId]);
@@ -190,7 +191,8 @@ const ReactFlowComp = () => {
 			}
 			if (flowId === null || flowId === undefined || flowId === '') {
 				if (window.location.pathname.includes('/flow/')) {
-					const id = window.location.pathname.split('/')[-1];
+					const pathArr = window.location.pathname.split('/');
+					const id = pathArr[pathArr.length - 1];
 					setFlowId(id);
 					localStorage.setItem(
 						id,
