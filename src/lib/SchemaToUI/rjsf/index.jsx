@@ -33,7 +33,7 @@ export const FieldMap = {
 async function postFunctionExecuteToST(executeURI, body, isSuccessFunctionExecute) {
 	// executeURI = https://moa.rpm.kr-dv-midasit.com/backend/function-executor/python-execute/moapy/project/wgsd/wgsd_flow/rebar_properties_design
 	const res = await fetchFunction({ baseUrl: executeURI, method: 'POST', body: body });
-	if (res.ok) {
+	if (res && res.ok) {
 		isSuccessFunctionExecute(true);
 		const data = await res.json();
 		return data;

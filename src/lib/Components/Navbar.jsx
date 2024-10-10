@@ -86,7 +86,7 @@ export default function Navbar({ title, setTitle }) {
 			tokenHeaderKey: 'Authorization',
 			token: token,
 		});
-		if (res.ok) console.log('title save successed:', res);
+		if (res && res.ok) console.log('title save successed:', res);
 		else console.error('title save failed:', res);
 	};
 

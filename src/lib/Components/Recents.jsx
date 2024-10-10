@@ -96,7 +96,7 @@ async function postNewFlowProject(token) {
 		body: JSON.stringify({ title: 'Untitled' }),
 	});
 
-	if (res.ok) {
+	if (res && res.ok) {
 		const data = await res.json();
 		return data;
 	}

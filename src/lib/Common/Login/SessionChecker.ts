@@ -9,7 +9,7 @@ export const IsSessionValid = async (token: string) => {
 		},
 	});
 
-	if (response.ok) return true;
+	if (response && response.ok) return true;
 	else return false;
 };
 
@@ -26,7 +26,7 @@ export const GetToken = async (acc: any) => {
 		body: JSON.stringify({ email: acc.id, password: acc.pwd }),
 	});
 
-	if (response.ok) {
+	if (response && response.ok) {
 		const data = await response.json();
 		console.log(
 			'%cnew Token: %c' + data.token,
