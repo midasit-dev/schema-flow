@@ -190,7 +190,7 @@ const ReactFlowComp = () => {
 			}
 			if (flowId === null || flowId === undefined || flowId === '') {
 				if (window.location.pathname.includes('/flow/')) {
-					const id = window.location.pathname.split('/')[2];
+					const id = window.location.pathname.split('/')[-1];
 					setFlowId(id);
 					localStorage.setItem(
 						id,
