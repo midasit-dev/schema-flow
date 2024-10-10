@@ -113,7 +113,7 @@ export default function Navbar({ title, setTitle }) {
 		}
 		const body = {
 			title: title,
-			flowData: flowDatas,
+			flowProject: flowDatas,
 		};
 		const res = await fetchFunction({
 			baseUrl: `${process.env.REACT_APP_ACTUAL_DV_API_URL}backend/wgsd/flow-projects/${flowId}`,
