@@ -76,7 +76,7 @@ const ReactFlowComp = () => {
 	const setEgdesInfo = useSetRecoilState(EgdesInfo);
 	const [flowId, setFlowId] = useRecoilState(FlowID);
 	const [token, setToken] = useRecoilState(TokenState);
-	const [acc, setAcc] = useRecoilState(AccState);
+	const [acc,] = useRecoilState(AccState);
 
 	const onConnectStart = useCallback((_, { nodeId }) => {
 		connectingNodeId.current = nodeId;
@@ -139,7 +139,7 @@ const ReactFlowComp = () => {
 			const res = await getFlowData(flowId, newToken);
 			if (res !== null) {
 				if (res.title) setTitle(res.title);
-				if (res.flowProject && flowId !== '') {
+				if (res.flowProject && flowId !== '' && flowId) {
 					localStorage.setItem(flowId, JSON.stringify(res.flowProject));
 				}
 			}
@@ -159,7 +159,7 @@ const ReactFlowComp = () => {
 			if (typeof localFlow === 'string') {
 				localFlow = JSON.parse(localFlow);
 			}
-			localStorage.setItem(flowId, JSON.stringify({ ...localFlow, nodes: nodes }));
+			if(flowId)	localStorage.setItem(flowId, JSON.stringify({ ...localFlow, nodes: nodes }));
 		}
 	}, [nodes]);
 
@@ -178,7 +178,7 @@ const ReactFlowComp = () => {
 			if (typeof localFlow === 'string') {
 				localFlow = JSON.parse(localFlow);
 			}
-			localStorage.setItem(flowId, JSON.stringify({ ...localFlow, edges: edges }));
+			if(flowId)	localStorage.setItem(flowId, JSON.stringify({ ...localFlow, edges: edges }));
 		}
 	}, [edges]);
 

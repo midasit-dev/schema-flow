@@ -157,7 +157,6 @@ export default function SchemaToUI(props: {
 	}, [isOpenResultView]);
 
 	const setResponseData = React.useCallback((data: any) => {
-		console.log('setResponseData', data);
 		if (!isEmpty(data) && data.hasOwnProperty('json')) {
 			data = data.json;
 			if (data.hasOwnProperty('moapy.data_post.Result3DPM')) {

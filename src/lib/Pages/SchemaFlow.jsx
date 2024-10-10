@@ -34,7 +34,7 @@ function SchemaFlow(props) {
 
 	const [functionlistInfo, setFunctionListInfo] = useRecoilState(FunctionListInfo);
 	const setSchema = useSetRecoilState(SelectedSchema);
-	const FlowId = useRecoilValue(FlowID);
+	const flowId = useRecoilValue(FlowID);
 
 	const toggleOpen = () => setIsopenList(!isopenList);
 
@@ -104,7 +104,7 @@ function SchemaFlow(props) {
 	);
 
 	const loadData = React.useCallback(async () => {
-		const localFlow = localStorage.getItem(FlowId);
+		const localFlow = localStorage.getItem(flowId);
 		let functionlistInfoLocal = {};
 		// if local storage is not empty and it is an array type, remove local storage FLOW
 		if (localFlow) {
@@ -158,11 +158,11 @@ function SchemaFlow(props) {
 					break;
 			}
 		});
-	}, [FlowId, fetchFunctionList, setFunctionListInfo]);
+	}, [flowId, fetchFunctionList, setFunctionListInfo]);
 
 	React.useEffect(() => {
 		loadData();
-	}, []);
+	}, [flowId]);
 
 	React.useEffect(() => {
 		if (selectedCategory === null) {
