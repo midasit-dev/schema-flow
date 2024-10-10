@@ -146,14 +146,13 @@ const ReactFlowComp = () => {
 		}
 		if (flowId === null || flowId === undefined || flowId === '') {
 			if (window.location.pathname.includes('/flow/')) {
-				setFlowId(window.location.pathname.split('/')[2]);
+				setFlowId(window.location.pathname.split('/')[-1]);
 			}
 		} else getFlowDatasbyFlowID(flowId);
 	}, [flowId]);
 
 	React.useEffect(() => {
 		// set nodes to localstorage
-
 		if (nodes.length > 0) {
 			let localFlow = JSON.parse(localStorage.getItem(flowId));
 			if (typeof localFlow === 'string') {
