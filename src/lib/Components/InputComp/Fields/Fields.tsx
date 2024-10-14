@@ -57,10 +57,8 @@ export default function Fields(props: FieldsProps) {
 				}
 
 				const { title, description } = field;
-				const defaultData = field.default as { value: number; unit: string };
-
-				const value = (defaultData?.value.toString() || (valueProperty.default as string)) ?? '';
-				const unit = defaultData?.unit || (unitProperty.enum?.[0] as string);
+				const value = (valueProperty.default as string) ?? '';
+				const unit = ((unitProperty.default || unitProperty.enum?.[0]) as string) ?? '';
 
 				return renderField(
 					{ ...valueProperty, title, description, unit },
