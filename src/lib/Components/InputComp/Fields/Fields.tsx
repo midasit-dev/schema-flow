@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import './Fields.css';
 import {
 	FieldsProps,
@@ -46,9 +46,27 @@ export default function Fields(props: FieldsProps) {
 				);
 			};
 
-			const childProperties = properties[fieldKey].properties;
+			const childProperties = field.properties;
 			if (childProperties) {
-				return renderChildFields(childProperties);
+				const valueProperty = childProperties['value'];
+				const unitProperty = childProperties['unit'];
+
+				const isUnitValue = valueProperty !== undefined && unitProperty !== undefined;
+				if (!isUnitValue) {
+					return renderChildFields(childProperties);
+				}
+
+				const { title, description } = field;
+				const value = (valueProperty.default as string) ?? '';
+				const unit = ((unitProperty.default || unitProperty.enum?.[0]) as string) ?? '';
+
+				return renderField(
+					{ ...valueProperty, title, description, unit },
+					value,
+					(value: string) => {
+						handleChange([...currentKeyList, 'value'], value);
+					},
+				);
 			}
 
 			if (field.anyOf) {
